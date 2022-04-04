@@ -18,15 +18,18 @@ const Chat = () => {
 
   const sendMessage = async () => {
     const index = `${Date.now()}`
-    await setDoc(doc(messagesRef, index), {
-      uid: user.uid,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
-      text: value,
-      createdAt: Date.now()
-    });
-    setFlag(!flag)
+    if (user) {
+      await setDoc(doc(messagesRef, index), {
+        uid: user.uid,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        text: value,
+        createdAt: Date.now()
+      });  
+      setFlag(!flag)
+    }
   }
+  
   return (
     <div>
       <h3>Chat</h3>
