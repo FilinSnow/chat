@@ -1,4 +1,3 @@
-import { Firestore } from 'firebase/firestore';
 import React, { useContext, useState } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { collection, doc, setDoc } from "firebase/firestore";
@@ -12,7 +11,7 @@ const Chat = () => {
   const tmpUser: any = localStorage.getItem('user')
   const user = JSON.parse(tmpUser)
 
-  const [messages, loading] = useCollectionData(
+  const [messages] = useCollectionData(
     collection(db, 'messages')
   )
   const messagesRef = collection(db, 'messages')

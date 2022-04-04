@@ -1,19 +1,14 @@
 import React, { FC, useContext } from 'react'
-import { Link } from 'react-router-dom'
 import { Context } from '../..'
 import { IAuth } from '../../interfaces/auth'
 import './Header.scss'
 
-
-
-const Header: FC<IAuth> = ({flag, setFlag, auth: isCheckAuth, setAuth}: IAuth) => {
+const Header: FC<IAuth> = ({flag, setFlag, auth: isCheckAuth}: IAuth) => {
   const {auth}: any = useContext(Context)
   const logout = async() => {
     localStorage.clear()
     await auth.signOut()
     setFlag && setFlag(!flag)
-    // setAuth && setAuth(false)
-    
   }
 
   return (
