@@ -11,7 +11,7 @@ const Header: FC<IAuth> = ({flag, setFlag, auth: isCheckAuth}: IAuth) => {
     localStorage.clear()
     await auth.signOut()
     setFlag && setFlag(!flag)
-    navigate('/login')
+    return navigate('/login')
   }
 
   return (
