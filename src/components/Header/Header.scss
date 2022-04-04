@@ -1,0 +1,14 @@
+.header__content {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background: rgb(143, 131, 131);
+
+  .content {
+    a {
+      text-decoration: none;
+      margin: 10px;
+    }
+  }
+}
+
