@@ -1,8 +1,6 @@
 import React, { FC, useState } from 'react';
 import './App.css';
 import AppRouter from './components/AppRouter';
-import WrapperAppRouter from './components/HOC/WrapperAppRouter';
-
 
 const App: FC = () => {
   const [flag, setFlag] = useState<any>(false)

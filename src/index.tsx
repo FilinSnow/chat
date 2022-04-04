@@ -10,7 +10,6 @@ import { initializeApp } from "firebase/app";
 import 'firebase/firestore';
 import 'firebase/auth';
 import { getAuth } from 'firebase/auth';
-import { Firestore } from 'firebase/firestore';
 import { GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 // import { auth, provider } from './components/Context/ContextAuth';
