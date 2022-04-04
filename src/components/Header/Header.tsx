@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const Header: FC<IAuth> = ({flag, setFlag, auth: isCheckAuth}: IAuth) => {
   const {auth}: any = useContext(Context)
   let navigate = useNavigate();
-  const logout = async() => {
+  const logout = async () => {
     localStorage.clear()
     await auth.signOut()
     setFlag && setFlag(!flag)
