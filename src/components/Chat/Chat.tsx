@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { collection, doc, setDoc } from "firebase/firestore";
 import { Context } from '../..';
+import sky from '../../img/sky.jpeg'
 import './Chat.scss'
 
 
@@ -18,7 +19,12 @@ const Chat = () => {
 
   const sendMessage = async () => {
     const index = `${Date.now()}`
+    const regular = /^[а-яА-Яa-zA-Z0-9()*_\-!#$%^&*,."\'\][]*$/
     setValue('')
+    if(!regular.test(value)) {
+      return 
+    }
+    
     if (user) {
       await setDoc(doc(messagesRef, index), {
         uid: user.uid,
@@ -46,11 +52,11 @@ const Chat = () => {
   return (
     <div>
       <h3>Chat</h3>
-      <div className='wrapper__chat'>
-        <div style={{ margin: '0 auto', display: 'flex', flexDirection: 'column' }}>
+      <div className='wrapper__chat' style={{background: sky}}>
+        <div style={{ margin: '0 auto', display: 'flex', flexDirection: 'column'}}>
           {messages && messages.map(message => {
             return (
-              <div key={message?.createdAt} style={{display: 'flex', justifyContent: message?.uid === user?.uid ? 'end' : 'start' }}>
+              <div key={message?.createdAt} className='message' style={{display: 'flex', justifyContent: message?.uid === user?.uid ? 'end' : 'start' }}>
                 <div style={{ background: 'lightGray', margin: 5, maxWidth: 250, padding: 5}}>
                   <div style={{display: 'flex', justifyContent: 'flex-start'}}>name: {message?.displayName}</div>
                   <div style={{display: 'flex', justifyContent: 'flex-start'}}>text: {message?.text}</div>
