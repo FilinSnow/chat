@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { collection, doc, setDoc } from "firebase/firestore";
 import { Context } from '../..';
@@ -18,6 +18,7 @@ const Chat = () => {
 
   const sendMessage = async () => {
     const index = `${Date.now()}`
+    setValue('')
     if (user) {
       await setDoc(doc(messagesRef, index), {
         uid: user.uid,
@@ -25,10 +26,22 @@ const Chat = () => {
         photoURL: user.photoURL,
         text: value,
         createdAt: Date.now()
-      });  
+      });
       setFlag(!flag)
     }
   }
+
+  useEffect(() => {
+    const listener = (event:any) => {
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        sendMessage()
+      }
+    };
+    document.addEventListener("keydown", listener);
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
+  }, [value]);
 
   return (
     <div>
