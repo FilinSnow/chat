@@ -1,5 +1,5 @@
 import { signInWithPopup } from 'firebase/auth';
-import React, { FC, useContext } from 'react'
+import React, { FC, useContext, useState } from 'react'
 import { Context } from '../..';
 import { IAuth } from '../../interfaces/auth';
 import { useNavigate } from "react-router-dom";
