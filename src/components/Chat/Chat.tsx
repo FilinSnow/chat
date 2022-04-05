@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { collection, doc, setDoc } from "firebase/firestore";
 import { Context } from '../..';
@@ -17,9 +17,9 @@ const Chat = () => {
   )
   const messagesRef = collection(db, 'messages')
 
-  const sendMessage = async () => {
+  const sendMessage = useCallback(async () => {
     const index = `${Date.now()}`
-    const regular = /^[а-яА-Яa-zA-Z0-9()*_\-!#$%^&*,."\'\][]*$/
+    const regular = /^[а-яА-Яa-zA-Z0-9()*_\-!#$%^&*,."'\][]*$/
     setValue('')
     if(!regular.test(value)) {
       return 
@@ -35,8 +35,9 @@ const Chat = () => {
       });
       setFlag(!flag)
     }
-  }
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]) 
+  
   useEffect(() => {
     const listener = (event:any) => {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
@@ -47,7 +48,7 @@ const Chat = () => {
     return () => {
       document.removeEventListener("keydown", listener);
     };
-  }, [value]);
+  }, [value, sendMessage]);
 
   return (
     <div>
