@@ -1,8 +1,38 @@
 .wrapper__chat {
   border: 1px solid #000;
-  min-height: 500px;
-  max-height: 500px;
-  max-width: 500px;
+  height: 600px;
+  max-width: 600px;
   overflow-y: scroll;
   margin: 0 auto;
+  background-image: url('https://d7hftxdivxxvm.cloudfront.net/?resize_to=width&src=https%3A%2F%2Fartsy-media-uploads.s3.amazonaws.com%2F2RNK1P0BYVrSCZEy_Sd1Ew%252F3417757448_4a6bdf36ce_o.jpg&width=1200&quality=80');
+}
+
+.message,
+.message-owner {
+  display: flex;
+}
+
+.message {
+  justify-content: end;
+}
+
+.message-owner {
+  justify-content: start;
+}
+
+.message-content {
+  text-align: left;
+  background: rgb(255, 255, 255); 
+  margin: 5px; 
+  max-width: 250px; 
+  padding: 9px;
+  border-radius: 5px;
+}
+
+.send-message {
+  margin-top: 10px;
+
+  & > {
+    height: 20px
+  }
 }
