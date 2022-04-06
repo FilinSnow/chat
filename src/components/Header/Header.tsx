@@ -16,7 +16,7 @@ const Header: FC<IAuth> = ({flag, setFlag, auth: isCheckAuth, theme, setTheme}: 
   return (
     <div style={{width: '100%'}}>
       <div className="header__content">
-        {/* <ToggleThemeBtn theme={theme} setTheme={setTheme}/> */}
+        <ToggleThemeBtn theme={theme} setTheme={setTheme}/>
         <div className="content">
         </div>
         {isCheckAuth ? (<div className="content">
