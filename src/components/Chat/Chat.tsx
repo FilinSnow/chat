@@ -71,7 +71,6 @@ const Chat = () => {
     }
 
   }, [messages])
-  console.log(messages)
 
   const play = () => {
     const audio = new Audio("https://notificationsounds.com/storage/sounds/file-sounds-1303-man-its-for-you.ogg");
@@ -96,8 +95,8 @@ const Chat = () => {
                   className={isOwner ? 'message' : 'message-owner'}
                 >
                   <div className='message-content'>
-                    <div>name: {displayName}</div>
-                    <div>text: {text}</div>
+                    <div><i>name:</i> {displayName}</div>
+                    <div><i>text:</i> {text}</div>
                   </div>
                   <img src={photoURL} className='avatar' alt='avatar' />
                 </div>

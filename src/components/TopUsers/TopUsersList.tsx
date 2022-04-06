@@ -21,8 +21,11 @@ const TopUsers = ({ messages } : any) => {
         count: messagesGroup[key].length
       });
     }
-    
-    setTopUsers(items.slice(0, 10)); //return top-10 users
+
+    items.sort((item : any, nextItem: any) => item.count - nextItem.count);
+    const sortedList = _.sortBy(items, 'count').reverse().slice(0, 10);
+
+    setTopUsers(sortedList); //return top-10 users
   }
 
   useEffect(() => {

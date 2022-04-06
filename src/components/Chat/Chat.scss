@@ -9,6 +9,11 @@
 
 .chat {
   width: 100%;
+  padding-right: 10%;
+
+  @media (max-width: 800px) {
+    padding: 0 10px;
+  }
 
   .wrapper__chat {
     border: 1px solid #000;
