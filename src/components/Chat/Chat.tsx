@@ -26,7 +26,7 @@ const Chat = () => {
     collection(db, 'messages')
   );
   const messagesRef = collection(db, 'messages');
-  const messageRef = useRef<null | HTMLDivElement>(null);
+  const messageRef = useRef<HTMLInputElement>(null);
 
   const sendMessage = useCallback(async () => {
     const index = `${Date.now()}`;
@@ -70,6 +70,8 @@ const Chat = () => {
       play();
     }
 
+    messageRef.current?.scrollIntoView(false);
+
   }, [messages])
 
   const play = () => {
@@ -83,8 +85,8 @@ const Chat = () => {
 
       <div className='chat'>
         <h3>Chat</h3>
-        <div ref={messageRef} className='wrapper__chat' style={{background: sky}}>
-          <div style={{ margin: '0 auto', display: 'flex', flexDirection: 'column'}}>
+        <div className='wrapper__chat' style={{background: sky}}>
+          <div id='1' ref={messageRef} style={{ margin: '0 auto', display: 'flex', flexDirection: 'column'}}>
             {messages && messages.map(message => {
               const {createdAt, uid, displayName, text, photoURL} = message;
               const isOwner = uid === user?.uid;

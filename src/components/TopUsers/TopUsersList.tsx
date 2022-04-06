@@ -39,8 +39,8 @@ const TopUsers = ({ messages } : any) => {
     <div className='top-user-container'>
       <h4>Топ пользователей</h4>
       <ol className='user-list'>
-        {topUsers.map((user: IntTopUsers) => {
-          return <li>{user.name} ({user.count})</li>
+        {topUsers.map((user: IntTopUsers, i: number) => {
+          return <li key={`top-${i}`}>{user.name} ({user.count})</li>
         })}
       </ol>
     </div>
