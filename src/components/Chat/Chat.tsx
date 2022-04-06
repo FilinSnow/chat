@@ -5,12 +5,13 @@ import
     useContext, 
     useEffect, 
     useState,
-    useRef,
-    useLayoutEffect
+    useRef
   } from 'react';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { collection, doc, setDoc } from "firebase/firestore";
 import { Context } from '../..';
+import TopUsers from '../TopUsers/TopUsersList';
+
 import sky from '../../img/sky.jpeg'
 import './Chat.scss'
 
@@ -69,17 +70,6 @@ const Chat = () => {
       play();
     }
 
-    // setTimeout(() => {
-    //   if (messageRef.current) {
-    //     messageRef.current.scrollIntoView(
-    //       {
-    //         behavior: 'smooth',
-    //         block: 'end',
-    //         inline: 'nearest'
-    //       })
-    //   }
-    // }, 1500);
-
   }, [messages])
   console.log(messages)
 
@@ -88,50 +78,41 @@ const Chat = () => {
     audio.play();
   }
 
-  useLayoutEffect(() => {
-    if (messageRef.current) {
-      console.log(1111)
-      messageRef.current.scrollIntoView(
-        {
-          behavior: 'smooth',
-          // block: 'end',
-          // inline: 'nearest'
-        })
-    }
-  }, [messages])
-
-
   return (
-    <div>
-      <h3>Chat</h3>
-      <div ref={messageRef} className='wrapper__chat' style={{background: sky}}>
-        <div style={{ margin: '0 auto', display: 'flex', flexDirection: 'column'}}>
-          {messages && messages.map(message => {
-            const {createdAt, uid, displayName, text, photoURL} = message;
-            const isOwner = uid === user?.uid;
+    <div className='main-conteiner'>
+      <TopUsers messages={messages}/>
 
-            return (
-              <div 
-                key={createdAt} 
-                className={isOwner ? 'message' : 'message-owner'}
-              >
-                <div className='message-content'>
-                  <div>name: {displayName}</div>
-                  <div>text: {text}</div>
+      <div className='chat'>
+        <h3>Chat</h3>
+        <div ref={messageRef} className='wrapper__chat' style={{background: sky}}>
+          <div style={{ margin: '0 auto', display: 'flex', flexDirection: 'column'}}>
+            {messages && messages.map(message => {
+              const {createdAt, uid, displayName, text, photoURL} = message;
+              const isOwner = uid === user?.uid;
+
+              return (
+                <div 
+                  key={createdAt} 
+                  className={isOwner ? 'message' : 'message-owner'}
+                >
+                  <div className='message-content'>
+                    <div>name: {displayName}</div>
+                    <div>text: {text}</div>
+                  </div>
+                  <img src={photoURL} className='avatar' alt='avatar' />
                 </div>
-                <img src={photoURL} className='avatar' alt='avatar' />
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
         </div>
-      </div>
-      <div className='send-message'>
-        <input 
-          type="text" 
-          value={value} 
-          onChange={(e) => setValue(e.target.value)}
-        />
-        <button onClick={() => sendMessage()}>Send</button>
+        <div className='send-message'>
+          <input 
+            type="text" 
+            value={value} 
+            onChange={(e) => setValue(e.target.value)}
+          />
+          <button onClick={() => sendMessage()}>Send</button>
+        </div>       
       </div>
     </div>
   )
