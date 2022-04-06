@@ -29,7 +29,7 @@ const Chat = (data : any) => {
 
   const sendMessage = useCallback(async () => {
     const index = `${Date.now()}`;
-    const regular = /^[а-яА-Яa-zA-Z0-9\s()*_\-!?=#$%^&*,."'\][]*$/;
+    const regular = /^[а-яА-Яa-zA-Z0-9\s()*_\-+!?=#:;@$%^&*,."'\][]*$/;
 
     setValue('');
     
