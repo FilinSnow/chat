@@ -3,12 +3,6 @@ import React, { useEffect, useState } from 'react';
 import _ from 'underscore';
 import './topUsers.scss';
 
-interface IntMessage {
-  uid: string,
-  displayName: string,
-  text: string
-}
-
 interface IntTopUsers {
   name: any, 
   count: any
