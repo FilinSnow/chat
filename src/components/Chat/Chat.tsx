@@ -29,7 +29,7 @@ const Chat = () => {
 
   const sendMessage = useCallback(async () => {
     const index = `${Date.now()}`;
-    const regular = /^[а-яА-Яa-zA-Z0-9()*_\-!#$%^&*,."'\][]*$/;
+    const regular = /^[а-яА-Яa-zA-Z0-9\s()*_\-!#$%^&*,."'\][]*$/;
 
     setValue('');
     
@@ -65,8 +65,8 @@ const Chat = () => {
   useEffect(() => {
     const len = messages.length;
 
-    if (len > 0) {
-      if (messages[len - 1].text === '!sound') play();
+    if (len > 0 && messages[len - 1].text === '!sound') {
+      play();
     }
 
     // setTimeout(() => {
@@ -108,23 +108,29 @@ const Chat = () => {
         <div style={{ margin: '0 auto', display: 'flex', flexDirection: 'column'}}>
           {messages && messages.map(message => {
             const {createdAt, uid, displayName, text, photoURL} = message;
+            const isOwner = uid === user?.uid;
 
             return (
               <div 
                 key={createdAt} 
-                className={uid === user?.uid ? 'message' : 'message-owner'}
+                className={isOwner ? 'message' : 'message-owner'}
               >
                 <div className='message-content'>
                   <div>name: {displayName}</div>
                   <div>text: {text}</div>
                 </div>
+                <img src={photoURL} className='avatar' alt='avatar' />
               </div>
             )
           })}
         </div>
       </div>
       <div className='send-message'>
-        <input type="text" value={value} onChange={(e) => setValue(e.target.value)} />
+        <input 
+          type="text" 
+          value={value} 
+          onChange={(e) => setValue(e.target.value)}
+        />
         <button onClick={() => sendMessage()}>Send</button>
       </div>
     </div>
