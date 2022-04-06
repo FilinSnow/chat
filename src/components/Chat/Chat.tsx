@@ -1,5 +1,4 @@
-import 
-  React, 
+import React, 
   { 
     useCallback, 
     useContext, 
@@ -15,8 +14,8 @@ import TopUsers from '../TopUsers/TopUsersList';
 import sky from '../../img/sky.jpeg'
 import './Chat.scss'
 
-
-const Chat = () => {
+const Chat = (data : any) => {
+  console.log("theme=", data)
   const { db }: any = useContext(Context);
   const [value, setValue] = useState('');
   const [flag, setFlag] = useState(false);
@@ -30,7 +29,7 @@ const Chat = () => {
 
   const sendMessage = useCallback(async () => {
     const index = `${Date.now()}`;
-    const regular = /^[а-яА-Яa-zA-Z0-9\s()*_\-!#$%^&*,."'\][]*$/;
+    const regular = /^[а-яА-Яa-zA-Z0-9\s()*_\-!?=#$%^&*,."'\][]*$/;
 
     setValue('');
     
