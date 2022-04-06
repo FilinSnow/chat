@@ -34,7 +34,7 @@ const Chat = () => {
 
     setValue('');
     
-    if(!regular.test(value)) {
+    if(!regular.test(value) || !value.trim()) {
       return 
     }
     
