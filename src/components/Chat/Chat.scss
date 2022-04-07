@@ -53,12 +53,12 @@
   }
   
   .message-owner {
-    justify-content: end;
+    justify-content: flex-end;
 
     & > .message-container {
       display: flex;
       flex-direction: column;
-      align-items: end;
+      align-items: flex-end;
 
       & > .message-content {
         background: #0078FF;
@@ -142,7 +142,7 @@
   }
   
   .message-owner {
-    justify-content: end;
+    justify-content: flex-end;
   }
   
   .message-content {
