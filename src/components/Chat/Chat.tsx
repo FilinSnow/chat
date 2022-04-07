@@ -10,6 +10,8 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { collection, doc, setDoc } from "firebase/firestore";
 import { Context } from '../..';
 import TopUsers from '../TopUsers/TopUsersList';
+import Message from './Message'
+import EmojiPicker from '../EmojiPicker/EmojiPicker';
 
 import sky from '../../img/sky.jpeg'
 import './Chat.scss'
@@ -20,6 +22,7 @@ const Chat = (data : any) => {
   const [value, setValue] = useState('');
   const [flag, setFlag] = useState(false);
   const tmpUser: any = localStorage.getItem('user');
+  const [chosenEmoji, setChosenEmoji] = useState(null);
   const user = JSON.parse(tmpUser);
   const [messages = []] = useCollectionData(
     collection(db, 'messages')
@@ -30,10 +33,11 @@ const Chat = (data : any) => {
   const sendMessage = useCallback(async () => {
     const index = `${Date.now()}`;
     const regular = /^[а-яА-Яa-zA-Z0-9\s()*_\-+!?=#:;@$%^&*,."'\][]*$/;
+    const regularEmoji = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/
 
     setValue('');
     
-    if(!regular.test(value) || !value.trim()) {
+    if((!regular.test(value) && !regularEmoji.test(value)) || !value.trim()) {
       return 
     }
     
@@ -71,7 +75,12 @@ const Chat = (data : any) => {
 
     messageRef.current?.scrollIntoView(false);
 
-  }, [messages])
+  }, [messages]);
+
+  useEffect(() => {
+    console.log(chosenEmoji)
+    setValue(previous => previous + chosenEmoji);
+  }, [chosenEmoji])
 
   const play = () => {
     const audio = new Audio("https://notificationsounds.com/storage/sounds/file-sounds-1303-man-its-for-you.ogg");
@@ -87,25 +96,21 @@ const Chat = (data : any) => {
         <div className='wrapper__chat' style={{background: sky}}>
           <div id='1' ref={messageRef} style={{ margin: '0 auto', display: 'flex', flexDirection: 'column'}}>
             {messages && messages.map(message => {
-              const {createdAt, uid, displayName, text, photoURL} = message;
-              const isOwner = uid === user?.uid;
-
+              const {createdAt } = message;
               return (
-                <div 
-                  key={createdAt} 
-                  className={isOwner ? 'message' : 'message-owner'}
-                >
-                  <div className='message-content'>
-                    <div><i>name:</i> {displayName}</div>
-                    <div><i>text:</i> {text}</div>
-                  </div>
-                  <img src={photoURL} className='avatar' alt='avatar' />
-                </div>
+                <Message
+                  key={createdAt}
+                  message={message}
+                  user={user}
+                />
               )
             })}
           </div>
         </div>
         <div className='send-message'>
+          <EmojiPicker
+            setChosenEmoji={setChosenEmoji}
+          />
           <input 
             type="text" 
             value={value} 
