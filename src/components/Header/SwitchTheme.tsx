@@ -4,7 +4,9 @@ import './Header.scss';
 const ToggleThemeBtn = ({theme, setTheme}: IAuth) => {
 
   const toggleTheme = () => {
-    setTheme(theme === 'default' ? 'modern' : 'default')
+    const newTheme = theme === 'default' ? 'modern' : 'default';
+    setTheme(newTheme)
+    localStorage.setItem('theme', newTheme);
   };
 
   return (
@@ -12,6 +14,7 @@ const ToggleThemeBtn = ({theme, setTheme}: IAuth) => {
       onClick={() => toggleTheme()}
       className="apple-switch" 
       type="checkbox"
+      checked={theme === 'modern'}
     >
         
     </input>

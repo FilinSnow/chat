@@ -7,6 +7,99 @@
   }
 }
 
+.chat_modern {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 0 30px;
+
+  @media (max-width: 800px) {
+    padding: 0 10px;
+  }
+
+  .wrapper__chat {
+    height: 600px;
+    width: 100%;
+    max-width: 1200px;
+    overflow-y: scroll;
+    margin: 0 auto;
+  }
+  
+  
+  .message,
+  .message-owner {
+    display: flex;
+    align-items: flex-end;
+    margin-top: 8px;
+
+    & > .message-container {
+      margin: 0 5px;
+
+      & > .user-name {
+        font-size: 13px;
+        margin: 0 4px;
+        color: #909093;
+        text-align: left;
+        margin-bottom: 3px;
+      }
+    }
+  
+    & > .avatar {
+      height: 40px;
+      margin: 0 3px;
+      border-radius: 50%;
+    }
+  }
+  
+  .message-owner {
+    justify-content: end;
+
+    & > .message-container {
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+
+      & > .message-content {
+        background: #0078FF;
+        color: white; 
+      }
+    }
+
+  }
+  
+  .message {
+    justify-content: start;
+    flex-direction: row-reverse;
+  }
+  
+  .message-content {
+    text-align: left;
+    background: #E9E9EB;
+    width: fit-content;
+    max-width: 250px; 
+    margin: 0;
+    padding: 7px 12px;
+    border-radius: 20px;
+    word-break: break-word;
+  }
+  
+  .send-message {
+    align-items: center;
+    display: flex;
+    margin: 0 auto;
+    margin-top: 25px;
+  
+    & > .message-input {
+      height: 34px;
+      width: 227px;
+      border: 1px solid rgba(200, 200, 204, 1);
+      border-radius: 15px;
+      padding: 0 8px
+    }
+  }
+}
+
 .chat {
   width: 100%;
   padding-right: 10%;
@@ -34,15 +127,22 @@
       margin: 0 5px;
       border-radius: 5px;
     }
+
+    & > .message-container{
+      & > .user-name {
+        text-align: left;
+        margin: 0;
+      }
+    }
   }
   
   .message {
-    justify-content: end;
+    justify-content: start;
+    flex-direction: row-reverse;
   }
   
   .message-owner {
-    justify-content: start;
-    flex-direction: row-reverse;
+    justify-content: end;
   }
   
   .message-content {

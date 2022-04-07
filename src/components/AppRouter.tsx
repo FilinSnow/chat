@@ -7,7 +7,8 @@ import Header from './Header/Header';
 import WrapperAppRouter from './HOC/WrapperAppRouter';
 
 const AppRouter = ({flag, setFlag, auth, setAuth}: IAuth) => {
-  const [theme, setTheme] = useState('defalt');
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'default');
+
   console.log("theme from App", theme)
 
   return (
@@ -28,12 +29,12 @@ const AppRouter = ({flag, setFlag, auth, setAuth}: IAuth) => {
             ?
             (<Routes>
               {privateRoutes.map(route => {
-                return <Route key={route.path} {...route} element={<route.element />} />
+                return <Route key={route.path} {...route} element={<route.element theme={theme}/>} />
               })}
               <Route
                 path="*"
                 element={
-                  <Navigate to="/chat" replace state={theme}/>
+                  <Navigate to="/chat" replace />
                 }
               />
             </Routes>)

@@ -32,8 +32,6 @@ const TopUsers = ({ messages } : any) => {
     createTop();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
-
-  console.log(topUsers)
   
   return (
     <div className='top-user-container'>
