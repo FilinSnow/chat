@@ -1,0 +1,13 @@
+.drawerWithEmoji .MuiDrawer-paper{
+    background: none;
+    box-shadow: none;
+    margin-left: auto;
+    margin-right: auto;
+    width: max-content;
+};
+@media (max-width: 800px){
+    .emojiButton {
+        display: none!important;
+    }
+}
+

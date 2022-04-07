@@ -1,9 +1,11 @@
-import React, { FC, useContext } from 'react'
-import { Context } from '../..'
-import { IAuth } from '../../interfaces/auth'
-import './Header.scss'
+import React, { FC, useContext } from 'react';
+import { Context } from '../..';
+import { IAuth } from '../../interfaces/auth';
+import ToggleThemeBtn from './SwitchTheme';
 
-const Header: FC<IAuth> = ({flag, setFlag, auth: isCheckAuth}: IAuth) => {
+import './Header.scss';
+
+const Header: FC<IAuth> = ({flag, setFlag, auth: isCheckAuth, theme, setTheme}: IAuth) => {
   const {auth}: any = useContext(Context)
   const logout = async () => {
     localStorage.clear()
@@ -14,7 +16,7 @@ const Header: FC<IAuth> = ({flag, setFlag, auth: isCheckAuth}: IAuth) => {
   return (
     <div style={{width: '100%'}}>
       <div className="header__content">
-        <div className="content">Chat</div>
+        <ToggleThemeBtn theme={theme} setTheme={setTheme}/>
         <div className="content">
         </div>
         {isCheckAuth ? (<div className="content">
