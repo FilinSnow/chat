@@ -1,33 +1,33 @@
-import React, { useState } from 'react';
-import Picker, { SKIN_TONE_MEDIUM_DARK } from 'emoji-picker-react';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
-import './EmojiPicker.scss';
+import React, { useState } from "react";
+import Picker, { SKIN_TONE_MEDIUM_DARK } from "emoji-picker-react";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import Button from "@mui/material/Button";
+import "./EmojiPicker.scss";
 
 interface IEmoji {
   setChosenEmoji: any;
 }
 
-type Anchor = 'bottom';
+type Anchor = "bottom";
 
-const EmojiPicker = ({setChosenEmoji}: IEmoji) => {
+const EmojiPicker = ({ setChosenEmoji }: IEmoji) => {
   const [state, setState] = useState({
     bottom: false,
   });
-  const anchor = 'bottom';
+  const anchor = "bottom";
 
   const onEmojiClick = (event: any, emojiObject: any) => {
-    setChosenEmoji(emojiObject.emoji + ' ');
+    setChosenEmoji(emojiObject.emoji + " ");
   };
 
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
     (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
-        event.type === 'keydown' &&
-        ((event as React.KeyboardEvent).key === 'Tab' ||
-          (event as React.KeyboardEvent).key === 'Shift')
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
       ) {
         return;
       }
@@ -37,30 +37,30 @@ const EmojiPicker = ({setChosenEmoji}: IEmoji) => {
 
   const list = (anchor: Anchor) => (
     <Box
-      sx={{ width: anchor === 'bottom' ? 'auto' : 250 }}
+      sx={{ width: anchor === "bottom" ? "auto" : 250 }}
       role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
+      className="boxWithEmoji"
     >
-      <Box>
-        <Picker
-          onEmojiClick={onEmojiClick}
-          disableAutoFocus={true}
-          skinTone={SKIN_TONE_MEDIUM_DARK}
-          groupNames={{ smileys_people: 'PEOPLE' }}
-          native
-        />
-      </Box>
+      <Picker
+        onEmojiClick={onEmojiClick}
+        disableAutoFocus={true}
+        skinTone={SKIN_TONE_MEDIUM_DARK}
+        groupNames={{ smileys_people: "PEOPLE" }}
+        native
+      />
     </Box>
   );
 
   return (
     <React.Fragment key={anchor}>
-      <Button onClick={toggleDrawer(anchor, true)}>Emoji</Button>
+      <Button className="emojiButton" onClick={toggleDrawer(anchor, true)}>
+        Emoji
+      </Button>
       <Drawer
         anchor={anchor}
         open={state[anchor]}
         onClose={toggleDrawer(anchor, false)}
+        className="drawerWithEmoji"
       >
         {list(anchor)}
       </Drawer>

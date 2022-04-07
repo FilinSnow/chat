@@ -1,12 +1,11 @@
-import React, 
-  { 
-    useCallback, 
-    useContext, 
-    useEffect, 
-    useState,
-    useRef
-  } from 'react';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+} from "react";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { Context } from '../..';
 import TopUsers from '../TopUsers/TopUsersList';
@@ -14,21 +13,18 @@ import Message from './Message'
 import EmojiPicker from '../EmojiPicker/EmojiPicker';
 import SendIcon from '@mui/icons-material/Send';
 
-import sky from '../../img/sky.jpeg'
-import './Chat.scss'
+import sky from "../../img/sky.jpeg";
+import "./Chat.scss";
 
 const Chat = ({theme = 'default'}: any) => {
-  console.log("theme=", theme)
   const { db }: any = useContext(Context);
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   const [flag, setFlag] = useState(false);
-  const tmpUser: any = localStorage.getItem('user');
-  const [chosenEmoji, setChosenEmoji] = useState(null);
+  const tmpUser: any = localStorage.getItem("user");
+  const [chosenEmoji, setChosenEmoji] = useState("");
   const user = JSON.parse(tmpUser);
-  const [messages = []] = useCollectionData(
-    collection(db, 'messages')
-  );
-  const messagesRef = collection(db, 'messages');
+  const [messages = []] = useCollectionData(collection(db, "messages"));
+  const messagesRef = collection(db, "messages");
   const messageRef = useRef<HTMLInputElement>(null);
 
   const sendMessage = useCallback(async () => {
@@ -37,13 +33,14 @@ const Chat = ({theme = 'default'}: any) => {
     const regularEmoji = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/
     
     setValue('');
+    setChosenEmoji('');
 
     if (!localStorage.getItem('theme')) localStorage.setItem('theme', 'default');
     
     if((!regular.test(value) && !regularEmoji.test(value)) || !value.trim()) {
       return 
     }
-    
+
     if (user) {
       await setDoc(doc(messagesRef, index), {
         uid: user.uid,
@@ -51,17 +48,17 @@ const Chat = ({theme = 'default'}: any) => {
         email: user.email,
         photoURL: user.photoURL,
         text: value,
-        createdAt: Date.now()
+        createdAt: Date.now(),
       });
-      setFlag(!flag)
+      setFlag(!flag);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
   
   useEffect(() => {
-    const listener = (event:any) => {
+    const listener = (event: any) => {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
-        sendMessage()
+        sendMessage();
       }
     };
     document.addEventListener("keydown", listener);
@@ -73,12 +70,11 @@ const Chat = ({theme = 'default'}: any) => {
   useEffect(() => {
     const len = messages.length;
 
-    if (len > 0 && messages[len - 1].text === '!sound') {
+    if (len > 0 && messages[len - 1].text === "!sound") {
       play();
     }
 
     messageRef.current?.scrollIntoView(false);
-
   }, [messages]);
 
   useEffect(() => {
@@ -86,9 +82,11 @@ const Chat = ({theme = 'default'}: any) => {
   }, [chosenEmoji])
 
   const play = () => {
-    const audio = new Audio("https://notificationsounds.com/storage/sounds/file-sounds-1303-man-its-for-you.ogg");
+    const audio = new Audio(
+      "https://notificationsounds.com/storage/sounds/file-sounds-1303-man-its-for-you.ogg"
+    );
     audio.play();
-  }
+  };
 
   return (
     <div className='main-conteiner'>
@@ -162,7 +160,7 @@ const Chat = ({theme = 'default'}: any) => {
       </>
       }
     </div>
-  )
-}
+  );
+};
 
-export default Chat
+export default Chat;
