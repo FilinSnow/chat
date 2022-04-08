@@ -34,13 +34,24 @@ const TopUsers = ({ messages } : any) => {
   }, [messages]);
   
   return (
-    <div className='top-user-container'>
-      <h4>Топ пользователей</h4>
-      <ol className='user-list'>
-        {topUsers.map((user: IntTopUsers, i: number) => {
-          return <li key={`top-${i}`}>{user.name} ({user.count})</li>
-        })}
-      </ol>
+    <div className='spacing-container'>
+      <div className='list-container'>
+        <h4>Топ пользователей</h4>
+        <ol className='list'>
+          {topUsers.map((user: IntTopUsers, i: number) => {
+            return <li key={`top-${i}`}>{user.name} ({user.count})</li>
+          })}
+        </ol>
+      </div>
+      <div className='list-container'>
+        <h4>Голосовые команды</h4>
+        <ol className='list'>
+          <li>!sound</li>
+          <li>!anime</li>
+          <li>!secret</li>
+          <li>!news</li>
+        </ol>
+      </div>
     </div>
 
   );

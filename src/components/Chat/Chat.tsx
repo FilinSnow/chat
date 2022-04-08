@@ -86,13 +86,21 @@ const Chat = ({ theme = "default" }: any) => {
 
     switch (text) {
       case '!sound':
-        audioPath = "https://notificationsounds.com/storage/sounds/file-sounds-1303-man-its-for-you.ogg"
+        audioPath = "https://notificationsounds.com/storage/sounds/file-sounds-1303-man-its-for-you.ogg";
         break;
 
       case '!anime':
-        audioPath = "https://www.myinstants.com/media/sounds/tuturu_1.mp3"
+        audioPath = "https://www.myinstants.com/media/sounds/tuturu_1.mp3";
         break;
-      
+
+      case '!secret':
+        audioPath = "https://notificationsounds.com/storage/sounds/file-sounds-1254-asmr-girl-i-have-a-secret.ogg";
+        break;
+
+      case '!news':
+        audioPath = "https://notificationsounds.com/storage/sounds/file-sounds-1253-asmr-girl-i-got-news-for-you.ogg";
+        break;
+
       default:
         break;
     }
