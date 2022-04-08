@@ -72,7 +72,7 @@ const Chat = ({ theme = "default" }: any) => {
     const len = messages.length;
     const text = messages[len - 1]?.text;
 
-    if (len > 0 && text[0] === '!') play(text);
+    if (len > 0 && text[0] === "!") play(text);
 
     messageRef.current?.scrollIntoView(false);
   }, [messages, theme]);
@@ -81,18 +81,19 @@ const Chat = ({ theme = "default" }: any) => {
     messageRef.current?.scrollIntoView(false);
   }, [theme]);
 
-  const play = (text : string) => {
-    let audioPath = '';
+  const play = (text: string) => {
+    let audioPath = "";
 
     switch (text) {
-      case '!sound':
-        audioPath = "https://notificationsounds.com/storage/sounds/file-sounds-1303-man-its-for-you.ogg"
+      case "!sound":
+        audioPath =
+          "https://notificationsounds.com/storage/sounds/file-sounds-1303-man-its-for-you.ogg";
         break;
 
-      case '!anime':
-        audioPath = "https://www.myinstants.com/media/sounds/tuturu_1.mp3"
+      case "!anime":
+        audioPath = "https://www.myinstants.com/media/sounds/tuturu_1.mp3";
         break;
-      
+
       default:
         break;
     }
@@ -102,6 +103,24 @@ const Chat = ({ theme = "default" }: any) => {
       audio.play();
     }
   };
+
+  let filteredMessages: any[];
+  let EMAIL = messages.length !== 0 && messages[0].email;
+
+  filteredMessages = [[]];
+
+  const createBigMessages = () => {
+    messages.forEach((message) => {
+      if (message.email === EMAIL) {
+        filteredMessages[filteredMessages.length - 1].push(message);
+      } else {
+        filteredMessages.push([message]);
+        EMAIL = message.email;
+      }
+    });
+  };
+
+  createBigMessages();
 
   return (
     <div className="main-conteiner">
@@ -121,13 +140,12 @@ const Chat = ({ theme = "default" }: any) => {
                   flexDirection: "column",
                 }}
               >
-                {messages &&
-                  messages.map((message) => {
-                    const { createdAt } = message;
+                {messages.length > 0 &&
+                  filteredMessages.map((message, index) => {
                     return (
                       <Message
                         theme={theme}
-                        key={createdAt}
+                        key={index}
                         message={message}
                         user={user}
                       />
@@ -155,8 +173,8 @@ const Chat = ({ theme = "default" }: any) => {
                 ref={messageRef}
                 style={{ display: "flex", flexDirection: "column" }}
               >
-                {messages &&
-                  messages.map((message) => {
+                {messages.length > 0 &&
+                  filteredMessages.map((message) => {
                     const { createdAt } = message;
                     return (
                       <Message key={createdAt} message={message} user={user} />
