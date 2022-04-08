@@ -21,7 +21,6 @@ const Chat = ({ theme = "default" }: any) => {
   const [value, setValue] = useState("");
   const [flag, setFlag] = useState(false);
   const tmpUser: any = localStorage.getItem("user");
-  // const [chosenEmoji, setChosenEmoji] = useState("");
   const user = JSON.parse(tmpUser);
   const [messages = []] = useCollectionData(collection(db, "messages"));
   const messagesRef = collection(db, "messages");
@@ -150,7 +149,10 @@ const Chat = ({ theme = "default" }: any) => {
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
               />
-              <button onClick={() => sendMessage()}>Send</button>
+              <button 
+                onClick={() => sendMessage()}
+                style={{marginLeft: 5}}
+              >Send</button>
             </div>
           </div>
         </>

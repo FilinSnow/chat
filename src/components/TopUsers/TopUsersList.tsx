@@ -12,7 +12,7 @@ const TopUsers = ({ messages } : any) => {
   const [topUsers, setTopUsers] = useState<any>([]);
 
   const createTop = () => {
-    const messagesGroup = _.groupBy(messages, (message: any) => { return message.uid; });
+    const messagesGroup = _.groupBy(messages, (message: any) => { return message.email; });
     const items = [] as any;
 
     for (let key in messagesGroup) {
@@ -24,6 +24,12 @@ const TopUsers = ({ messages } : any) => {
 
     items.sort((item : any, nextItem: any) => item.count - nextItem.count);
     const sortedList = _.sortBy(items, 'count').reverse().slice(0, 10);
+
+    if (sortedList.length) {
+      sortedList[0].name = "👑 " + sortedList[0].name;
+      sortedList[1].name = "😎 " + sortedList[1].name;
+      sortedList[2].name = "🤠 " + sortedList[2].name;
+    }
 
     setTopUsers(sortedList); //return top-10 users
   }
