@@ -15,15 +15,13 @@ const Header: FC<IAuth> = ({flag, setFlag, auth: isCheckAuth, theme, setTheme}: 
     setFlag && setFlag(!flag)
   }
 
-  console.log(Context)
-
   return (
     <div style={{width: '100%'}}>
       <div className="header__content">
         <ToggleThemeBtn theme={theme} setTheme={setTheme}/>
-        <div className="content">
-          <ChatAvatar />
-        </div>
+
+        {theme === 'modern' && <ChatAvatar />}
+
         {isCheckAuth ? (<div className="content">
           <ExitIcon onClick={() => logout()} />
         </div>) 

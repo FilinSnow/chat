@@ -1,8 +1,7 @@
 .drawerWithEmoji .MuiDrawer-paper{
     background: none;
     box-shadow: none;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: calc(35vw - 20%);
     width: max-content;
 };
 @media (max-width: 800px){
