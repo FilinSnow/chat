@@ -69,23 +69,41 @@ const Chat = ({theme = 'default'}: any) => {
 
   useEffect(() => {
     const len = messages.length;
+    const text = messages[len - 1]?.text;
 
-    if (len > 0 && messages[len - 1].text === "!sound") {
-      play();
-    }
+    if (len > 0 && text[0] === '!') play(text);
 
     messageRef.current?.scrollIntoView(false);
-  }, [messages]);
+  }, [messages, theme]);
+
+  useEffect(() => {
+    messageRef.current?.scrollIntoView(false);
+  }, [theme]);
 
   useEffect(() => {
     setValue(previous => previous + chosenEmoji);
   }, [chosenEmoji])
 
-  const play = () => {
-    const audio = new Audio(
-      "https://notificationsounds.com/storage/sounds/file-sounds-1303-man-its-for-you.ogg"
-    );
-    audio.play();
+  const play = (text : string) => {
+    let audioPath = '';
+
+    switch (text) {
+      case '!sound':
+        audioPath = "https://notificationsounds.com/storage/sounds/file-sounds-1303-man-its-for-you.ogg"
+        break;
+
+      case '!anime':
+        audioPath = "https://www.myinstants.com/media/sounds/tuturu_1.mp3"
+        break;
+      
+      default:
+        break;
+    }
+
+    if (audioPath) {
+      const audio = new Audio(audioPath);
+      audio.play();
+    }
   };
 
   return (
