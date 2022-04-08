@@ -14,7 +14,7 @@ import { GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 // import { auth, provider } from './components/Context/ContextAuth';
 
-export const Context = createContext({})
+export const Context = createContext({});
 
 initializeApp({
   apiKey: "AIzaSyDEWiEvLa5WWP80czHSXKxjOTnET6mgfT4",
@@ -26,9 +26,9 @@ initializeApp({
   measurementId: "G-49QNSTY8X4"
 });
 
-export const auth = getAuth()
+export const auth = getAuth();
 export const provider = new GoogleAuthProvider();
-export const db = getFirestore()
+export const db = getFirestore();
 
 ReactDOM.render(
   <React.StrictMode>
