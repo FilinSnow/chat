@@ -21,7 +21,6 @@ const Chat = ({ theme = "default" }: any) => {
   const [value, setValue] = useState("");
   const [flag, setFlag] = useState(false);
   const tmpUser: any = localStorage.getItem("user");
-  // const [chosenEmoji, setChosenEmoji] = useState("");
   const user = JSON.parse(tmpUser);
   const [messages = []] = useCollectionData(collection(db, "messages"));
   const messagesRef = collection(db, "messages");
@@ -85,13 +84,20 @@ const Chat = ({ theme = "default" }: any) => {
     let audioPath = "";
 
     switch (text) {
-      case "!sound":
-        audioPath =
-          "https://notificationsounds.com/storage/sounds/file-sounds-1303-man-its-for-you.ogg";
+      case '!sound':
+        audioPath = "https://notificationsounds.com/storage/sounds/file-sounds-1303-man-its-for-you.ogg";
         break;
 
-      case "!anime":
+      case '!anime':
         audioPath = "https://www.myinstants.com/media/sounds/tuturu_1.mp3";
+        break;
+
+      case '!secret':
+        audioPath = "https://notificationsounds.com/storage/sounds/file-sounds-1254-asmr-girl-i-have-a-secret.ogg";
+        break;
+
+      case '!news':
+        audioPath = "https://notificationsounds.com/storage/sounds/file-sounds-1253-asmr-girl-i-got-news-for-you.ogg";
         break;
 
       default:
@@ -160,7 +166,10 @@ const Chat = ({ theme = "default" }: any) => {
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
               />
-              <button onClick={() => sendMessage()}>Send</button>
+              <button 
+                onClick={() => sendMessage()}
+                style={{marginLeft: 5}}
+              >Send</button>
             </div>
           </div>
         </>

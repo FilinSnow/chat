@@ -12,7 +12,7 @@ const TopUsers = ({ messages } : any) => {
   const [topUsers, setTopUsers] = useState<any>([]);
 
   const createTop = () => {
-    const messagesGroup = _.groupBy(messages, (message: any) => { return message.uid; });
+    const messagesGroup = _.groupBy(messages, (message: any) => { return message.email; });
     const items = [] as any;
 
     for (let key in messagesGroup) {
@@ -25,6 +25,12 @@ const TopUsers = ({ messages } : any) => {
     items.sort((item : any, nextItem: any) => item.count - nextItem.count);
     const sortedList = _.sortBy(items, 'count').reverse().slice(0, 10);
 
+    if (sortedList.length) {
+      sortedList[0].name = "👑 " + sortedList[0].name;
+      sortedList[1].name = "😎 " + sortedList[1].name;
+      sortedList[2].name = "🤠 " + sortedList[2].name;
+    }
+
     setTopUsers(sortedList); //return top-10 users
   }
 
@@ -34,13 +40,24 @@ const TopUsers = ({ messages } : any) => {
   }, [messages]);
   
   return (
-    <div className='top-user-container'>
-      <h4>Топ пользователей</h4>
-      <ol className='user-list'>
-        {topUsers.map((user: IntTopUsers, i: number) => {
-          return <li key={`top-${i}`}>{user.name} ({user.count})</li>
-        })}
-      </ol>
+    <div className='spacing-container'>
+      <div className='list-container'>
+        <h4>Топ пользователей</h4>
+        <ol className='list'>
+          {topUsers.map((user: IntTopUsers, i: number) => {
+            return <li key={`top-${i}`}>{user.name} ({user.count})</li>
+          })}
+        </ol>
+      </div>
+      <div className='list-container'>
+        <h4>Голосовые команды</h4>
+        <ol className='list'>
+          <li>!sound</li>
+          <li>!anime</li>
+          <li>!secret</li>
+          <li>!news</li>
+        </ol>
+      </div>
     </div>
 
   );
