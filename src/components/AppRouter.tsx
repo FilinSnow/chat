@@ -9,8 +9,6 @@ import WrapperAppRouter from './HOC/WrapperAppRouter';
 const AppRouter = ({flag, setFlag, auth, setAuth}: IAuth) => {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'default');
 
-  console.log("theme from App", theme)
-
   return (
     <div className='wrapper'>
       <div className="wrapper__content">

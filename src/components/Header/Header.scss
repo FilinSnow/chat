@@ -1,8 +1,12 @@
 .header__content {
   display: flex;
   justify-content: space-between;
-  padding: 13px;
+  align-items: center;
+  height: 80px;
+  padding: 13px 20px;
   background: #F1F1F2;
+  border-bottom: 1px solid rgb(209 209 209);
+  transition: 1.5s;
 
   .content {
     a {

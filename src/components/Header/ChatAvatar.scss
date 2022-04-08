@@ -1,0 +1,58 @@
+img {
+  border-radius: 50%;
+  shape-outside: circle();
+  transition: transform .3s ease;
+  padding: 5px;
+}
+
+img:hover {
+  transform: scale(1.1);
+}
+
+html, body{
+  height: 100%;
+  margin: 0;
+}
+
+.circle{
+  height: 80px;
+  width: 80px;
+  display: flex;
+  position: relative;
+
+  & > img {
+    position: absolute;
+  }
+}
+
+.circle > img:nth-child(1){
+  height: 35px;
+  top: 0;
+  left: 0;
+  margin-top: 8px;
+  margin-left: 5px;
+}
+
+.circle > img:nth-child(2){
+  height: 25px;
+  bottom: 0;
+  right: 0;
+  margin-right: 5px;
+  margin-bottom: 15px;
+}
+
+.circle > img:nth-child(3){
+  height: 17px;
+  top: 0;
+  right: 0;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+.circle > img:nth-child(4){
+  height: 21px;
+  bottom: 0;
+  left: 0;
+  margin-left: 16px;
+  margin-bottom: 4px;
+}
