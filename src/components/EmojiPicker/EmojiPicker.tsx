@@ -6,19 +6,20 @@ import Button from "@mui/material/Button";
 import "./EmojiPicker.scss";
 
 interface IEmoji {
-  setChosenEmoji: any;
+  value: any;
+  setValue: any;
 }
 
 type Anchor = "bottom";
 
-const EmojiPicker = ({ setChosenEmoji }: IEmoji) => {
+const EmojiPicker = ({ value, setValue }: IEmoji) => {
   const [state, setState] = useState({
     bottom: false,
   });
   const anchor = "bottom";
 
   const onEmojiClick = (event: any, emojiObject: any) => {
-    setChosenEmoji(emojiObject.emoji + " ");
+    setValue(value + emojiObject.emoji + " ");
   };
 
   const toggleDrawer =
