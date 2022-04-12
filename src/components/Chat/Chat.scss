@@ -196,3 +196,9 @@
 .oneMessage:not(:first-of-type) {
   margin-top: 10px;
 }
+
+.arrow__block {
+  width: 100px;
+  height: 100px;
+  align-self: end;
+}
