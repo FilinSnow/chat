@@ -12,8 +12,9 @@ import TopUsers from "../TopUsers/TopUsersList";
 import Message from "./Message";
 import EmojiPicker from "../EmojiPicker/EmojiPicker";
 import SendIcon from "@mui/icons-material/Send";
-
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import sky from "../../img/sky.jpeg";
+import arrowDown from '../../img/arrowDown.png'
 import "./Chat.scss";
 
 const Chat = ({ theme = "default" }: any) => {
@@ -21,10 +22,13 @@ const Chat = ({ theme = "default" }: any) => {
   const [value, setValue] = useState("");
   const [flag, setFlag] = useState(false);
   const tmpUser: any = localStorage.getItem("user");
+  // const [chosenEmoji, setChosenEmoji] = useState("");
   const user = JSON.parse(tmpUser);
   const [messages = []] = useCollectionData(collection(db, "messages"));
   const messagesRef = collection(db, "messages");
-  const messageRef = useRef<HTMLInputElement>(null);
+  const messageRef = useRef<HTMLDivElement>(null);
+  const scrollRef= useRef<HTMLDivElement>(null)
+  const [moveScroll, setMoveScroll] = useState(true)
 
   const sendMessage = useCallback(async () => {
     const index = `${Date.now()}`;
@@ -42,6 +46,7 @@ const Chat = ({ theme = "default" }: any) => {
     }
 
     if (user) {
+      setMoveScroll(true) // при добавлении своего сообщения скролл перемещается вниз
       await setDoc(doc(messagesRef, index), {
         uid: user.uid,
         displayName: user.displayName,
@@ -71,17 +76,29 @@ const Chat = ({ theme = "default" }: any) => {
     const len = messages.length;
     const text = messages[len - 1]?.text;
 
-    if (len > 0 && text[0] === "!") play(text);
+    if (len > 0 && text[0] === '!') play(text);
+    if (moveScroll) {
+      messageRef.current?.scrollIntoView(false);
+    }
+  }, [messages, theme, moveScroll]);
 
-    messageRef.current?.scrollIntoView(false);
-  }, [messages, theme]);
+  const handleAutoScroll = () => {
+    setMoveScroll(true) // скролл перемещается вниз
+  }
 
   useEffect(() => {
-    messageRef.current?.scrollIntoView(false);
-  }, [theme]);
+    const checkScrollMessage = (e: any) => {
+      if (e.target.scrollHeight - e.target.scrollTop === 600) { // если текущее расположение скролла находится в самом низу чата
+        setMoveScroll(true)
+      } else {
+        setMoveScroll(false)
+      }
+    }
+    scrollRef?.current?.addEventListener('scroll',  checkScrollMessage)
+  }, [theme])
 
   const play = (text: string) => {
-    let audioPath = "";
+    let audioPath = '';
 
     switch (text) {
       case '!sound':
@@ -109,25 +126,7 @@ const Chat = ({ theme = "default" }: any) => {
       audio.play();
     }
   };
-
-  let filteredMessages: any[];
-  let EMAIL = messages.length !== 0 && messages[0].email;
-
-  filteredMessages = [[]];
-
-  const createBigMessages = () => {
-    messages.forEach((message) => {
-      if (message.email === EMAIL) {
-        filteredMessages[filteredMessages.length - 1].push(message);
-      } else {
-        filteredMessages.push([message]);
-        EMAIL = message.email;
-      }
-    });
-  };
-
-  createBigMessages();
-
+  
   return (
     <div className="main-conteiner">
       {theme === "default" ? (
@@ -136,7 +135,7 @@ const Chat = ({ theme = "default" }: any) => {
 
           <div className="chat">
             <h3>Chat</h3>
-            <div className="wrapper__chat" style={{ background: sky }}>
+            <div id='2' className="wrapper__chat" style={{ background: sky }} ref={scrollRef}>
               <div
                 id="1"
                 ref={messageRef}
@@ -146,12 +145,13 @@ const Chat = ({ theme = "default" }: any) => {
                   flexDirection: "column",
                 }}
               >
-                {messages.length > 0 &&
-                  filteredMessages.map((message, index) => {
+                {messages &&
+                  messages.map((message) => {
+                    const { createdAt } = message;
                     return (
                       <Message
                         theme={theme}
-                        key={index}
+                        key={createdAt}
                         message={message}
                         user={user}
                       />
@@ -166,24 +166,22 @@ const Chat = ({ theme = "default" }: any) => {
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
               />
-              <button 
-                onClick={() => sendMessage()}
-                style={{marginLeft: 5}}
-              >Send</button>
+              <button onClick={() => sendMessage()}>Send</button>
             </div>
           </div>
         </>
       ) : (
         <>
           <div className="chat_modern">
-            <div className="wrapper__chat">
+            <div className="wrapper__chat__img">
+            <div className="wrapper__chat" ref={scrollRef}>
               <div
-                id="1"
+                id="3"
                 ref={messageRef}
                 style={{ display: "flex", flexDirection: "column" }}
               >
-                {messages.length > 0 &&
-                  filteredMessages.map((message) => {
+                {messages &&
+                  messages.map((message) => {
                     const { createdAt } = message;
                     return (
                       <Message key={createdAt} message={message} user={user} />
@@ -191,6 +189,11 @@ const Chat = ({ theme = "default" }: any) => {
                   })}
               </div>
             </div>
+            <div className="arrow__wrapper" onClick={() => handleAutoScroll()}>
+              {/* <img src={arrowDown} alt="" /> */}
+            </div>
+            </div>
+           
             <div className="send-message">
               <EmojiPicker value={value} setValue={setValue} />
               <input
@@ -205,6 +208,8 @@ const Chat = ({ theme = "default" }: any) => {
               />
             </div>
           </div>
+         
+          
         </>
       )}
     </div>
