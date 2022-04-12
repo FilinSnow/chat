@@ -26,9 +26,9 @@ const TopUsers = ({ messages } : any) => {
     const sortedList = _.sortBy(items, 'count').reverse().slice(0, 10);
 
     if (sortedList.length) {
-      sortedList[0].name = "👑 " + sortedList[0].name;
-      sortedList[1].name = "😎 " + sortedList[1].name;
-      sortedList[2].name = "🤠 " + sortedList[2].name;
+      if (sortedList[0]) sortedList[0].name = "👑 " + sortedList[0].name;
+      if (sortedList[1]) sortedList[1].name = "😎 " + sortedList[1].name;
+      if (sortedList[2]) sortedList[2].name = "🤠 " + sortedList[2].name;
     }
 
     setTopUsers(sortedList); //return top-10 users
