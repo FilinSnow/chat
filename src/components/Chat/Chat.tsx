@@ -12,9 +12,7 @@ import TopUsers from "../TopUsers/TopUsersList";
 import Message, { TMessage } from "./Message";
 import EmojiPicker from "../EmojiPicker/EmojiPicker";
 import SendIcon from "@mui/icons-material/Send";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import sky from "../../img/sky.jpeg";
-import arrowDown from '../../img/arrowDown.png'
 import "./Chat.scss";
 
 const Chat = ({ theme = "default" }: any) => {
@@ -192,7 +190,6 @@ const Chat = ({ theme = "default" }: any) => {
               </div>
             </div>
             <div className="arrow__wrapper" onClick={() => handleAutoScroll()}>
-              {/* <img src={arrowDown} alt="" /> */}
             </div>
             </div>
            
