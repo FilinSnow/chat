@@ -190,4 +190,9 @@
 .wrapper__chat__img {
   display: flex;
   width: 71%;
+
+}
+
+.oneMessage:not(:first-of-type) {
+  margin-top: 10px;
 }
