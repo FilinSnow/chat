@@ -189,8 +189,11 @@ const Chat = ({ theme = "default" }: any) => {
                   })}
               </div>
             </div>
-            <div className="arrow__wrapper" onClick={() => handleAutoScroll()}>
+            <div className="arrow__block">
+            {!moveScroll && (<div className="arrow__wrapper" onClick={() => handleAutoScroll()}>
+              </div>)}
             </div>
+            
             </div>
            
             <div className="send-message">
