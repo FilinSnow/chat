@@ -13,6 +13,8 @@
   align-items: center;
   width: 100%;
   padding: 0 30px;
+  
+
 
   @media (max-width: 800px) {
     padding: 0 10px;
@@ -177,4 +179,20 @@
       height: 20px
     }
   }
+}
+
+.arrow-to-bottom {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+}
+
+.wrapper__chat__img {
+  display: flex;
+  width: 71%;
+  position: relative;
+}
+
+.oneMessage:not(:first-of-type) {
+  margin-top: 10px;
 }

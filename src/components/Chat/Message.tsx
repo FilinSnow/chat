@@ -1,9 +1,19 @@
-import React from 'react';
+import React from "react";
 
-interface IMessageInfo {
-  message: any;
+
+export type TMessage = {
+  createdAt: number;
+  text: string;
+  uid: string;
+  displayName: string;
+  email: string;
+  photoURL: string;
+}
+interface IMessage {
+  message: TMessage;
   user: any;
   theme?: string | undefined;
+  
 }
 
 const getReadableTime = (time : number) => {
@@ -13,11 +23,14 @@ const getReadableTime = (time : number) => {
   return `${t.getHours()}:${minutes}`;
 }
 
-const Message = ({message, user, theme}: IMessageInfo) => {
+const Message = ({message, user, theme}: IMessage) => {
   const { createdAt, uid, displayName, email, text, photoURL } = message;
   const isOwner = uid === user?.uid;
 
-  const admindUids = ["dkikot.exceedteam@gmail.com", "vproskurin.exceedteam@gmail.com"];
+  const admindUids = [
+    "dkikot.exceedteam@gmail.com",
+    "vproskurin.exceedteam@gmail.com",
+  ];
   const isAdmin = isOwner && admindUids.includes(email);
   const adminName = `${displayName} [admin]`;
 
@@ -44,9 +57,9 @@ const Message = ({message, user, theme}: IMessageInfo) => {
         </div>
       }
 
-      <img src={photoURL} className='avatar' alt='avatar' />
+      <img src={photoURL} className="avatar" alt="avatar" />
     </div>
-  )
-}
+  );
+};
 
 export default Message;
