@@ -9,7 +9,7 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { Context } from "../..";
 import TopUsers from "../TopUsers/TopUsersList";
-import Message from "./Message";
+import Message, { TMessage } from "./Message";
 import EmojiPicker from "../EmojiPicker/EmojiPicker";
 import SendIcon from "@mui/icons-material/Send";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -24,7 +24,7 @@ const Chat = ({ theme = "default" }: any) => {
   const tmpUser: any = localStorage.getItem("user");
   // const [chosenEmoji, setChosenEmoji] = useState("");
   const user = JSON.parse(tmpUser);
-  const [messages = []] = useCollectionData(collection(db, "messages"));
+  const [messages = []]: any = useCollectionData(collection(db, "messages"));
   const messagesRef = collection(db, "messages");
   const messageRef = useRef<HTMLDivElement>(null);
   const scrollRef= useRef<HTMLDivElement>(null)
@@ -146,7 +146,9 @@ const Chat = ({ theme = "default" }: any) => {
                 }}
               >
                 {messages &&
-                  messages.map((message) => {
+                  messages.map((message: TMessage) => {
+                    console.log(message);
+                    
                     const { createdAt } = message;
                     return (
                       <Message
@@ -181,7 +183,7 @@ const Chat = ({ theme = "default" }: any) => {
                 style={{ display: "flex", flexDirection: "column" }}
               >
                 {messages &&
-                  messages.map((message) => {
+                  messages.map((message: TMessage) => {
                     const { createdAt } = message;
                     return (
                       <Message key={createdAt} message={message} user={user} />

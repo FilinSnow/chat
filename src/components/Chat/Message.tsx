@@ -1,13 +1,25 @@
 import React from "react";
 
+
+export type TMessage = {
+  createdAt: number;
+  text: string;
+  uid: string;
+  displayName: string;
+  email: string;
+  photoURL: string;
+}
 interface IMessage {
-  message: any[];
+  message: TMessage;
   user: any;
   theme?: string | undefined;
+  
 }
 
 const Message = ({ message, user, theme }: IMessage) => {
-  const { createdAt, uid, displayName, email, photoURL } = message[0];
+  console.log(message);
+  
+  const { createdAt, uid, displayName, email, photoURL, text} = message;
   const isOwner = uid === user?.uid;
 
   const admindUids = [
@@ -25,9 +37,7 @@ const Message = ({ message, user, theme }: IMessage) => {
             <b>{displayName}</b>
           </div>
           <div className="message-text">
-            {message.map((mess) => (
-              <div className="oneMessage">{mess.text}</div>
-            ))}
+              <div className="oneMessage">{text}</div>
           </div>
         </div>
       ) : (
@@ -35,9 +45,7 @@ const Message = ({ message, user, theme }: IMessage) => {
           <p className="user-name">{isAdmin ? adminName : displayName}</p>
           <p className="message-content">
             <div className="message-text">
-              {message.map((mess) => (
-                <div className="oneMessage">{mess.text}</div>
-              ))}
+                <div className="oneMessage">{text}</div>
             </div>
           </p>
         </div>
