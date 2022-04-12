@@ -13,6 +13,8 @@
   align-items: center;
   width: 100%;
   padding: 0 30px;
+  
+
 
   @media (max-width: 800px) {
     padding: 0 10px;
@@ -162,4 +164,30 @@
       height: 20px
     }
   }
+}
+
+.arrow__wrapper {
+  max-width: 100px;
+  background-image: url('../../img/arrowDown.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 100px;
+  height: 100px;
+  align-self: end;
+  cursor: pointer;
+
+  &:hover {
+    background-image: url('../../img/gachi2.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  img {
+    width: 100%;
+  }
+}
+
+.wrapper__chat__img {
+  display: flex;
+  width: 71%;
 }

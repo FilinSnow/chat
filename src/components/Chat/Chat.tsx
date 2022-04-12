@@ -12,8 +12,9 @@ import TopUsers from "../TopUsers/TopUsersList";
 import Message from "./Message";
 import EmojiPicker from "../EmojiPicker/EmojiPicker";
 import SendIcon from "@mui/icons-material/Send";
-
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import sky from "../../img/sky.jpeg";
+import arrowDown from '../../img/arrowDown.png'
 import "./Chat.scss";
 
 const Chat = ({ theme = "default" }: any) => {
@@ -25,7 +26,9 @@ const Chat = ({ theme = "default" }: any) => {
   const user = JSON.parse(tmpUser);
   const [messages = []] = useCollectionData(collection(db, "messages"));
   const messagesRef = collection(db, "messages");
-  const messageRef = useRef<HTMLInputElement>(null);
+  const messageRef = useRef<HTMLDivElement>(null);
+  const scrollRef= useRef<HTMLDivElement>(null)
+  const [moveScroll, setMoveScroll] = useState(true)
 
   const sendMessage = useCallback(async () => {
     const index = `${Date.now()}`;
@@ -43,6 +46,7 @@ const Chat = ({ theme = "default" }: any) => {
     }
 
     if (user) {
+      setMoveScroll(true) // при добавлении своего сообщения скролл перемещается вниз
       await setDoc(doc(messagesRef, index), {
         uid: user.uid,
         displayName: user.displayName,
@@ -73,15 +77,27 @@ const Chat = ({ theme = "default" }: any) => {
     const text = messages[len - 1]?.text;
 
     if (len > 0 && text[0] === '!') play(text);
+    if (moveScroll) {
+      messageRef.current?.scrollIntoView(false);
+    }
+  }, [messages, theme, moveScroll]);
 
-    messageRef.current?.scrollIntoView(false);
-  }, [messages, theme]);
+  const handleAutoScroll = () => {
+    setMoveScroll(true) // скролл перемещается вниз
+  }
 
   useEffect(() => {
-    messageRef.current?.scrollIntoView(false);
-  }, [theme]);
+    const checkScrollMessage = (e: any) => {
+      if (e.target.scrollHeight - e.target.scrollTop === 600) { // если текущее расположение скролла находится в самом низу чата
+        setMoveScroll(true)
+      } else {
+        setMoveScroll(false)
+      }
+    }
+    scrollRef?.current?.addEventListener('scroll',  checkScrollMessage)
+  }, [theme])
 
-  const play = (text : string) => {
+  const play = (text: string) => {
     let audioPath = '';
 
     switch (text) {
@@ -110,7 +126,7 @@ const Chat = ({ theme = "default" }: any) => {
       audio.play();
     }
   };
-
+  
   return (
     <div className="main-conteiner">
       {theme === "default" ? (
@@ -119,7 +135,7 @@ const Chat = ({ theme = "default" }: any) => {
 
           <div className="chat">
             <h3>Chat</h3>
-            <div className="wrapper__chat" style={{ background: sky }}>
+            <div id='2' className="wrapper__chat" style={{ background: sky }} ref={scrollRef}>
               <div
                 id="1"
                 ref={messageRef}
@@ -157,9 +173,10 @@ const Chat = ({ theme = "default" }: any) => {
       ) : (
         <>
           <div className="chat_modern">
-            <div className="wrapper__chat">
+            <div className="wrapper__chat__img">
+            <div className="wrapper__chat" ref={scrollRef}>
               <div
-                id="1"
+                id="3"
                 ref={messageRef}
                 style={{ display: "flex", flexDirection: "column" }}
               >
@@ -172,6 +189,11 @@ const Chat = ({ theme = "default" }: any) => {
                   })}
               </div>
             </div>
+            <div className="arrow__wrapper" onClick={() => handleAutoScroll()}>
+              {/* <img src={arrowDown} alt="" /> */}
+            </div>
+            </div>
+           
             <div className="send-message">
               <EmojiPicker value={value} setValue={setValue} />
               <input
@@ -186,6 +208,8 @@ const Chat = ({ theme = "default" }: any) => {
               />
             </div>
           </div>
+         
+          
         </>
       )}
     </div>
