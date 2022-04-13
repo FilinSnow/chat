@@ -6,17 +6,17 @@ import './AppRouter.scss'
 import Header from './Header/Header';
 import WrapperAppRouter from './HOC/WrapperAppRouter';
 
-const AppRouter = ({flag, setFlag, auth, setAuth}: IAuth) => {
+const AppRouter = ({ flag, setFlag, auth, setAuth }: IAuth) => {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'default');
 
   return (
     <div className='wrapper'>
       <div className="wrapper__content">
         <div className="content__header">
-          <Header 
-            auth={auth} 
-            flag={flag} 
-            setFlag={setFlag} 
+          <Header
+            auth={auth}
+            flag={flag}
+            setFlag={setFlag}
             setAuth={setAuth}
             theme={theme}
             setTheme={setTheme}
@@ -27,7 +27,7 @@ const AppRouter = ({flag, setFlag, auth, setAuth}: IAuth) => {
             ?
             (<Routes>
               {privateRoutes.map(route => {
-                return <Route key={route.path} {...route} element={<route.element theme={theme}/>} />
+                return <Route key={route.path} {...route} element={<route.element theme={theme} />} />
               })}
               <Route
                 path="*"
@@ -40,10 +40,10 @@ const AppRouter = ({flag, setFlag, auth, setAuth}: IAuth) => {
             (<Routes>
               {
                 publicRoutes.map(route => {
-                  return <Route 
-                    key={route.path} 
-                    {...route} 
-                    element={<route.element flag={flag} setFlag={setFlag}/>} 
+                  return <Route
+                    key={route.path}
+                    {...route}
+                    element={<route.element flag={flag} setFlag={setFlag} setAuth={setAuth}/>}
                   />
                 })
               }
