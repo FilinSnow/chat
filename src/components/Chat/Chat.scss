@@ -13,6 +13,8 @@
   align-items: center;
   width: 100%;
   padding: 0 30px;
+  
+
 
   @media (max-width: 800px) {
     padding: 0 10px;
@@ -79,9 +81,17 @@
     width: fit-content;
     max-width: 250px; 
     margin: 0;
-    padding: 7px 12px;
+    padding: 10px 12px 7px 12px;
     border-radius: 20px;
     word-break: break-word;
+
+    & > .message-date {
+      margin: 0;
+      margin-top: 4px;
+      color: rgb(82 82 82);
+      font-size: 14px;
+      text-align: right;
+    }
   }
   
   .send-message {
@@ -154,6 +164,13 @@
     border-radius: 5px;
     word-break: break-word;
   }
+
+  .message-date {
+    margin: 0px 0;
+    text-align: right;
+    color: #737373;
+    font-size: 14px;
+  }
   
   .send-message {
     margin-top: 10px;
@@ -162,4 +179,20 @@
       height: 20px
     }
   }
+}
+
+.arrow-to-bottom {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+}
+
+.wrapper__chat__img {
+  display: flex;
+  width: 71%;
+  position: relative;
+}
+
+.oneMessage:not(:first-of-type) {
+  margin-top: 10px;
 }

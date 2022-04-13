@@ -9,10 +9,10 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { Context } from "../..";
 import TopUsers from "../TopUsers/TopUsersList";
-import Message from "./Message";
+import Message, { TMessage } from "./Message";
 import EmojiPicker from "../EmojiPicker/EmojiPicker";
 import SendIcon from "@mui/icons-material/Send";
-
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import sky from "../../img/sky.jpeg";
 import "./Chat.scss";
 
@@ -23,9 +23,11 @@ const Chat = ({ theme = "default" }: any) => {
   const tmpUser: any = localStorage.getItem("user");
   // const [chosenEmoji, setChosenEmoji] = useState("");
   const user = JSON.parse(tmpUser);
-  const [messages = []] = useCollectionData(collection(db, "messages"));
+  const [messages = []]: any = useCollectionData(collection(db, "messages"));
   const messagesRef = collection(db, "messages");
-  const messageRef = useRef<HTMLInputElement>(null);
+  const messageRef = useRef<HTMLDivElement>(null);
+  const scrollRef= useRef<HTMLDivElement>(null);
+  const [moveScroll, setMoveScroll] = useState(true);
 
   const sendMessage = useCallback(async () => {
     const index = `${Date.now()}`;
@@ -43,6 +45,7 @@ const Chat = ({ theme = "default" }: any) => {
     }
 
     if (user) {
+      setMoveScroll(true) // при добавлении своего сообщения скролл перемещается вниз
       await setDoc(doc(messagesRef, index), {
         uid: user.uid,
         displayName: user.displayName,
@@ -73,15 +76,27 @@ const Chat = ({ theme = "default" }: any) => {
     const text = messages[len - 1]?.text;
 
     if (len > 0 && text[0] === '!') play(text);
+    if (moveScroll) {
+      messageRef.current?.scrollIntoView(false);
+    }
+  }, [messages, theme, moveScroll]);
 
-    messageRef.current?.scrollIntoView(false);
-  }, [messages, theme]);
+  const handleAutoScroll = () => {
+    setMoveScroll(true) // скролл перемещается вниз
+  }
 
   useEffect(() => {
-    messageRef.current?.scrollIntoView(false);
-  }, [theme]);
+    const checkScrollMessage = (e: any) => {
+      if (e.target.scrollHeight - e.target.scrollTop === 600) { // если текущее расположение скролла находится в самом низу чата
+        setMoveScroll(true)
+      } else {
+        setMoveScroll(false)
+      }
+    }
+    scrollRef?.current?.addEventListener('scroll',  checkScrollMessage)
+  }, [theme])
 
-  const play = (text : string) => {
+  const play = (text: string) => {
     let audioPath = '';
 
     switch (text) {
@@ -100,7 +115,11 @@ const Chat = ({ theme = "default" }: any) => {
       case '!news':
         audioPath = "https://notificationsounds.com/storage/sounds/file-sounds-1253-asmr-girl-i-got-news-for-you.ogg";
         break;
-
+      
+      case '!🇺🇦':
+        audioPath = "https://audionerd.ru/mp3/Ly9tb29zaWMubXkubWFpbC5ydS9maWxlLzg2NzNhYjRiZjE0OTY0MGRiMWZiNzE2YWZlY2FkNWRmLm1wMw==";
+        break;
+  
       default:
         break;
     }
@@ -110,7 +129,7 @@ const Chat = ({ theme = "default" }: any) => {
       audio.play();
     }
   };
-
+  
   return (
     <div className="main-conteiner">
       {theme === "default" ? (
@@ -119,7 +138,7 @@ const Chat = ({ theme = "default" }: any) => {
 
           <div className="chat">
             <h3>Chat</h3>
-            <div className="wrapper__chat" style={{ background: sky }}>
+            <div id='2' className="wrapper__chat" style={{ background: sky }} ref={scrollRef}>
               <div
                 id="1"
                 ref={messageRef}
@@ -130,7 +149,9 @@ const Chat = ({ theme = "default" }: any) => {
                 }}
               >
                 {messages &&
-                  messages.map((message) => {
+                  messages.map((message: TMessage) => {
+                    console.log(message);
+                    
                     const { createdAt } = message;
                     return (
                       <Message
@@ -157,20 +178,27 @@ const Chat = ({ theme = "default" }: any) => {
       ) : (
         <>
           <div className="chat_modern">
-            <div className="wrapper__chat">
+            <div className="wrapper__chat__img">
+            {!moveScroll && (
+                <div className="arrow-to-bottom" onClick={() => handleAutoScroll()}>
+                  <ArrowDownwardIcon />
+                </div>
+              )}
+            <div className="wrapper__chat" ref={scrollRef}>
               <div
-                id="1"
+                id="3"
                 ref={messageRef}
                 style={{ display: "flex", flexDirection: "column" }}
               >
                 {messages &&
-                  messages.map((message) => {
+                  messages.map((message: TMessage) => {
                     const { createdAt } = message;
                     return (
                       <Message key={createdAt} message={message} user={user} />
                     );
                   })}
               </div>
+            </div>
             </div>
             <div className="send-message">
               <EmojiPicker value={value} setValue={setValue} />

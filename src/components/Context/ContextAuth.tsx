@@ -1,4 +1,3 @@
-import { log } from "console";
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
@@ -51,8 +50,7 @@ export const signInPopup = () => {
 
 function getProfileData() {
   const stringObj = localStorage.getItem('user') || 'Default Value'
-  console.log(stringObj);
-  
+
   if (typeof stringObj === 'object') {
     if (JSON.parse(stringObj)) {
       return JSON.parse(stringObj);
