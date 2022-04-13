@@ -4,7 +4,7 @@ import { Context } from '../..';
 import { IAuth } from '../../interfaces/auth';
 import { useNavigate } from "react-router-dom";
 
-const Login: FC<IAuth> = ({flag, setFlag}: IAuth) => {
+const Login: FC<IAuth> = ({flag, setFlag, setAuth}: IAuth) => {
   
   const { auth, provider }: any = useContext(Context)
   let navigate = useNavigate();
@@ -14,6 +14,7 @@ const Login: FC<IAuth> = ({flag, setFlag}: IAuth) => {
         const tmpUser = result.user;
         localStorage.setItem('user', JSON.stringify(tmpUser))
         setFlag && setFlag(true)
+        setAuth && setAuth(true)
         return navigate('/chat')
       }).catch((error) => {
         throw new Error(error)
