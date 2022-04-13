@@ -26,7 +26,7 @@ const Chat = ({ theme = "default" }: any) => {
   const [messages = []]: any = useCollectionData(collection(db, "messages"));
   const messagesRef = collection(db, "messages");
   const messageRef = useRef<HTMLDivElement>(null);
-  const scrollRef= useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [moveScroll, setMoveScroll] = useState(true);
 
   const sendMessage = useCallback(async () => {
@@ -79,7 +79,13 @@ const Chat = ({ theme = "default" }: any) => {
     if (moveScroll) {
       messageRef.current?.scrollIntoView(false);
     }
-  }, [messages, theme, moveScroll]);
+  }, [messages, theme]);
+
+  useEffect(() => {
+    if (moveScroll) {
+      messageRef.current?.scrollIntoView(false);
+    }
+  }, [moveScroll])
 
   const handleAutoScroll = () => {
     setMoveScroll(true) // скролл перемещается вниз
