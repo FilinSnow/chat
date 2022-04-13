@@ -21,7 +21,6 @@ const Chat = ({ theme = "default" }: any) => {
   const [value, setValue] = useState("");
   const [flag, setFlag] = useState(false);
   const tmpUser: any = localStorage.getItem("user");
-  // const [chosenEmoji, setChosenEmoji] = useState("");
   const user = JSON.parse(tmpUser);
   const [messages = []]: any = useCollectionData(collection(db, "messages"));
   const messagesRef = collection(db, "messages");
@@ -79,6 +78,7 @@ const Chat = ({ theme = "default" }: any) => {
     if (moveScroll) {
       messageRef.current?.scrollIntoView(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages, theme]);
 
   useEffect(() => {
@@ -90,7 +90,7 @@ const Chat = ({ theme = "default" }: any) => {
   const handleAutoScroll = () => {
     setMoveScroll(true) // скролл перемещается вниз
   }
-
+  
   useEffect(() => {
     const checkScrollMessage = (e: any) => {
       if (e.target.scrollHeight - e.target.scrollTop === 600) { // если текущее расположение скролла находится в самом низу чата
@@ -134,8 +134,8 @@ const Chat = ({ theme = "default" }: any) => {
       const audio = new Audio(audioPath);
       audio.play();
     }
-  };
-  
+  };  
+
   return (
     <div className="main-conteiner">
       {theme === "default" ? (
