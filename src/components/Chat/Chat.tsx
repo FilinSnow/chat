@@ -116,9 +116,9 @@ const Chat = ({ theme = "default" }: any) => {
         audioPath = "https://notificationsounds.com/storage/sounds/file-sounds-1253-asmr-girl-i-got-news-for-you.ogg";
         break;
       
-      case '!🇺🇦':
-        audioPath = "https://audionerd.ru/mp3/Ly9tb29zaWMubXkubWFpbC5ydS9maWxlLzg2NzNhYjRiZjE0OTY0MGRiMWZiNzE2YWZlY2FkNWRmLm1wMw==";
-        break;
+      // case '!🇺🇦':
+      //   audioPath = "https://audionerd.ru/mp3/Ly9tb29zaWMubXkubWFpbC5ydS9maWxlLzg2NzNhYjRiZjE0OTY0MGRiMWZiNzE2YWZlY2FkNWRmLm1wMw==";
+      //   break;
   
       default:
         break;

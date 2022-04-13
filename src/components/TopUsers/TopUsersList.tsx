@@ -56,7 +56,7 @@ const TopUsers = ({ messages } : any) => {
           <li>!anime</li>
           <li>!secret</li>
           <li>!news</li>
-          <li>!🇺🇦</li>
+          {/* <li>!🇺🇦</li> */}
         </ol>
       </div>
     </div>
