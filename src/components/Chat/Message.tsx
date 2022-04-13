@@ -52,11 +52,10 @@ const Message = ({message, user, theme}: IMessage) => {
           <p className='user-name'>{isAdmin ? adminName : displayName}</p>
           <div className='message-content'>
             {text}
-            <p className='message-date'>{messageTime}</p>
+            <p className={isOwner ? 'message-date__owner' : 'message-date'}>{messageTime}</p>
           </div>
         </div>
       }
-
       <img src={photoURL} className="avatar" alt="avatar" />
     </div>
   );

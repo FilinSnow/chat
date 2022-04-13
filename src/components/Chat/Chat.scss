@@ -21,9 +21,9 @@
   }
 
   .wrapper__chat {
-    height: 600px;
+    height: 43em;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1100px;
     overflow-y: scroll;
     margin: 0 auto;
   }
@@ -85,12 +85,17 @@
     border-radius: 20px;
     word-break: break-word;
 
-    & > .message-date {
+    & > .message-date, 
+    .message-date__owner {
       margin: 0;
       margin-top: 4px;
       color: rgb(82 82 82);
       font-size: 14px;
       text-align: right;
+    }
+
+    & > .message-date__owner {
+      color: #e0e0e0;
     }
   }
   
@@ -189,7 +194,7 @@
 
 .wrapper__chat__img {
   display: flex;
-  width: 71%;
+  width: 100%;
   position: relative;
 }
 
