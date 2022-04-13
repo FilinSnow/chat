@@ -11,7 +11,7 @@ const ToggleThemeBtn = ({theme, setTheme}: IAuth) => {
 
   return (
     <input
-      onClick={() => toggleTheme()}
+      onChange={() => toggleTheme()}
       className="apple-switch" 
       type="checkbox"
       checked={theme === 'modern'}
