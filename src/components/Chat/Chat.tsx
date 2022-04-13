@@ -93,7 +93,8 @@ const Chat = ({ theme = "default" }: any) => {
   
   useEffect(() => {
     const checkScrollMessage = (e: any) => {
-      if (e.target.scrollHeight - e.target.scrollTop === 600) { // если текущее расположение скролла находится в самом низу чата
+      console.log(e.target.scrollHeight - e.target.scrollTop)
+      if (e.target.scrollHeight - e.target.scrollTop <= 690) { // если текущее расположение скролла находится в самом низу чата
         setMoveScroll(true)
       } else {
         setMoveScroll(false)
