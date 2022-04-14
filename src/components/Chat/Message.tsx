@@ -1,6 +1,5 @@
 import React from "react";
 
-
 export type TMessage = {
   createdAt: number;
   text: string;
@@ -8,23 +7,22 @@ export type TMessage = {
   displayName: string;
   email: string;
   photoURL: string;
-}
+};
 interface IMessage {
-  message: TMessage;
+  message: Array<TMessage>;
   user: any;
   theme?: string | undefined;
-  
 }
 
-const getReadableTime = (time : number) => {
+const getReadableTime = (time: number) => {
   const t = new Date(time);
-  const minutes = (t.getMinutes()<10?'0':'') + t.getMinutes();
-  
-  return `${t.getHours()}:${minutes}`;
-}
+  const minutes = (t.getMinutes() < 10 ? "0" : "") + t.getMinutes();
 
-const Message = ({message, user, theme}: IMessage) => {
-  const { createdAt, uid, displayName, email, text, photoURL } = message;
+  return `${t.getHours()}:${minutes}`;
+};
+
+const Message = ({ message, user, theme }: IMessage) => {
+  const { createdAt, uid, displayName, email, photoURL } = message[0];
   const isOwner = uid === user?.uid;
 
   const admindUids = [
@@ -34,28 +32,43 @@ const Message = ({message, user, theme}: IMessage) => {
   const isAdmin = isOwner && admindUids.includes(email);
   const adminName = `${displayName} [admin]`;
 
-  const messageTime = getReadableTime(createdAt);
-
   return (
-    <div 
-      key={createdAt} 
-      className={isOwner ? 'message-owner' : 'message'}
-    >
-      {theme === 'default' ? 
-        <div className='message-content'>  
-          <div style={{marginBottom: 3}}><b>{displayName}</b></div>
-          <div>{text}</div>
-          <p className='message-date'>{messageTime}</p>
+    <div key={createdAt} className={isOwner ? "message-owner" : "message"}>
+      {theme === "default" ? (
+        <div className="message-content">
+          {message.map((item, index) => {
+            const messageTime = getReadableTime(item.createdAt);
+            return (
+              <>
+                <div className="message-content-text">
+                  {index === 0 && (
+                    <div style={{ marginBottom: "10px", fontWeight: "bold" }}>
+                      {displayName}
+                    </div>
+                  )}
+                  <div>{item.text}</div>
+                  <p className="message-date">{messageTime}</p>
+                </div>
+              </>
+            );
+          })}
         </div>
-          :
-        <div className='message-container'>
-          <p className='user-name'>{isAdmin ? adminName : displayName}</p>
-          <div className='message-content'>
-            {text}
-            <p className={isOwner ? 'message-date__owner' : 'message-date'}>{messageTime}</p>
-          </div>
+      ) : (
+        <div className="message-container">
+          <p className="user-name">{isAdmin ? adminName : displayName}</p>
+          {message.map((item) => {
+            const messageTime = getReadableTime(item.createdAt);
+            return (
+              <div className="message-content">
+                {item.text}
+                <p className={isOwner ? "message-date__owner" : "message-date"}>
+                  {messageTime}
+                </p>
+              </div>
+            );
+          })}
         </div>
-      }
+      )}
       <img src={photoURL} className="avatar" alt="avatar" />
     </div>
   );

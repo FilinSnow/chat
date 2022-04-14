@@ -12,9 +12,29 @@ import TopUsers from "../TopUsers/TopUsersList";
 import Message, { TMessage } from "./Message";
 import EmojiPicker from "../EmojiPicker/EmojiPicker";
 import SendIcon from "@mui/icons-material/Send";
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import sky from "../../img/sky.jpeg";
 import "./Chat.scss";
+
+const createBigMessages = (messages: Array<TMessage>) => {
+  const allMessages: Array<any> = [];
+  let EMAIL = messages.length !== 0 && messages[0].email;
+
+  messages.forEach((message: any, index) => {
+    if (index === 0) {
+      allMessages.push([message]);
+    } else {
+      if (message.email === EMAIL) {
+        allMessages[allMessages.length - 1].push(message);
+      } else {
+        allMessages.push([message]);
+        EMAIL = message.email;
+      }
+    }
+  });
+
+  return allMessages;
+};
 
 const Chat = ({ theme = "default" }: any) => {
   const { db }: any = useContext(Context);
@@ -27,6 +47,7 @@ const Chat = ({ theme = "default" }: any) => {
   const messageRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [moveScroll, setMoveScroll] = useState(true);
+  let filteredMessages = createBigMessages(messages);
 
   const sendMessage = useCallback(async () => {
     const index = `${Date.now()}`;
@@ -44,7 +65,7 @@ const Chat = ({ theme = "default" }: any) => {
     }
 
     if (user) {
-      setMoveScroll(true) // при добавлении своего сообщения скролл перемещается вниз
+      setMoveScroll(true); // при добавлении своего сообщения скролл перемещается вниз
       await setDoc(doc(messagesRef, index), {
         uid: user.uid,
         displayName: user.displayName,
@@ -74,7 +95,7 @@ const Chat = ({ theme = "default" }: any) => {
     const len = messages.length;
     const text = messages[len - 1]?.text;
 
-    if (len > 0 && text[0] === '!') play(text);
+    if (len > 0 && text[0] === "!") play(text);
     if (moveScroll) {
       messageRef.current?.scrollIntoView(false);
     }
@@ -85,48 +106,52 @@ const Chat = ({ theme = "default" }: any) => {
     if (moveScroll) {
       messageRef.current?.scrollIntoView(false);
     }
-  }, [moveScroll])
+  }, [moveScroll]);
 
   const handleAutoScroll = () => {
-    setMoveScroll(true) // скролл перемещается вниз
-  }
-  
+    setMoveScroll(true); // скролл перемещается вниз
+  };
+
   useEffect(() => {
     const checkScrollMessage = (e: any) => {
-      console.log(e.target.scrollHeight - e.target.scrollTop)
-      if (e.target.scrollHeight - e.target.scrollTop <= 690) { // если текущее расположение скролла находится в самом низу чата
-        setMoveScroll(true)
+      console.log(e.target.scrollHeight - e.target.scrollTop);
+      if (e.target.scrollHeight - e.target.scrollTop <= 690) {
+        // если текущее расположение скролла находится в самом низу чата
+        setMoveScroll(true);
       } else {
-        setMoveScroll(false)
+        setMoveScroll(false);
       }
-    }
-    scrollRef?.current?.addEventListener('scroll',  checkScrollMessage)
-  }, [theme])
+    };
+    scrollRef?.current?.addEventListener("scroll", checkScrollMessage);
+  }, [theme]);
 
   const play = (text: string) => {
-    let audioPath = '';
+    let audioPath = "";
 
     switch (text) {
-      case '!sound':
-        audioPath = "https://notificationsounds.com/storage/sounds/file-sounds-1303-man-its-for-you.ogg";
+      case "!sound":
+        audioPath =
+          "https://notificationsounds.com/storage/sounds/file-sounds-1303-man-its-for-you.ogg";
         break;
 
-      case '!anime':
+      case "!anime":
         audioPath = "https://www.myinstants.com/media/sounds/tuturu_1.mp3";
         break;
 
-      case '!secret':
-        audioPath = "https://notificationsounds.com/storage/sounds/file-sounds-1254-asmr-girl-i-have-a-secret.ogg";
+      case "!secret":
+        audioPath =
+          "https://notificationsounds.com/storage/sounds/file-sounds-1254-asmr-girl-i-have-a-secret.ogg";
         break;
 
-      case '!news':
-        audioPath = "https://notificationsounds.com/storage/sounds/file-sounds-1253-asmr-girl-i-got-news-for-you.ogg";
+      case "!news":
+        audioPath =
+          "https://notificationsounds.com/storage/sounds/file-sounds-1253-asmr-girl-i-got-news-for-you.ogg";
         break;
-      
+
       // case '!🇺🇦':
       //   audioPath = "https://audionerd.ru/mp3/Ly9tb29zaWMubXkubWFpbC5ydS9maWxlLzg2NzNhYjRiZjE0OTY0MGRiMWZiNzE2YWZlY2FkNWRmLm1wMw==";
       //   break;
-  
+
       default:
         break;
     }
@@ -135,7 +160,7 @@ const Chat = ({ theme = "default" }: any) => {
       const audio = new Audio(audioPath);
       audio.play();
     }
-  };  
+  };
 
   return (
     <div className="main-conteiner">
@@ -145,7 +170,12 @@ const Chat = ({ theme = "default" }: any) => {
 
           <div className="chat">
             <h3>Chat</h3>
-            <div id='2' className="wrapper__chat" style={{ background: sky }} ref={scrollRef}>
+            <div
+              id="2"
+              className="wrapper__chat"
+              style={{ background: sky }}
+              ref={scrollRef}
+            >
               <div
                 id="1"
                 ref={messageRef}
@@ -155,15 +185,12 @@ const Chat = ({ theme = "default" }: any) => {
                   flexDirection: "column",
                 }}
               >
-                {messages &&
-                  messages.map((message: TMessage) => {
-                    console.log(message);
-                    
-                    const { createdAt } = message;
+                {filteredMessages.length > 0 &&
+                  filteredMessages.map((message: Array<TMessage>, index) => {
                     return (
                       <Message
                         theme={theme}
-                        key={createdAt}
+                        key={index}
                         message={message}
                         user={user}
                       />
@@ -186,26 +213,28 @@ const Chat = ({ theme = "default" }: any) => {
         <>
           <div className="chat_modern">
             <div className="wrapper__chat__img">
-            {!moveScroll && (
-                <div className="arrow-to-bottom" onClick={() => handleAutoScroll()}>
+              {!moveScroll && (
+                <div
+                  className="arrow-to-bottom"
+                  onClick={() => handleAutoScroll()}
+                >
                   <ArrowDownwardIcon />
                 </div>
               )}
-            <div className="wrapper__chat" ref={scrollRef}>
-              <div
-                id="3"
-                ref={messageRef}
-                style={{ display: "flex", flexDirection: "column" }}
-              >
-                {messages &&
-                  messages.map((message: TMessage) => {
-                    const { createdAt } = message;
-                    return (
-                      <Message key={createdAt} message={message} user={user} />
-                    );
-                  })}
+              <div className="wrapper__chat" ref={scrollRef}>
+                <div
+                  id="3"
+                  ref={messageRef}
+                  style={{ display: "flex", flexDirection: "column" }}
+                >
+                  {filteredMessages.length > 0 &&
+                    filteredMessages.map((message: Array<TMessage>, index) => {
+                      return (
+                        <Message key={index} message={message} user={user} />
+                      );
+                    })}
+                </div>
               </div>
-            </div>
             </div>
             <div className="send-message">
               <EmojiPicker value={value} setValue={setValue} />
