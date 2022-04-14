@@ -85,6 +85,10 @@
     border-radius: 20px;
     word-break: break-word;
 
+    &:not(:last-child) {
+      margin-bottom: 10px
+    }
+
     & > .message-date, 
     .message-date__owner {
       margin: 0;
@@ -135,7 +139,7 @@
   .message,
   .message-owner {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
   
     & > .avatar {
       height: 30px;
@@ -162,12 +166,30 @@
   
   .message-content {
     text-align: left;
-    background: rgb(255, 255, 255); 
-    margin: 5px; 
+    margin: 5px 5px 0px 5px; 
     max-width: 250px; 
-    padding: 9px;
-    border-radius: 5px;
     word-break: break-word;
+
+
+    & .message-content-name {
+      padding: 10px;
+      margin-bottom: 3; 
+      background: white;
+      width: 100%;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+
+    & .message-content-text {
+      margin-bottom: 10px;
+      margin-top: 10px;
+      padding: 10px;
+      background: white;
+      border-radius: 10px;
+      &:last-child {
+        margin-bottom: 0px;
+      }
+    }
   }
 
   .message-date {
