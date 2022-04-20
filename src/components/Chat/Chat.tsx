@@ -15,6 +15,7 @@ import SendIcon from "@mui/icons-material/Send";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import sky from "../../img/sky.jpeg";
 import "./Chat.scss";
+import moment from "moment";
 
 const createBigMessages = (messages: Array<TMessage>) => {
   const allMessages: Array<any> = [];
@@ -36,6 +37,21 @@ const createBigMessages = (messages: Array<TMessage>) => {
   return allMessages;
 };
 
+const findArrayOldFirstDates = (messages: Array<TMessage>) => {
+  if (messages.length > 0) {
+    const arrDates = [messages[0].createdAt];
+    let currentDateInArray = moment(messages[0].createdAt).format("DD MM YY");
+
+    messages.forEach((item) => {
+      if (moment(item.createdAt).format("DD MM YY") !== currentDateInArray) {
+        arrDates.push(item.createdAt);
+        currentDateInArray = moment(item.createdAt).format("DD MM YY");
+      }
+    });
+    return arrDates;
+  }
+};
+
 const Chat = ({ theme = "default" }: any) => {
   const { db }: any = useContext(Context);
   const [value, setValue] = useState("");
@@ -48,6 +64,8 @@ const Chat = ({ theme = "default" }: any) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [moveScroll, setMoveScroll] = useState(true);
   let filteredMessages = createBigMessages(messages);
+
+  const oldDays = findArrayOldFirstDates(messages) || [];
 
   const sendMessage = useCallback(async () => {
     const index = `${Date.now()}`;
@@ -193,6 +211,7 @@ const Chat = ({ theme = "default" }: any) => {
                         key={index}
                         message={message}
                         user={user}
+                        oldDays={oldDays}
                       />
                     );
                   })}
@@ -230,7 +249,12 @@ const Chat = ({ theme = "default" }: any) => {
                   {filteredMessages.length > 0 &&
                     filteredMessages.map((message: Array<TMessage>, index) => {
                       return (
-                        <Message key={index} message={message} user={user} />
+                        <Message
+                          key={index}
+                          message={message}
+                          user={user}
+                          oldDays={oldDays}
+                        />
                       );
                     })}
                 </div>
