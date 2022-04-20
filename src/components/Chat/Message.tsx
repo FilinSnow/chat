@@ -50,7 +50,7 @@ const Message = ({ message, user, theme, oldDays }: IMessage) => {
               <>
                 {!!isOldDayMessage && (
                   <div className="old-day">
-                    {oldDays[oldDays.length - 1] == item.createdAt ? (
+                    {oldDays[oldDays.length - 1] === item.createdAt ? (
                       <p>today</p>
                     ) : (
                       <p>{moment(item.createdAt).format("DD MMMM YYYY")}</p>
@@ -81,7 +81,7 @@ const Message = ({ message, user, theme, oldDays }: IMessage) => {
               <>
                 {!!isOldDayMessage && (
                   <div className="old-day">
-                    {oldDays[oldDays.length - 1] == item.createdAt ? (
+                    {oldDays[oldDays.length - 1] === item.createdAt ? (
                       <p>today</p>
                     ) : (
                       <p>{moment(item.createdAt).format("DD MMMM YYYY")}</p>
