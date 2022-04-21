@@ -27,11 +27,6 @@ const Message = ({ message, user, theme, oldDays }: IMessage) => {
   const { createdAt, uid, displayName, email, photoURL } = message[0];
   const isOwner = uid === user?.uid;
 
-  console.log(oldDays, "oldDays");
-  console.log(message, "message");
-  console.log(oldDays[oldDays.length - 1], "oldDays[oldDays.length - 1]");
-  console.log(1650446671817, "1650446671817");
-
   const admindUids = [
     "dkikot.exceedteam@gmail.com",
     "vproskurin.exceedteam@gmail.com",
@@ -81,7 +76,10 @@ const Message = ({ message, user, theme, oldDays }: IMessage) => {
               <>
                 {!!isOldDayMessage && (
                   <div className="old-day">
-                    {oldDays[oldDays.length - 1] === item.createdAt ? (
+                    {oldDays[oldDays.length - 1] === item.createdAt &&
+                    moment(Number(oldDays[oldDays.length - 1])).format(
+                      "DD MMMM YYYY"
+                    ) === moment().format("DD MMMM YYYY") ? (
                       <p>today</p>
                     ) : (
                       <p>{moment(item.createdAt).format("DD MMMM YYYY")}</p>
