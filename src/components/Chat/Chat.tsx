@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useState,
   useRef,
+  useMemo,
 } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { collection, doc, setDoc } from "firebase/firestore";
@@ -16,6 +17,7 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import sky from "../../img/sky.jpeg";
 import "./Chat.scss";
 import moment from "moment";
+import useChat from "../hooks/useChat";
 
 const createBigMessages = (messages: Array<TMessage>) => {
   const allMessages: Array<any> = [];
@@ -54,6 +56,8 @@ const findArrayOldFirstDates = (messages: Array<TMessage>) => {
 
 const Chat = ({ theme = "default" }: any) => {
   const { db }: any = useContext(Context);
+  const { messages: m, handleAddMessage } = useChat();
+
   const [value, setValue] = useState("");
   const [flag, setFlag] = useState(false);
   const tmpUser: any = localStorage.getItem("user");
@@ -64,9 +68,11 @@ const Chat = ({ theme = "default" }: any) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [moveScroll, setMoveScroll] = useState(true);
   let filteredMessages = createBigMessages(messages);
-
+  
   const oldDays = findArrayOldFirstDates(messages) || [];
 
+  // console.log(messages);
+  
   const sendMessage = useCallback(async () => {
     const index = `${Date.now()}`;
     const regular = /^[а-яА-Яa-zA-Z0-9\s()*_\-+!?=#:;@$%^&*,."'\][]*$/;
@@ -84,14 +90,15 @@ const Chat = ({ theme = "default" }: any) => {
 
     if (user) {
       setMoveScroll(true); // при добавлении своего сообщения скролл перемещается вниз
-      await setDoc(doc(messagesRef, index), {
-        uid: user.uid,
-        displayName: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
-        text: value,
-        createdAt: Date.now(),
-      });
+      handleAddMessage(value)
+      // await setDoc(doc(messagesRef, index), {
+      //   uid: user.uid,
+      //   displayName: user.displayName,
+      //   email: user.email,
+      //   photoURL: user.photoURL,
+      //   text: value,
+      //   createdAt: Date.now(),
+      // });
       setFlag(!flag);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -120,6 +127,20 @@ const Chat = ({ theme = "default" }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages, theme]);
 
+  // useEffect(() => {
+  //   if (moveScroll) {
+  //     messageRef.current?.scrollIntoView(false);
+  //   }
+  // }, [moveScroll])
+  // console.log(messages);
+  console.log(m);
+  
+ 
+  // console.log(m);
+  // useEffect(() => {
+  //   console.log(m);
+  // }, [m])
+
   useEffect(() => {
     if (moveScroll) {
       messageRef.current?.scrollIntoView(false);
@@ -132,7 +153,6 @@ const Chat = ({ theme = "default" }: any) => {
 
   useEffect(() => {
     const checkScrollMessage = (e: any) => {
-      console.log(e.target.scrollHeight - e.target.scrollTop);
       if (e.target.scrollHeight - e.target.scrollTop <= 690) {
         // если текущее расположение скролла находится в самом низу чата
         setMoveScroll(true);
@@ -179,6 +199,9 @@ const Chat = ({ theme = "default" }: any) => {
       audio.play();
     }
   };
+
+  // console.log(messages);
+
 
   return (
     <div className="main-conteiner">
@@ -280,4 +303,4 @@ const Chat = ({ theme = "default" }: any) => {
   );
 };
 
-export default Chat;
+export default React.memo(Chat);

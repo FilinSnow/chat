@@ -42,7 +42,7 @@ const Message = ({ message, user, theme, oldDays }: IMessage) => {
             const messageTime = getReadableTime(item.createdAt);
             const isOldDayMessage = oldDays.find((at) => at === item.createdAt);
             return (
-              <>
+              <React.Fragment key={item.createdAt}>
                 {!!isOldDayMessage && (
                   <div className="old-day">
                     {oldDays[oldDays.length - 1] === item.createdAt ? (
@@ -62,7 +62,7 @@ const Message = ({ message, user, theme, oldDays }: IMessage) => {
                   <div>{item.text}</div>
                   <p className="message-date">{messageTime}</p>
                 </div>
-              </>
+              </React.Fragment>
             );
           })}
         </div>
@@ -73,7 +73,7 @@ const Message = ({ message, user, theme, oldDays }: IMessage) => {
             const messageTime = getReadableTime(item.createdAt);
             const isOldDayMessage = oldDays.find((at) => at === item.createdAt);
             return (
-              <>
+              <React.Fragment key={item.createdAt}>
                 {!!isOldDayMessage && (
                   <div className="old-day">
                     {oldDays[oldDays.length - 1] === item.createdAt &&
@@ -94,7 +94,7 @@ const Message = ({ message, user, theme, oldDays }: IMessage) => {
                     {messageTime}
                   </p>
                 </div>
-              </>
+              </React.Fragment>
             );
           })}
         </div>
