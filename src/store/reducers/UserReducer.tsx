@@ -1,15 +1,7 @@
-import axios from "axios";
-import { store } from "../store";
 
 interface IAction {
   type: string;
   data: any;
-}
-
-interface IState<T> {
-  data: T;
-  age: number;
-  loading: boolean;
 }
 
 export const initialState = {
@@ -19,9 +11,6 @@ export const initialState = {
 const UserReducer = (state = initialState, action: IAction) => {
   switch (action.type) {
     case 'USER': {
-      // console.log(action.data);
-      
-     
       return {
         ...state,
       }
@@ -34,8 +23,6 @@ const UserReducer = (state = initialState, action: IAction) => {
 }
 
 export const userAction = (data: any) => {
-  // console.log(data);
-  
   return {
     type: 'USER',
     data: data

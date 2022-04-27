@@ -1,9 +1,6 @@
-import { collection } from 'firebase/firestore';
+
 import React, { useState } from 'react'
-import { useContext } from 'react';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { Route, Routes, Navigate } from "react-router";
-import { Context } from '..';
 import { IAuth } from '../interfaces/auth';
 import { privateRoutes, publicRoutes } from '../routes/routes';
 import './AppRouter.scss'

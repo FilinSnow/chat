@@ -1,8 +1,6 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { api } from "../../components/api/api";
 import { actionUser } from "../actions/actionUser";
-import { store } from "../store";
 import { AUTH } from "../types/types";
 import { userAction } from "./UserReducer";
 
@@ -92,7 +90,6 @@ export const getUserThunk = () => {
       }).catch(e => {
         throw new Error(e)
       })
-    // dispatch()
   }
 }
 

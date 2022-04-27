@@ -1,9 +1,6 @@
-import { signInWithPopup } from 'firebase/auth';
-import React, { FC, useContext, useEffect, useState } from 'react'
-import { Context } from '../..';
+import React, { FC, useEffect, useState } from 'react'
 import { IAuth } from '../../interfaces/auth';
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from 'axios';
 import './Login.scss'
 import { Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -48,6 +45,7 @@ const Login: FC<IOnChange & IAuth> = ({ flag, setFlag, setAuth }) => {
       dispatch(getUser(location.search))
       // navigate('/chat')
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search])
 
   const handleClickShowPassword = () => {
@@ -115,9 +113,7 @@ const Login: FC<IOnChange & IAuth> = ({ flag, setFlag, setAuth }) => {
         </div>
         <Button variant="contained" sx={{mr: '8px'}} onClick={login}>Login</Button>
         <Button variant="contained" sx={{mr: '8px'}} onClick={handleMoveGoogle}>Login Google</Button>
-
         <Button color="secondary" variant="outlined" onClick={navigateRegisterPage}>Register</Button>
-        {/* <button onClick={() => login()}>Login with google</button> */}
       </div>
     </div>
   )
