@@ -9,12 +9,6 @@ const useChat = () => {
 
   const [messages, setMessages] = useState<Array<any>>([])
   const { current: socket } = useRef(
-    // io(SERVER_URI, {
-    //   query: {
-    //     roomId: user.roomId,
-    //     userName: user.userName,
-    //   }
-    // })
     io(SERVER_URI, {
       query: {
         roomId: '626696098f5928e2635222b9',
@@ -33,16 +27,13 @@ const useChat = () => {
   useEffect(() => {
     socket.emit('user:add', user)
     socket.on('messageToClient', (message) => {
-      console.log(message);
-      
       setMessages((prev) => [...prev, message])
     })
-    socket.emit('joinRoom', {roomId: "626696098f5928e2635222b9"})
+    socket.emit('joinRoom', { roomId: "626696098f5928e2635222b9" })
     socket.on('allRoomMessages', (allMessages) => {
-      console.log(allMessages, 'allMessages ===========>');
-      
       setMessages(allMessages)
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleAddMessage = (message: any) => {

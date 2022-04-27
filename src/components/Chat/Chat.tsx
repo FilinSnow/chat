@@ -1,14 +1,10 @@
 import React, {
   useCallback,
-  useContext,
   useEffect,
   useState,
   useRef,
-  useMemo,
 } from "react";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import { collection, doc, setDoc } from "firebase/firestore";
-import { Context } from "../..";
+
 import TopUsers from "../TopUsers/TopUsersList";
 import Message, { TMessage } from "./Message";
 import EmojiPicker from "../EmojiPicker/EmojiPicker";
@@ -21,17 +17,18 @@ import useChat from "../hooks/useChat";
 
 const createBigMessages = (messages: Array<TMessage>) => {
   const allMessages: Array<any> = [];
-  let EMAIL = messages.length !== 0 && messages[0].email;
+  
+  let EMAIL = messages.length !== 0 && messages[0].user.email;
 
   messages.forEach((message: any, index) => {
     if (index === 0) {
       allMessages.push([message]);
     } else {
-      if (message.email === EMAIL) {
+      if (message.user.email === EMAIL) {
         allMessages[allMessages.length - 1].push(message);
       } else {
         allMessages.push([message]);
-        EMAIL = message.email;
+        EMAIL = message.user.email;
       }
     }
   });
@@ -41,13 +38,13 @@ const createBigMessages = (messages: Array<TMessage>) => {
 
 const findArrayOldFirstDates = (messages: Array<TMessage>) => {
   if (messages.length > 0) {
-    const arrDates = [messages[0].createdAt];
-    let currentDateInArray = moment(messages[0].createdAt).format("DD MM YY");
+    const arrDates = [messages[0].createData];
+    let currentDateInArray = moment(messages[0].createData).format("DD MM YY");
 
     messages.forEach((item) => {
-      if (moment(item.createdAt).format("DD MM YY") !== currentDateInArray) {
-        arrDates.push(item.createdAt);
-        currentDateInArray = moment(item.createdAt).format("DD MM YY");
+      if (moment(item.createData).format("DD MM YY") !== currentDateInArray) {
+        arrDates.push(item.createData);
+        currentDateInArray = moment(item.createData).format("DD MM YY");
       }
     });
     return arrDates;
@@ -55,15 +52,12 @@ const findArrayOldFirstDates = (messages: Array<TMessage>) => {
 };
 
 const Chat = ({ theme = "default" }: any) => {
-  const { db }: any = useContext(Context);
-  const { messages: m, handleAddMessage } = useChat();
+  const { messages, handleAddMessage } = useChat();
 
   const [value, setValue] = useState("");
   const [flag, setFlag] = useState(false);
   const tmpUser: any = localStorage.getItem("user");
   const user = JSON.parse(tmpUser);
-  const [messages = []]: any = useCollectionData(collection(db, "messages"));
-  const messagesRef = collection(db, "messages");
   const messageRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [moveScroll, setMoveScroll] = useState(true);
@@ -71,10 +65,8 @@ const Chat = ({ theme = "default" }: any) => {
   
   const oldDays = findArrayOldFirstDates(messages) || [];
 
-  // console.log(messages);
   
   const sendMessage = useCallback(async () => {
-    const index = `${Date.now()}`;
     const regular = /^[а-яА-Яa-zA-Z0-9\s()*_\-+!?=#:;@$%^&*,."'\][]*$/;
     const regularEmoji =
       /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/;
@@ -91,14 +83,6 @@ const Chat = ({ theme = "default" }: any) => {
     if (user) {
       setMoveScroll(true); // при добавлении своего сообщения скролл перемещается вниз
       handleAddMessage(value)
-      // await setDoc(doc(messagesRef, index), {
-      //   uid: user.uid,
-      //   displayName: user.displayName,
-      //   email: user.email,
-      //   photoURL: user.photoURL,
-      //   text: value,
-      //   createdAt: Date.now(),
-      // });
       setFlag(!flag);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -127,19 +111,7 @@ const Chat = ({ theme = "default" }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages, theme]);
 
-  // useEffect(() => {
-  //   if (moveScroll) {
-  //     messageRef.current?.scrollIntoView(false);
-  //   }
-  // }, [moveScroll])
-  // console.log(messages);
-  console.log(m);
-  
- 
-  // console.log(m);
-  // useEffect(() => {
-  //   console.log(m);
-  // }, [m])
+
 
   useEffect(() => {
     if (moveScroll) {
@@ -186,10 +158,6 @@ const Chat = ({ theme = "default" }: any) => {
           "https://notificationsounds.com/storage/sounds/file-sounds-1253-asmr-girl-i-got-news-for-you.ogg";
         break;
 
-      // case '!🇺🇦':
-      //   audioPath = "https://audionerd.ru/mp3/Ly9tb29zaWMubXkubWFpbC5ydS9maWxlLzg2NzNhYjRiZjE0OTY0MGRiMWZiNzE2YWZlY2FkNWRmLm1wMw==";
-      //   break;
-
       default:
         break;
     }
@@ -199,9 +167,6 @@ const Chat = ({ theme = "default" }: any) => {
       audio.play();
     }
   };
-
-  // console.log(messages);
-
 
   return (
     <div className="main-conteiner">

@@ -1,54 +1,69 @@
 import moment from "moment";
 import React from "react";
+import defaultUser from '../../img/defaultUser.png'
 
-export type TMessage = {
-  createdAt: number;
-  text: string;
-  uid: string;
-  displayName: string;
+interface IUser {
+  avatar: string;
+  createData: string;
   email: string;
-  photoURL: string;
-};
-interface IMessage {
-  message: Array<TMessage>;
-  user: any;
-  theme?: string | undefined;
-  oldDays: Array<Number>;
+  firstName: string;
+  lastName: string;
+  status: string;
+  _id: string;
 }
 
-const getReadableTime = (time: number) => {
+export type TMessage = {
+  createData: string;
+  isChanged: boolean;
+  room: string;
+  text: string;
+  user: IUser;
+  _id?: string;
+};
+interface IMessage {
+  message: TMessage[];
+  user: any;
+  theme?: string | undefined;
+  oldDays: Array<string>;
+}
+
+const getReadableTime = (time: number | string) => {
   const t = new Date(time);
   const minutes = (t.getMinutes() < 10 ? "0" : "") + t.getMinutes();
 
   return `${t.getHours()}:${minutes}`;
 };
 
-const Message = ({ message, user, theme, oldDays }: IMessage) => {
-  const { createdAt, uid, displayName, email, photoURL } = message[0];
-  const isOwner = uid === user?.uid;
 
+const Message = ({ message, theme, user: userStorage, oldDays }: IMessage) => {
+  const { createData, user } = message[0];
+  const { firstName, lastName, email, avatar } = user;
+  const displayName = `${firstName} ${lastName}`
+  const isOwner = user._id === userStorage?._id;
+  const isAvatar = avatar.includes('default.png') ? defaultUser : avatar
+  
   const admindUids = [
     "dkikot.exceedteam@gmail.com",
     "vproskurin.exceedteam@gmail.com",
   ];
   const isAdmin = isOwner && admindUids.includes(email);
-  const adminName = `${displayName} [admin]`;
+  const adminName = `${firstName} ${lastName} [admin]`;
 
   return (
-    <div key={createdAt} className={isOwner ? "message-owner" : "message"}>
+    <div key={createData} className={isOwner ? "message-owner" : "message"}>
       {theme === "default" ? (
         <div className="message-content">
           {message.map((item, index) => {
-            const messageTime = getReadableTime(item.createdAt);
-            const isOldDayMessage = oldDays.find((at) => at === item.createdAt);
+            const messageTime = getReadableTime(item.createData);
+            const isOldDayMessage = oldDays.find((at) => at === item.createData);
             return (
-              <React.Fragment key={item.createdAt}>
+              <React.Fragment key={item.createData}>
                 {!!isOldDayMessage && (
                   <div className="old-day">
-                    {oldDays[oldDays.length - 1] === item.createdAt ? (
+                    {oldDays[oldDays.length - 1] === item.createData ? (
                       <p>today</p>
                     ) : (
-                      <p>{moment(item.createdAt).format("DD MMMM YYYY")}</p>
+                      <p>{moment(item.createData).format("DD MMMM YYYY")}</p>
                     )}
                   </div>
                 )}
@@ -70,19 +85,19 @@ const Message = ({ message, user, theme, oldDays }: IMessage) => {
         <div className="message-container">
           <p className="user-name">{isAdmin ? adminName : displayName}</p>
           {message.map((item) => {
-            const messageTime = getReadableTime(item.createdAt);
-            const isOldDayMessage = oldDays.find((at) => at === item.createdAt);
+            const messageTime = getReadableTime(item.createData);
+            const isOldDayMessage = oldDays.find((at) => at === item.createData);
             return (
-              <React.Fragment key={item.createdAt}>
+              <React.Fragment key={item.createData}>
                 {!!isOldDayMessage && (
                   <div className="old-day">
-                    {oldDays[oldDays.length - 1] === item.createdAt &&
-                    moment(Number(oldDays[oldDays.length - 1])).format(
-                      "DD MMMM YYYY"
-                    ) === moment().format("DD MMMM YYYY") ? (
+                    {oldDays[oldDays.length - 1] === item.createData &&
+                      moment(Number(oldDays[oldDays.length - 1])).format(
+                        "DD MMMM YYYY"
+                      ) === moment().format("DD MMMM YYYY") ? (
                       <p>today</p>
                     ) : (
-                      <p>{moment(item.createdAt).format("DD MMMM YYYY")}</p>
+                      <p>{moment(item.createData).format("DD MMMM YYYY")}</p>
                     )}
                   </div>
                 )}
@@ -99,7 +114,7 @@ const Message = ({ message, user, theme, oldDays }: IMessage) => {
           })}
         </div>
       )}
-      <img src={photoURL} className="avatar" alt="avatar" />
+      <img src={isAvatar} className="avatar" alt="avatar" />
     </div>
   );
 };

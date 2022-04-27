@@ -10,14 +10,13 @@ interface IntTopUsers {
 
 const TopUsers = ({ messages } : any) => {
   const [topUsers, setTopUsers] = useState<any>([]);
-
   const createTop = () => {
-    const messagesGroup = _.groupBy(messages, (message: any) => { return message.email; });
+    const messagesGroup = _.groupBy(messages, (message: any) => { return message.user.email; });
     const items = [] as any;
-
+    
     for (let key in messagesGroup) {
       items.push({
-        name: messagesGroup[key][0].displayName,
+        name: `${messagesGroup[key][0].user.firstName} ${messagesGroup[key][0].user.lastName}`,
         count: messagesGroup[key].length
       });
     }
@@ -56,7 +55,6 @@ const TopUsers = ({ messages } : any) => {
           <li>!anime</li>
           <li>!secret</li>
           <li>!news</li>
-          {/* <li>!🇺🇦</li> */}
         </ol>
       </div>
     </div>

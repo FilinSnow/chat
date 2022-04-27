@@ -1,9 +1,6 @@
-import { signInWithPopup } from 'firebase/auth';
-import React, { FC, useContext, useState } from 'react'
-import { Context } from '../..';
-import { IAuth } from '../../interfaces/auth';
+
+import React, { FC, useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
 import './Login.scss'
 import { Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -97,6 +94,10 @@ const Register: FC<IFormData & IOnChange>  = () => {
       .then(res => {
         console.log(res);
         if(res.status !== 400) {
+          if (res.data.message) {
+            alert('Cykas')
+            return;
+          }
           dispatch(actionUser(res.data))
           localStorage.setItem('user', JSON.stringify(res.data))
           return navigate('/chat')
