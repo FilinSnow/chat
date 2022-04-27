@@ -1,10 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux';
-import { RootState, store } from '../../store/store';
+import { RootState } from '../../store/store';
 
 const WrapperAppRouter: any = (Component: any) => {
   
-  // setAuth(false)
   const ShowComponent = (props: any) => {
     const copyUser = useSelector((state: RootState) => state.auth.user)
     const [auth, setAuth] = useState(false);
