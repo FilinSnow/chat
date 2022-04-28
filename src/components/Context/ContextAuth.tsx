@@ -29,7 +29,7 @@ export const signInPopup = () => {
       
       // This gives you a Google Access Token. You can use it to access the Google API.
       const credential: any = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
+      const token = credential?.accessToken;
       // The signed-in user info.
       const tmpUser = result.user;
       localStorage.setItem('user', JSON.stringify(tmpUser))

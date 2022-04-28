@@ -17,7 +17,7 @@ const useChat = () => {
       transportOptions: {
         polling: {
           extraHeaders: {
-            'authorization': `Bearer ${user.accessToken}`
+            'authorization': `Bearer ${user?.accessToken}`
           }
         }
       }
