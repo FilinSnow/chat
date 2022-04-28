@@ -39,7 +39,7 @@ const Message = ({ message, theme, user: userStorage, oldDays }: IMessage) => {
   const { createData, user } = message[0];
   const { firstName, lastName, email, avatar } = user;
   const displayName = `${firstName} ${lastName}`
-  const isOwner = user._id === userStorage?._id;
+  const isOwner = user?._id === userStorage?._id;
   const isAvatar = avatar.includes('default.png') ? defaultUser : avatar
   
   const admindUids = [

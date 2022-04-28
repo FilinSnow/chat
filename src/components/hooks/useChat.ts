@@ -12,7 +12,7 @@ const useChat = () => {
     io(SERVER_URI, {
       query: {
         roomId: '626696098f5928e2635222b9',
-        userId: user._id
+        userId: user?._id
       },
       transportOptions: {
         polling: {
