@@ -37,7 +37,7 @@ const Login: FC<IOnChange & IAuth> = ({ flag, setFlag, setAuth }) => {
   };
 
   const handleMoveGoogle = () => {
-    window.open('https://docker-chat-app.herokuapp.com/google-auth', '_self')
+    window.open('https://exceed-chat-app.herokuapp.com/google-auth', '_self')
   }
   
   useEffect(() => {
