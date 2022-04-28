@@ -7,7 +7,6 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { getUser, loginUser } from '../../store/reducers/AuthReducer';
 import { useDispatch } from 'react-redux';
 
-
 interface IFormData {
   displayName: string;
   email: string;
@@ -48,16 +47,16 @@ const Login: FC<IOnChange & IAuth> = ({ flag, setFlag, setAuth }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search])
 
-  const handleClickShowPassword = () => {
-    setFormData({
-      ...formData,
-      showPassword: !formData.showPassword,
-    });
-  };
+  // const handleClickShowPassword = () => {
+  //   setFormData({
+  //     ...formData,
+  //     showPassword: !formData.showPassword,
+  //   });
+  // };
 
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
+  // const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+  //   event.preventDefault();
+  // };
 
   const navigateRegisterPage = () => {
     navigate('/register')
@@ -74,46 +73,52 @@ const Login: FC<IOnChange & IAuth> = ({ flag, setFlag, setAuth }) => {
   return (
     <div className="container__login">
       <h2>Login</h2>
-      <div className="wrapper__login">
-        <div style={{ width: '100%' }}>
-          <TextField
-            id="outlined-basic"
-            label="Email"
-            variant="outlined"
-            required
-            value={formData.email}
-            onChange={handleFormData('email')} 
-            style={{ width: '100%' }} 
-          />
-            
-        </div>
-        <div>
-          <FormControl sx={{ m: 1 }} variant="outlined" style={{ width: '100%', margin: '12px 0' }}>
-            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-password"
-              type={formData.showPassword ? 'text' : 'password'}
+      <div className="form">
+        <div className="container">
+          <div className="form-field">
+            <p>Email</p>
+            <input 
+              className="form-input" 
+              type="email" 
+              name="email"
+              value={formData.email}
+              onChange={handleFormData('email')} 
+            />
+          </div>
+          <div className="form-field">
+            <p>Password</p>
+            <input 
+              className="form-input"
+              type="password" 
+              name="password"
               value={formData.password}
               onChange={handleFormData('password')}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {formData.showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Password"
             />
-          </FormControl>
+          </div>
+          <p className="reminder-text">Work again? Forever 💻</p>  
         </div>
-        <Button variant="contained" sx={{mr: '8px'}} onClick={login}>Login</Button>
-        <Button variant="contained" sx={{mr: '8px'}} onClick={handleMoveGoogle}>Login Google</Button>
-        <Button color="secondary" variant="outlined" onClick={navigateRegisterPage}>Register</Button>
+      </div>
+
+      <div className="buttons" onClick={login}>
+        <div className="button inline-button">
+          <div className="content">
+            <p className="text">Login</p>
+          </div>
+        </div>
+        <div className="button inline-button" onClick={navigateRegisterPage}>
+          <div className="content">
+            <p className="text">Register</p>
+          </div>
+        </div>
+      </div>
+      <div className="button" onClick={handleMoveGoogle}>
+        <div className="content">
+          <img 
+            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" 
+            alt="google-auth" 
+          />
+          <p className="text">Sign in with Google</p>
+        </div>
       </div>
     </div>
   )

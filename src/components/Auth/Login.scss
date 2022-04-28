@@ -1,16 +1,70 @@
-.container__login {
-  width: 100%;
-}
+$grey: rgb(190 190 206 / 60%);
 
-.wrapper__login {
-  padding: 10px;
-  max-width: 250px;
+.container__login {
+  box-sizing: border-box;
+  max-width: 420px;
   margin: 0 auto;
 
-  div {
-    input {
-      width: 100%;
+  & > .form {
+    display: flex;
+    width: 100%;
+    padding: 0 20px 5px 20px;
+    flex-direction: column;
+    border-top: 1px solid $grey;
+    border-bottom: 1px solid $grey;
+    margin-bottom: 20px;
+
+    & > .container {
+      padding: 10px 20px 5px 20px;
+
+      & > .form-field {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 44px;
+        max-width: 400px;
+        margin-top: 10px;
+        border-bottom: 1px solid #e8e8e8;
+  
+        & > .form-input {
+          width: 285px;
+          border: none;
+        }
+      }
+  
+      & > .reminder-text {
+        font-size: 15px;
+        color: rgba(60, 60, 67, 0.6);
+      }
     }
   }
- 
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
+  display: flex;
+  background: rgba(116, 116, 128, 0.08);
+  border: 0.5px solid #E5E5EA;
+  border-radius: 14px;
+  margin-top: 10px;
+  cursor: pointer;
+
+  & > .content {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+
+    & > .text {
+      font-weight: 500;
+      margin-left: 7px;
+    }
+  }
+}
+
+.inline-button {
+  width: 48%;
 }
