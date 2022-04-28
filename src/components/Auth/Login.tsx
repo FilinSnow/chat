@@ -2,8 +2,6 @@ import React, { FC, useEffect, useState } from 'react'
 import { IAuth } from '../../interfaces/auth';
 import { useLocation, useNavigate } from "react-router-dom";
 import './Login.scss'
-import { Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { getUser, loginUser } from '../../store/reducers/AuthReducer';
 import { useDispatch } from 'react-redux';
 
@@ -12,7 +10,6 @@ interface IFormData {
   email: string;
   roomId: string;
   password: string;
-  showPassword: boolean;
 }
 interface IOnChange {
   setFormData: (val: (prevprops: IFormData) => IFormData) => void
@@ -23,11 +20,11 @@ const Login: FC<IOnChange & IAuth> = ({ flag, setFlag, setAuth }) => {
   const [formData, setFormData] = useState<Omit<IFormData, 'displayName'>>({
     email: '',
     password: '',
-    showPassword: false,
     roomId: 'main_room',
   })
   const location = useLocation();
   const dispatch = useDispatch();
+
   const handleFormData = (prop: keyof IFormData) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -42,21 +39,9 @@ const Login: FC<IOnChange & IAuth> = ({ flag, setFlag, setAuth }) => {
   useEffect(() => {
     if(location.search) {
       dispatch(getUser(location.search))
-      // navigate('/chat')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search])
-
-  // const handleClickShowPassword = () => {
-  //   setFormData({
-  //     ...formData,
-  //     showPassword: !formData.showPassword,
-  //   });
-  // };
-
-  // const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-  //   event.preventDefault();
-  // };
 
   const navigateRegisterPage = () => {
     navigate('/register')
