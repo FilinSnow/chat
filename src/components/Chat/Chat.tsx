@@ -13,11 +13,10 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import sky from "../../img/sky.jpeg";
 import "./Chat.scss";
 import moment from "moment";
-import useChat from "../hooks/useChat";
+import voiceImg from '../../img/Dictation.svg'
 
 const createBigMessages = (messages: Array<TMessage>) => {
   const allMessages: Array<any> = [];
-  
   let EMAIL = messages.length !== 0 && messages[0].user.email;
 
   messages.forEach((message: any, index) => {
@@ -51,27 +50,30 @@ const findArrayOldFirstDates = (messages: Array<TMessage>) => {
   }
 };
 
-const Chat = ({ theme = "default" }: any) => {
-  const { messages, handleAddMessage } = useChat();
+const Chat = ({ theme = "default", messages, handleAddMessage }: any) => {
 
   const [value, setValue] = useState("");
   const [flag, setFlag] = useState(false);
+  const [voice, setVoice] = useState(false)
   const tmpUser: any = localStorage.getItem("user");
   const user = JSON.parse(tmpUser);
   const messageRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [moveScroll, setMoveScroll] = useState(true);
   let filteredMessages = createBigMessages(messages);
-  
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder>()
+  const [delay, setDelay] = useState(false)
+  const [counterMessage, setCounterMessage] = useState(0)
+  const [blockSend, setBlockSend] = useState(false);
   const oldDays = findArrayOldFirstDates(messages) || [];
 
-  
   const sendMessage = useCallback(async () => {
     const regular = /^[а-яА-Яa-zA-Z0-9\s()*_\-+!?=#:;@$%^&*,."'\][]*$/;
     const regularEmoji =
       /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/;
 
-    setValue("");
+    setDelay(true)
+    setCounterMessage((prevState) => prevState + 1)
 
     if (!localStorage.getItem("theme"))
       localStorage.setItem("theme", "default");
@@ -81,12 +83,35 @@ const Chat = ({ theme = "default" }: any) => {
     }
 
     if (user) {
-      setMoveScroll(true); // при добавлении своего сообщения скролл перемещается вниз
-      handleAddMessage(value)
-      setFlag(!flag);
+      if (!blockSend) {
+        setValue("");
+        setMoveScroll(true); // при добавлении своего сообщения скролл перемещается вниз
+        handleAddMessage(value)
+        setFlag(!flag);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
+
+  useEffect(() => {
+    if (delay) {
+      setTimeout(() => {
+        setDelay(false)
+        setCounterMessage(0)
+      }, 5000)
+    }
+
+  }, [delay])
+
+  useEffect(() => {
+    if (counterMessage === 6) { // проверка что отправленные сообщения достигли лимита 5 сообщений за 5 сек
+      setBlockSend(true)
+      alert('Muted chat 1 minute')
+      setTimeout(() => {
+        setBlockSend(false)
+      }, 30000)
+    }
+  }, [counterMessage])
 
   useEffect(() => {
     const listener = (event: any) => {
@@ -110,8 +135,6 @@ const Chat = ({ theme = "default" }: any) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages, theme]);
-
-
 
   useEffect(() => {
     if (moveScroll) {
@@ -167,6 +190,56 @@ const Chat = ({ theme = "default" }: any) => {
       audio.play();
     }
   };
+
+  const onRecord = () => {
+    if (navigator.mediaDevices) {
+      navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+        startRecord(stream)
+      });
+    }
+  };
+  let chunks: any = []
+  const startRecord = (stream: any) => {
+    const recorder = new MediaRecorder(stream);
+
+    setMediaRecorder(recorder);
+
+    recorder.start();
+
+    recorder.onstart = () => {
+      setVoice(true);
+    };
+
+    recorder.onstop = () => {
+      setVoice(false);
+      const blob = new Blob(chunks, { 'type': 'audio/ogg; codecs=opus' });
+      chunks = [];
+      const audioURL = URL.createObjectURL(blob);
+
+      console.log(audioURL)
+      download({ dataurl: audioURL, fileName: 'asd' })
+      recorder.stream.getTracks().forEach(i => i.stop());
+    };
+
+    recorder.ondataavailable = e => {
+      const file = new File([e.data], 'audio.webm');
+      chunks.push(e.data)
+      console.log(file);
+    };
+  }
+
+  function download({ dataurl, filename }: any) {
+    const link = document.createElement("a");
+    link.href = dataurl;
+    link.download = filename;
+    link.click();
+  }
+
+  const stopRecord = () => {
+    if (mediaRecorder) {
+      mediaRecorder.stop();
+    }
+  }
 
   return (
     <div className="main-conteiner">
@@ -250,16 +323,24 @@ const Chat = ({ theme = "default" }: any) => {
             </div>
             <div className="send-message">
               <EmojiPicker value={value} setValue={setValue} />
-              <input
-                type="text"
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-                className="message-input"
-              />
+              <div className="message-input">
+                <div className="voice-audio" onClick={() => voice ? stopRecord() : onRecord()}>
+                  <img style={{ color: voice ? 'red' : 'grey' }} src={voiceImg} alt="startVoice" />
+                </div>
+                <div className="message-input__container">
+                  <input
+                    type="text"
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                  />
+                </div>
+              </div>
+
               <SendIcon
                 onClick={() => sendMessage()}
                 sx={{ color: "#5e5e5e", marginLeft: "10px" }}
               />
+
             </div>
           </div>
         </>

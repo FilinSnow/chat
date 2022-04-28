@@ -142,7 +142,23 @@
       width: 227px;
       border: 1px solid rgba(200, 200, 204, 1);
       border-radius: 15px;
-      padding: 0 8px
+      padding: 0 8px;
+      display: flex;
+      align-self: center;
+      align-items: center;
+      justify-content: space-between;
+
+      .message-input__container {
+        width: 100%;
+
+        input {
+          border: none;
+          outline: none;
+          height: 100%;
+          width: 95%;
+        }
+      }
+      
     }
   }
 }
@@ -300,4 +316,13 @@
     align-items: center;
   }
 
+}
+
+.chat_modern .send-message > .message-input {
+  flex-direction: row-reverse;
+}
+
+.voice-audio {
+  align-self: center;
+  cursor: pointer;
 }
