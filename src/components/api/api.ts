@@ -7,7 +7,7 @@ type IUserLogin = Omit<IUser, 'uid' | 'firstName' | 'lastName'>
 export const api = {
   createUser: async (user: IUserCreate) => {
    return await axios.request({
-      url: 'https://docker-chat-app.herokuapp.com/auth/registration',
+      url: 'https://exceed-chat-app.herokuapp.com/auth/registration',
       method: 'post',
       data: user,
     })
@@ -15,7 +15,7 @@ export const api = {
 
   loginUser: async (user: IUserLogin) => {
     return await axios.request({
-      url: 'https://docker-chat-app.herokuapp.com/auth/authorization',
+      url: 'https://exceed-chat-app.herokuapp.com/auth/authorization',
       method: 'post',
       data: user,
     })
@@ -23,7 +23,7 @@ export const api = {
 
   getUser: async (url: string) => {
     return await axios.request({
-      url: `https://docker-chat-app.herokuapp.com/google-auth/redirect/${url}`,
+      url: `https://exceed-chat-app.herokuapp.com/google-auth/redirect/${url}`,
       method: 'get',
     })
   }
