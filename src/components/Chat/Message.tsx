@@ -1,31 +1,8 @@
 import moment from "moment";
 import React from "react";
 import defaultUser from '../../img/defaultUser.png'
+import { IMessage } from "../../utils/interfaces/interfaces";
 
-interface IUser {
-  avatar: string;
-  createData: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  status: string;
-  _id: string;
-}
-
-export type TMessage = {
-  createData: string;
-  isChanged: boolean;
-  room: string;
-  text: string;
-  user: IUser;
-  _id?: string;
-};
-interface IMessage {
-  message: TMessage[];
-  user: any;
-  theme?: string | undefined;
-  oldDays: Array<string>;
-}
 
 const getReadableTime = (time: number | string) => {
   const t = new Date(time);

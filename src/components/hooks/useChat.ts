@@ -36,7 +36,7 @@ const useChat = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const handleAddMessage = (message: any) => {
+  const handleAddMessage = (message: string) => {
     const obj = {
       roomId: '626696098f5928e2635222b9',
       text: message

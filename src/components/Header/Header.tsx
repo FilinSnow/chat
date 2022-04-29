@@ -1,6 +1,6 @@
 import React, { FC, useContext } from 'react';
 import { Context } from '../..';
-import { IAuth } from '../../interfaces/auth';
+import { IAuth } from '../../utils/interfaces/interfaces';
 import ToggleThemeBtn from './SwitchTheme';
 
 import './Header.scss';

@@ -1,8 +1,5 @@
 import axios from "axios"
-import { IUser } from "../../store/reducers/AuthReducer"
-
-type IUserCreate = Omit<IUser, 'uid'>
-type IUserLogin = Omit<IUser, 'uid' | 'firstName' | 'lastName'>
+import { IUserCreate, IUserLogin } from "../../utils/types/types"
 
 export const api = {
   createUser: async (user: IUserCreate) => {

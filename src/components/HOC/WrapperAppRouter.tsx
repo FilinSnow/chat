@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
+import { RootState } from '../../utils/types/types';
+
 
 const WrapperAppRouter: any = (Component: any) => {
   

@@ -7,28 +7,14 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { createUser } from '../../store/reducers/AuthReducer';
 import { actionUser } from '../../store/actions/actionUser';
-
-interface IFormData {
-  firstName: string;
-  lastName: string;
-  password: string;
-  email: string;
-  showPassword: boolean;
-  confirmPassword: string;
-  showPasswordConfirm: boolean;
-}
-
-interface IFormError {
-  errorPassword: boolean
-}
-
-interface IOnChange {
-  setFormData: (val: (prevprops: IFormData) => IFormData) => void
-}
+import { IFormDataRegister, IFormError, IOnChangeRegister } from '../../utils/interfaces/interfaces';
 
 
-const Register: FC<IFormData & IOnChange>  = () => {
-  const [formData, setFormData] = useState<IFormData>({
+
+
+
+const Register: FC<IFormDataRegister & IOnChangeRegister>  = () => {
+  const [formData, setFormData] = useState<IFormDataRegister>({
     email: '',
     firstName: '',
     lastName: '',
@@ -43,7 +29,7 @@ const Register: FC<IFormData & IOnChange>  = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleFormData = (prop: keyof IFormData) => (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFormData = (prop: keyof IFormDataRegister) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [prop]: event.target.value,

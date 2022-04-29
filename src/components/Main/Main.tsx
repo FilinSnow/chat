@@ -1,9 +1,5 @@
 import React, { FC } from 'react'
-
-interface IMain {
-  flag?: boolean;
-  setFlag?: () => void
-}
+import { IMain } from '../../utils/interfaces/interfaces'
 
 const Main: FC<IMain> = ({flag, setFlag}: IMain) => {
   return (

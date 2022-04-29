@@ -1,8 +1,6 @@
+import { IAction } from "../../utils/interfaces/interfaces"
 
-interface IAction {
-  type: string;
-  data: any;
-}
+
 
 export const initialState = {
   user: {}

@@ -6,7 +6,7 @@ import React, {
 } from "react";
 
 import TopUsers from "../TopUsers/TopUsersList";
-import Message, { TMessage } from "./Message";
+import Message from "./Message";
 import EmojiPicker from "../EmojiPicker/EmojiPicker";
 import SendIcon from "@mui/icons-material/Send";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
@@ -14,12 +14,15 @@ import sky from "../../img/sky.jpeg";
 import "./Chat.scss";
 import moment from "moment";
 import voiceImg from '../../img/Dictation.svg'
+import { TMessage } from "../../utils/types/types";
+import { IChat } from "../../utils/interfaces/interfaces";
 
 const createBigMessages = (messages: Array<TMessage>) => {
   const allMessages: Array<any> = [];
   let EMAIL = messages.length !== 0 && messages[0].user.email;
-
-  messages.forEach((message: any, index) => {
+  console.log(messages);
+  
+  messages.forEach((message: TMessage, index) => {
     if (index === 0) {
       allMessages.push([message]);
     } else {
@@ -31,7 +34,7 @@ const createBigMessages = (messages: Array<TMessage>) => {
       }
     }
   });
-
+  
   return allMessages;
 };
 
@@ -50,13 +53,12 @@ const findArrayOldFirstDates = (messages: Array<TMessage>) => {
   }
 };
 
-const Chat = ({ theme = "default", messages, handleAddMessage }: any) => {
+const Chat = ({ theme = "default", messages, handleAddMessage }: IChat) => {
 
   const [value, setValue] = useState("");
   const [flag, setFlag] = useState(false);
   const [voice, setVoice] = useState(false)
-  const tmpUser: any = localStorage.getItem("user");
-  const user = JSON.parse(tmpUser);
+  const user = JSON.parse(localStorage.getItem("user") ?? '');
   const messageRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [moveScroll, setMoveScroll] = useState(true);
@@ -74,7 +76,7 @@ const Chat = ({ theme = "default", messages, handleAddMessage }: any) => {
 
     setDelay(true)
     setCounterMessage((prevState) => prevState + 1)
-
+    setValue("");
     if (!localStorage.getItem("theme"))
       localStorage.setItem("theme", "default");
 
@@ -84,7 +86,6 @@ const Chat = ({ theme = "default", messages, handleAddMessage }: any) => {
 
     if (user) {
       if (!blockSend) {
-        setValue("");
         setMoveScroll(true); // при добавлении своего сообщения скролл перемещается вниз
         handleAddMessage(value)
         setFlag(!flag);
@@ -95,23 +96,35 @@ const Chat = ({ theme = "default", messages, handleAddMessage }: any) => {
 
   useEffect(() => {
     if (delay) {
-      setTimeout(() => {
+      const timeId = setTimeout(() => {
         setDelay(false)
         setCounterMessage(0)
       }, 5000)
+
+      return () => {
+        // console.log('clear timeout 11111');
+        
+        // clearTimeout(timeId)
+      }
     }
 
   }, [delay])
 
   useEffect(() => {
-    if (counterMessage === 6) { // проверка что отправленные сообщения достигли лимита 5 сообщений за 5 сек
+    if (counterMessage === 6) { // проверка что отправленные сообщения достигли лимита 6 сообщений за 5 се
+
       setBlockSend(true)
-      alert('Muted chat 1 minute')
-      setTimeout(() => {
+      const timeId = setTimeout(() => {
         setBlockSend(false)
-      }, 30000)
+      }, 3000)
+
+      return () => {
+        // console.log('clear timeout 22222');
+        // clearTimeout(timeId)
+      }
     }
   }, [counterMessage])
+  
 
   useEffect(() => {
     const listener = (event: any) => {
@@ -216,7 +229,6 @@ const Chat = ({ theme = "default", messages, handleAddMessage }: any) => {
       chunks = [];
       const audioURL = URL.createObjectURL(blob);
 
-      console.log(audioURL)
       download({ dataurl: audioURL, fileName: 'asd' })
       recorder.stream.getTracks().forEach(i => i.stop());
     };
@@ -224,7 +236,6 @@ const Chat = ({ theme = "default", messages, handleAddMessage }: any) => {
     recorder.ondataavailable = e => {
       const file = new File([e.data], 'audio.webm');
       chunks.push(e.data)
-      console.log(file);
     };
   }
 

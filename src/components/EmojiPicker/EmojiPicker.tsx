@@ -4,13 +4,9 @@ import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import "./EmojiPicker.scss";
+import { IEmoji } from "../../utils/interfaces/interfaces";
+import { Anchor } from "../../utils/types/types";
 
-interface IEmoji {
-  value: any;
-  setValue: any;
-}
-
-type Anchor = "bottom";
 
 const EmojiPicker = ({ value, setValue }: IEmoji) => {
   const [state, setState] = useState({

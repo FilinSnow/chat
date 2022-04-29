@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react'
 import { Route, Routes, Navigate } from "react-router";
-import { IAuth } from '../interfaces/auth';
+import { IAuth } from '../utils/interfaces/interfaces';
 import { privateRoutes, publicRoutes } from '../routes/routes';
 import './AppRouter.scss'
 import Header from './Header/Header';
