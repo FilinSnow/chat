@@ -202,7 +202,7 @@ const Register: FC<IFormData & IOnChange>  = () => {
             />
           </FormControl>
         </div>
-        <Button variant="contained" sx={{mr: '8px'}} onClick={handleRegister}>Register</Button>
+        <Button variant="contained" sx={{mr: '8px'}} onClick={() => handleRegister()}>Register</Button>
         <Button color="secondary" variant="outlined" onClick={navigateLoginPage}>Login</Button>
         {/* <button onClick={() => login()}>Login with google</button> */}
       </div>

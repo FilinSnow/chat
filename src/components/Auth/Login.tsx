@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import './Login.scss'
 import { getUser, loginUser } from '../../store/reducers/AuthReducer';
 import { useDispatch } from 'react-redux';
+import {  ReactComponent as GoogleIcon } from '../../img/googleLogo.svg';
 
 interface IFormData {
   displayName: string;
@@ -12,10 +13,10 @@ interface IFormData {
   password: string;
 }
 interface IOnChange {
-  setFormData: (val: (prevprops: IFormData) => IFormData) => void
+  setFormData: (val: (prevprops: IFormData) => IFormData) => void;
 }
 
-const Login: FC<IOnChange & IAuth> = ({ flag, setFlag, setAuth }) => {
+const Login: FC<IOnChange & IAuth> = () => {
   const navigate = useNavigate()
   const [formData, setFormData] = useState<Omit<IFormData, 'displayName'>>({
     email: '',
@@ -33,26 +34,20 @@ const Login: FC<IOnChange & IAuth> = ({ flag, setFlag, setAuth }) => {
   };
 
   const handleMoveGoogle = () => {
-    window.open('https://exceed-chat-app.herokuapp.com/google-auth', '_self')
+    window.open('https://exceed-chat-app.herokuapp.com/google-auth', '_self');
   }
   
   useEffect(() => {
-    if(location.search) {
-      dispatch(getUser(location.search))
+    if (location.search) {
+      dispatch(getUser(location.search));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.search])
-
-  const navigateRegisterPage = () => {
-    navigate('/register')
-  }
+  }, [location.search, dispatch]);
 
   const login = () => {
-    const copyFormData = {
+    dispatch(loginUser({
       email: formData.email,
       password: formData.password
-    }
-    dispatch(loginUser(copyFormData))
+    }));
   } 
 
   return (
@@ -61,7 +56,7 @@ const Login: FC<IOnChange & IAuth> = ({ flag, setFlag, setAuth }) => {
       <div className="form">
         <div className="container">
           <div className="form-field">
-            <p>Email</p>
+            <span>Email</span>
             <input 
               className="form-input" 
               type="email" 
@@ -71,7 +66,7 @@ const Login: FC<IOnChange & IAuth> = ({ flag, setFlag, setAuth }) => {
             />
           </div>
           <div className="form-field">
-            <p>Password</p>
+            <span>Password</span>
             <input 
               className="form-input"
               type="password" 
@@ -90,7 +85,7 @@ const Login: FC<IOnChange & IAuth> = ({ flag, setFlag, setAuth }) => {
             <p className="text">Login</p>
           </div>
         </div>
-        <div className="button inline-button" onClick={navigateRegisterPage}>
+        <div className="button inline-button" onClick={() => navigate('/register')}>
           <div className="content">
             <p className="text">Register</p>
           </div>
@@ -98,10 +93,7 @@ const Login: FC<IOnChange & IAuth> = ({ flag, setFlag, setAuth }) => {
       </div>
       <div className="button" onClick={handleMoveGoogle}>
         <div className="content">
-          <img 
-            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" 
-            alt="google-auth" 
-          />
+          <GoogleIcon />
           <p className="text">Sign in with Google</p>
         </div>
       </div>
@@ -109,4 +101,4 @@ const Login: FC<IOnChange & IAuth> = ({ flag, setFlag, setAuth }) => {
   )
 }
 
-export default Login
+export default Login;
