@@ -1,0 +1,48 @@
+.side-panel {
+  width: 100%;
+  background: #EBCBE8;
+  height: 100%;
+  
+
+  .header-panel {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    div {
+      border-radius: 10px;
+      width: 30%;
+      padding: 2%;
+      cursor: pointer;
+
+      img {
+        width: 70px;
+        border-radius: 50%;
+      }
+    }
+
+
+    div:hover {
+      background: #6FA8FD;
+    }
+  }
+
+  .list-of-chats {
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 95%;
+    max-height: 65vh;
+  }
+
+  .list-of-chats::-webkit-scrollbar {
+    width: 0;
+  }
+
+}
+
+.sign {
+  cursor: pointer;
+}

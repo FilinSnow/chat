@@ -1,5 +1,6 @@
 .main-conteiner {
   display: flex;
+  overflow: hidden;
 
   @media (max-width: 800px) {
     flex-direction: column;

@@ -4,7 +4,6 @@ import React, {
   useState,
   useRef,
 } from "react";
-
 import TopUsers from "../TopUsers/TopUsersList";
 import Message, { TMessage } from "./Message";
 import EmojiPicker from "../EmojiPicker/EmojiPicker";
@@ -14,10 +13,49 @@ import sky from "../../img/sky.jpeg";
 import "./Chat.scss";
 import moment from "moment";
 import useChat from "../hooks/useChat";
+import { SidePanel } from "../SidePanel/SidePanel";
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
+  open?: boolean;
+}>(({ theme, open }) => ({
+  flexGrow: 1,
+  padding: theme.spacing(3),
+  transition: theme.transitions.create('margin', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  marginLeft: `-240px`,
+  ...(open && {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: 0,
+  }),
+}));
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+  justifyContent: 'flex-end',
+}));
+
+
 
 const createBigMessages = (messages: Array<TMessage>) => {
   const allMessages: Array<any> = [];
-  
+
   let EMAIL = messages.length !== 0 && messages[0].user.email;
 
   messages.forEach((message: any, index) => {
@@ -52,20 +90,30 @@ const findArrayOldFirstDates = (messages: Array<TMessage>) => {
 };
 
 const Chat = ({ theme = "default" }: any) => {
+  const [ value, setValue ] = useState("");
+  const [ open, setOpen ] = useState(false);
+  const [ flag, setFlag ] = useState(false);
+  const [ moveScroll, setMoveScroll ] = useState(true);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
   const { messages, handleAddMessage } = useChat();
 
-  const [value, setValue] = useState("");
-  const [flag, setFlag] = useState(false);
   const tmpUser: any = localStorage.getItem("user");
   const user = JSON.parse(tmpUser);
   const messageRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [moveScroll, setMoveScroll] = useState(true);
   let filteredMessages = createBigMessages(messages);
-  
+
   const oldDays = findArrayOldFirstDates(messages) || [];
 
-  
+
   const sendMessage = useCallback(async () => {
     const regular = /^[а-яА-Яa-zA-Z0-9\s()*_\-+!?=#:;@$%^&*,."'\][]*$/;
     const regularEmoji =
@@ -218,50 +266,94 @@ const Chat = ({ theme = "default" }: any) => {
         </>
       ) : (
         <>
-          <div className="chat_modern">
-            <div className="wrapper__chat__img">
-              {!moveScroll && (
-                <div
-                  className="arrow-to-bottom"
-                  onClick={() => handleAutoScroll()}
-                >
-                  <ArrowDownwardIcon />
+          <Box
+            sx={{
+              display: open ? 'none' : 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '150px',
+              background: 'silver',
+              borderRadius: '0 10px 10px 0',
+              position: 'absolute',
+              top: '40%',
+              cursor: 'pointer',
+              '&:hover': {
+                background: '#C5C5C4'
+              }
+            }}
+            onClick={handleDrawerOpen}
+          >
+            <ChevronRightIcon />
+          </Box>
+          <Box sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+            <Drawer
+              sx={{
+                width: '30%',
+                flexShrink: 0,
+                '& .MuiDrawer-paper': {
+                  width: '30%',
+                  boxSizing: 'border-box',
+                },
+              }}
+              variant="persistent"
+              anchor="left"
+              open={open}
+            >
+              <DrawerHeader>
+                <IconButton onClick={handleDrawerClose}>
+                  <ChevronLeftIcon />
+                </IconButton>
+              </DrawerHeader>
+              <Divider />
+              <SidePanel />
+            </Drawer>
+            <Main open={open}>
+              <div className="chat_modern">
+                <div className="wrapper__chat__img">
+                  {!moveScroll && (
+                    <div
+                      className="arrow-to-bottom"
+                      onClick={() => handleAutoScroll()}
+                    >
+                      <ArrowDownwardIcon />
+                    </div>
+                  )}
+                  <div className="wrapper__chat" ref={scrollRef}>
+                    <div
+                      id="3"
+                      ref={messageRef}
+                      style={{ display: "flex", flexDirection: "column" }}
+                    >
+                      {filteredMessages.length > 0 &&
+                        filteredMessages.map((message: Array<TMessage>, index) => {
+                          return (
+                            <Message
+                              key={index}
+                              message={message}
+                              user={user}
+                              oldDays={oldDays}
+                            />
+                          );
+                        })}
+                    </div>
+                  </div>
                 </div>
-              )}
-              <div className="wrapper__chat" ref={scrollRef}>
-                <div
-                  id="3"
-                  ref={messageRef}
-                  style={{ display: "flex", flexDirection: "column" }}
-                >
-                  {filteredMessages.length > 0 &&
-                    filteredMessages.map((message: Array<TMessage>, index) => {
-                      return (
-                        <Message
-                          key={index}
-                          message={message}
-                          user={user}
-                          oldDays={oldDays}
-                        />
-                      );
-                    })}
+                <div className="send-message">
+                  <EmojiPicker value={value} setValue={setValue} />
+                  <input
+                    type="text"
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                    className="message-input"
+                  />
+                  <SendIcon
+                    onClick={() => sendMessage()}
+                    sx={{ color: "#5e5e5e", marginLeft: "10px" }}
+                  />
                 </div>
               </div>
-            </div>
-            <div className="send-message">
-              <EmojiPicker value={value} setValue={setValue} />
-              <input
-                type="text"
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-                className="message-input"
-              />
-              <SendIcon
-                onClick={() => sendMessage()}
-                sx={{ color: "#5e5e5e", marginLeft: "10px" }}
-              />
-            </div>
-          </div>
+            </Main>
+          </Box>
         </>
       )}
     </div>
