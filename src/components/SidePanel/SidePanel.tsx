@@ -42,21 +42,21 @@ export const SidePanel = () => {
           onClick={() => setFiltering('all')}
           style={{ background: filtering === 'all' ? '#056FFF' : '' }}
         >
-          <img src={`https://react-test-starwars.vercel.app${elements[0]?.image}`} />
+          <img src={`https://react-test-starwars.vercel.app${elements[0]?.image}`} alt="Avatar" />
           <p>All</p>
         </div>
         <div
           onClick={() => setFiltering('private')}
           style={{ background: filtering === 'private' ? '#056FFF' : '' }}
         >
-          <img src={`https://react-test-starwars.vercel.app${elements[1]?.image}`} />
+          <img src={`https://react-test-starwars.vercel.app${elements[1]?.image}`} alt="Avatar" />
           <p>Private</p>
         </div>
         <div
           onClick={() => setFiltering('groups')}
           style={{ background: filtering === 'groups' ? '#056FFF' : '' }}
         >
-          <img src={`https://react-test-starwars.vercel.app${elements[2]?.image}`} />
+          <img src={`https://react-test-starwars.vercel.app${elements[2]?.image}`} alt="Avatar" />
           <p>Groups</p>
         </div>
       </div>

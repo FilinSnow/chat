@@ -11,7 +11,7 @@ export const Dialog = ({ id, image, name, shortDescription }: IDialog) => {
   return (
     <div className="dialog">
       <div className="img">
-        <img src={`https://react-test-starwars.vercel.app${image}`} />
+        <img src={`https://react-test-starwars.vercel.app${image}`} alt="Avatar" />
       </div>
       <div className="container">
         <div className="text">
