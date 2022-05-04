@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { IAuth } from '../../interfaces/auth';
+import { IAuth, IFormDataLogin, IOnChangeLogin } from '../../utils/interfaces/interfaces';
 import { useLocation, useNavigate } from "react-router-dom";
 import './Login.scss'
 import { Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
@@ -8,20 +8,9 @@ import { getUser, loginUser } from '../../store/reducers/AuthReducer';
 import { useDispatch } from 'react-redux';
 
 
-interface IFormData {
-  displayName: string;
-  email: string;
-  roomId: string;
-  password: string;
-  showPassword: boolean;
-}
-interface IOnChange {
-  setFormData: (val: (prevprops: IFormData) => IFormData) => void
-}
-
-const Login: FC<IOnChange & IAuth> = ({ flag, setFlag, setAuth }) => {
+const Login: FC<IOnChangeLogin & IAuth> = ({ flag, setFlag, setAuth }) => {
   const navigate = useNavigate()
-  const [formData, setFormData] = useState<Omit<IFormData, 'displayName'>>({
+  const [formData, setFormData] = useState<Omit<IFormDataLogin, 'displayName'>>({
     email: '',
     password: '',
     showPassword: false,
@@ -29,7 +18,7 @@ const Login: FC<IOnChange & IAuth> = ({ flag, setFlag, setAuth }) => {
   })
   const location = useLocation();
   const dispatch = useDispatch();
-  const handleFormData = (prop: keyof IFormData) => (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFormData = (prop: keyof IFormDataLogin) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [prop]: event.target.value,

@@ -1,12 +1,8 @@
 
 import React, { useEffect, useState } from 'react';
 import _ from 'underscore';
+import { IntTopUsers } from '../../utils/interfaces/interfaces';
 import './topUsers.scss';
-
-interface IntTopUsers {
-  name: any, 
-  count: any
-}
 
 const TopUsers = ({ messages } : any) => {
   const [topUsers, setTopUsers] = useState<any>([]);

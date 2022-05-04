@@ -3,7 +3,7 @@ import './App.css';
 import AppRouter from './components/AppRouter';
 
 const App: FC = () => {
-  const [flag, setFlag] = useState<any>(false)
+  const [flag, setFlag] = useState<boolean>(false)
   return (
     <div className="App">
       <AppRouter flag={flag} setFlag={setFlag}/>
