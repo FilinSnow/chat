@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux';
+import { IAuth } from '../../utils/interfaces/interfaces';
 import { RootState } from '../../utils/types/types';
 
 
-const WrapperAppRouter: any = (Component: any) => {
+const WrapperAppRouter = (Component: any) => {
   
-  const ShowComponent = (props: any) => {
+  const ShowComponent = (props: IAuth) => {
     const copyUser = useSelector((state: RootState) => state.auth.user)
     const [auth, setAuth] = useState(false);
     const tmpObj: any = localStorage.getItem('user')
@@ -24,7 +25,7 @@ const WrapperAppRouter: any = (Component: any) => {
     }, [user, copyUser])
 
     return (
-      <Component {...props} auth={auth} setAuth={setAuth}/>
+      <Component {...props} auth={auth} setAuth={setAuth} user={user}/>
     )
   }
   return ShowComponent

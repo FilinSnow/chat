@@ -7,6 +7,7 @@ export interface IAuth {
   setAuth?: (tmp: boolean) => void;
   theme?: any;
   setTheme?: any;
+  user?: UserLocalStorage;
 }
 
 export interface IAction {
@@ -18,10 +19,11 @@ export interface IChat {
   theme: string;
   messages: TMessage[];
   handleAddMessage: (message: string) => void;
+  user: UserLocalStorage; 
 }
 
 export interface IntTopUsers {
-  name: any, 
+  name: any,
   count: any
 }
 
@@ -83,6 +85,13 @@ export interface IUser {
   lastName: string;
   status: string;
   _id: string;
+}
+
+export interface UserLocalStorage extends Omit<IChat, "theme"> {}
+
+export interface IUseDataState {
+  user: UserLocalStorage;
+  messages: TMessage[];
 }
 
 export interface IUserReducer {

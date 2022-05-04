@@ -8,12 +8,10 @@ import { useDispatch } from 'react-redux';
 import { actionUser } from '../../store/actions/actionUser';
 
 const Header: FC<IAuth> = ({flag, setFlag, auth: isCheckAuth, theme, setTheme}: IAuth) => {
-  const {auth}: any = useContext(Context)
   const dispatch = useDispatch()
   const logout = async () => {
     localStorage.clear()
     dispatch(actionUser({}))
-    await auth.signOut()
     setFlag && setFlag(!flag)
   }
 

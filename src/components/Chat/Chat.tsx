@@ -1,8 +1,5 @@
 import React, {
-  useCallback,
   useEffect,
-  useState,
-  useRef,
 } from "react";
 
 import TopUsers from "../TopUsers/TopUsersList";
@@ -12,122 +9,44 @@ import SendIcon from "@mui/icons-material/Send";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import sky from "../../img/sky.jpeg";
 import "./Chat.scss";
-import moment from "moment";
-import voiceImg from '../../img/Dictation.svg'
 import { TMessage } from "../../utils/types/types";
 import { IChat } from "../../utils/interfaces/interfaces";
+import RecordVoice from "../RecordVoice/RecordVoice";
+import useDataState from "../hooks/useDataState";
 
-const createBigMessages = (messages: Array<TMessage>) => {
-  const allMessages: Array<any> = [];
-  let EMAIL = messages.length !== 0 && messages[0].user.email;
-  console.log(messages);
-  
-  messages.forEach((message: TMessage, index) => {
-    if (index === 0) {
-      allMessages.push([message]);
-    } else {
-      if (message.user.email === EMAIL) {
-        allMessages[allMessages.length - 1].push(message);
-      } else {
-        allMessages.push([message]);
-        EMAIL = message.user.email;
-      }
-    }
-  });
-  
-  return allMessages;
-};
 
-const findArrayOldFirstDates = (messages: Array<TMessage>) => {
-  if (messages.length > 0) {
-    const arrDates = [messages[0].createData];
-    let currentDateInArray = moment(messages[0].createData).format("DD MM YY");
+const Chat = ({ theme = "default", messages, handleAddMessage, user }: IChat) => {
 
-    messages.forEach((item) => {
-      if (moment(item.createData).format("DD MM YY") !== currentDateInArray) {
-        arrDates.push(item.createData);
-        currentDateInArray = moment(item.createData).format("DD MM YY");
-      }
-    });
-    return arrDates;
-  }
-};
-
-const Chat = ({ theme = "default", messages, handleAddMessage }: IChat) => {
-
-  const [value, setValue] = useState("");
-  const [flag, setFlag] = useState(false);
-  const [voice, setVoice] = useState(false)
-  const user = JSON.parse(localStorage.getItem("user") ?? '');
-  const messageRef = useRef<HTMLDivElement>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [moveScroll, setMoveScroll] = useState(true);
-  let filteredMessages = createBigMessages(messages);
-  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder>()
-  const [delay, setDelay] = useState(false)
-  const [counterMessage, setCounterMessage] = useState(0)
-  const [blockSend, setBlockSend] = useState(false);
-  const oldDays = findArrayOldFirstDates(messages) || [];
-
-  const sendMessage = useCallback(async () => {
-    const regular = /^[а-яА-Яa-zA-Z0-9\s()*_\-+!?=#:;@$%^&*,."'\][]*$/;
-    const regularEmoji =
-      /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/;
-
-    setDelay(true)
-    setCounterMessage((prevState) => prevState + 1)
-    setValue("");
-    if (!localStorage.getItem("theme"))
-      localStorage.setItem("theme", "default");
-
-    if ((!regular.test(value) && !regularEmoji.test(value)) || !value.trim()) {
-      return;
-    }
-
-    if (user) {
-      if (!blockSend) {
-        setMoveScroll(true); // при добавлении своего сообщения скролл перемещается вниз
-        handleAddMessage(value)
-        setFlag(!flag);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
+  const {
+    value, setValue, messageRef,
+    scrollRef, moveScroll, setMoveScroll,
+    filteredMessages, delay, setDelay,
+    counterMessage, setCounterMessage,
+    setBlockSend, oldDays, sendMessage,
+  } = useDataState({ messages, user, handleAddMessage })
 
   useEffect(() => {
     if (delay) {
       const timeId = setTimeout(() => {
         setDelay(false)
         setCounterMessage(0)
+        clearTimeout(timeId)
       }, 5000)
-
-      return () => {
-        // console.log('clear timeout 11111');
-        
-        // clearTimeout(timeId)
-      }
     }
-
   }, [delay])
 
   useEffect(() => {
     if (counterMessage === 6) { // проверка что отправленные сообщения достигли лимита 6 сообщений за 5 се
-
       setBlockSend(true)
       const timeId = setTimeout(() => {
-        setBlockSend(false)
+        setBlockSend(false);
+        clearTimeout(timeId)
       }, 3000)
-
-      return () => {
-        // console.log('clear timeout 22222');
-        // clearTimeout(timeId)
-      }
     }
   }, [counterMessage])
-  
 
   useEffect(() => {
-    const listener = (event: any) => {
+    const listener = (event: KeyboardEvent) => {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
         sendMessage();
       }
@@ -146,7 +65,6 @@ const Chat = ({ theme = "default", messages, handleAddMessage }: IChat) => {
     if (moveScroll) {
       messageRef.current?.scrollIntoView(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages, theme]);
 
   useEffect(() => {
@@ -170,7 +88,7 @@ const Chat = ({ theme = "default", messages, handleAddMessage }: IChat) => {
     };
     scrollRef?.current?.addEventListener("scroll", checkScrollMessage);
   }, [theme]);
-
+  
   const play = (text: string) => {
     let audioPath = "";
 
@@ -203,54 +121,6 @@ const Chat = ({ theme = "default", messages, handleAddMessage }: IChat) => {
       audio.play();
     }
   };
-
-  const onRecord = () => {
-    if (navigator.mediaDevices) {
-      navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-        startRecord(stream)
-      });
-    }
-  };
-  let chunks: any = []
-  const startRecord = (stream: any) => {
-    const recorder = new MediaRecorder(stream);
-
-    setMediaRecorder(recorder);
-
-    recorder.start();
-
-    recorder.onstart = () => {
-      setVoice(true);
-    };
-
-    recorder.onstop = () => {
-      setVoice(false);
-      const blob = new Blob(chunks, { 'type': 'audio/ogg; codecs=opus' });
-      chunks = [];
-      const audioURL = URL.createObjectURL(blob);
-
-      download({ dataurl: audioURL, fileName: 'asd' })
-      recorder.stream.getTracks().forEach(i => i.stop());
-    };
-
-    recorder.ondataavailable = e => {
-      const file = new File([e.data], 'audio.webm');
-      chunks.push(e.data)
-    };
-  }
-
-  function download({ dataurl, filename }: any) {
-    const link = document.createElement("a");
-    link.href = dataurl;
-    link.download = filename;
-    link.click();
-  }
-
-  const stopRecord = () => {
-    if (mediaRecorder) {
-      mediaRecorder.stop();
-    }
-  }
 
   return (
     <div className="main-conteiner">
@@ -335,9 +205,7 @@ const Chat = ({ theme = "default", messages, handleAddMessage }: IChat) => {
             <div className="send-message">
               <EmojiPicker value={value} setValue={setValue} />
               <div className="message-input">
-                <div className="voice-audio" onClick={() => voice ? stopRecord() : onRecord()}>
-                  <img style={{ color: voice ? 'red' : 'grey' }} src={voiceImg} alt="startVoice" />
-                </div>
+                <RecordVoice />
                 <div className="message-input__container">
                   <input
                     type="text"

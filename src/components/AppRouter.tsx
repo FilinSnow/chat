@@ -8,7 +8,7 @@ import Header from './Header/Header';
 import WrapperAppRouter from './HOC/WrapperAppRouter';
 import useChat from './hooks/useChat';
 
-const AppRouter = ({ flag, setFlag, auth, setAuth }: IAuth) => {
+const AppRouter: any = ({ flag, setFlag, auth, setAuth, user }: IAuth) => {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'default');
   const { messages, handleAddMessage } = useChat();
 
@@ -30,7 +30,7 @@ const AppRouter = ({ flag, setFlag, auth, setAuth }: IAuth) => {
             ?
             (<Routes>
               {privateRoutes.map(route => {
-                return <Route key={route.path} {...route} element={<route.element theme={theme} messages={messages} handleAddMessage={handleAddMessage}/>} />
+                return <Route key={route.path} {...route} element={<route.element theme={theme} messages={messages} handleAddMessage={handleAddMessage} user={user}/>} />
               })}
               <Route
                 path="*"
