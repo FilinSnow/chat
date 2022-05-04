@@ -14,7 +14,7 @@ const EmojiPicker = ({ value, setValue }: IEmoji) => {
   });
   const anchor = "bottom";
 
-  const onEmojiClick = (event: MouseEvent, emojiObject: IEmojiData) => {
+  const onEmojiClick = (event: string, emojiObject: IEmojiData) => {
     setValue(value + emojiObject.emoji + " ");
   };
 
