@@ -6,7 +6,7 @@ import { RootState } from '../../utils/types/types';
 
 const WrapperAppRouter = (Component: any) => {
   
-  const ShowComponent = (props: IAuth) => {
+  const ShowComponent = (props: any) => {
     const copyUser = useSelector((state: RootState) => state.auth.user)
     const [auth, setAuth] = useState(false);
     const tmpObj: any = localStorage.getItem('user')
