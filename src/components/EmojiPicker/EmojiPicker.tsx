@@ -1,16 +1,12 @@
 import React, { useState } from "react";
-import Picker, { SKIN_TONE_MEDIUM_DARK } from "emoji-picker-react";
+import Picker, { IEmojiData, SKIN_TONE_MEDIUM_DARK } from "emoji-picker-react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import "./EmojiPicker.scss";
+import { IEmoji } from "../../utils/interfaces/interfaces";
+import { Anchor } from "../../utils/types/types";
 
-interface IEmoji {
-  value: any;
-  setValue: any;
-}
-
-type Anchor = "bottom";
 
 const EmojiPicker = ({ value, setValue }: IEmoji) => {
   const [state, setState] = useState({
@@ -18,7 +14,7 @@ const EmojiPicker = ({ value, setValue }: IEmoji) => {
   });
   const anchor = "bottom";
 
-  const onEmojiClick = (event: any, emojiObject: any) => {
+  const onEmojiClick = (event: any, emojiObject: IEmojiData) => {
     setValue(value + emojiObject.emoji + " ");
   };
 

@@ -12,12 +12,12 @@ const useChat = () => {
     io(SERVER_URI, {
       query: {
         roomId: '626696098f5928e2635222b9',
-        userId: user._id
+        userId: user?._id
       },
       transportOptions: {
         polling: {
           extraHeaders: {
-            'authorization': `Bearer ${user.accessToken}`
+            'authorization': `Bearer ${user?.accessToken}`
           }
         }
       }
@@ -36,7 +36,7 @@ const useChat = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const handleAddMessage = (message: any) => {
+  const handleAddMessage = (message: string) => {
     const obj = {
       roomId: '626696098f5928e2635222b9',
       text: message
