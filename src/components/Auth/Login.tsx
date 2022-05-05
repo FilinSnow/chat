@@ -1,32 +1,21 @@
 import React, { FC, useEffect, useState } from 'react'
-import { IAuth } from '../../interfaces/auth';
+import { IAuth, IFormDataLogin, IOnChangeLogin } from '../../utils/interfaces/interfaces';
 import { useLocation, useNavigate } from "react-router-dom";
 import './Login.scss'
 import { getUser, loginUser } from '../../store/reducers/AuthReducer';
 import { useDispatch } from 'react-redux';
 import {  ReactComponent as GoogleIcon } from '../../img/googleLogo.svg';
 
-interface IFormData {
-  displayName: string;
-  email: string;
-  roomId: string;
-  password: string;
-}
-interface IOnChange {
-  setFormData: (val: (prevprops: IFormData) => IFormData) => void;
-}
-
-const Login: FC<IOnChange & IAuth> = () => {
+const Login: FC<IOnChangeLogin & IAuth> = ({ flag, setFlag, setAuth }) => {
   const navigate = useNavigate()
-  const [formData, setFormData] = useState<Omit<IFormData, 'displayName'>>({
+  const [formData, setFormData] = useState<Omit<IFormDataLogin, 'displayName'>>({
     email: '',
     password: '',
     roomId: 'main_room',
   })
   const location = useLocation();
   const dispatch = useDispatch();
-
-  const handleFormData = (prop: keyof IFormData) => (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFormData = (prop: keyof IFormDataLogin) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [prop]: event.target.value,

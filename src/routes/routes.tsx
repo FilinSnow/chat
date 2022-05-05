@@ -2,12 +2,9 @@ import Chat from "../components/Chat/Chat";
 import Login from "../components/Auth/Login";
 import Register from "../components/Auth/Register";
 import { ConstsPath } from "../utils/consts";
+import { IRoute } from "../utils/interfaces/interfaces";
 
-interface IRoute {
-  path: string;
-  element: any;
-  exact: boolean;
-}
+
 
 
 export const publicRoutes: IRoute[] = [

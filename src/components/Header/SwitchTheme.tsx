@@ -1,4 +1,4 @@
-import { IAuth } from '../../interfaces/auth';
+import { IAuth } from '../../utils/interfaces/interfaces';
 import './Header.scss';
 
 const ToggleThemeBtn = ({theme, setTheme}: IAuth) => {

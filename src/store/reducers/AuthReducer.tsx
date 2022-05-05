@@ -1,21 +1,9 @@
 import axios from "axios";
 import { api } from "../../components/api/api";
+import { IAction, IUserReducer } from "../../utils/interfaces/interfaces";
 import { actionUser } from "../actions/actionUser";
 import { AUTH } from "../types/types";
 import { userAction } from "./UserReducer";
-
-export interface IUser {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  uid: string;
-}
-
-interface IAction {
-  type: string;
-  user: IUser;
-}
 
 export const initialState = {
   auth: false,
@@ -37,7 +25,7 @@ const AuthReducer = (state = initialState, action: IAction) => {
   }
 }
 
-export const createUser = (user: Omit<IUser, 'uid'>) => {
+export const createUser = (user: Omit<IUserReducer, 'uid'>) => {
   return api.createUser(user)
     .then((res: any) => {
       console.log(res);
@@ -51,7 +39,7 @@ export const createUser = (user: Omit<IUser, 'uid'>) => {
     })
 }
 
-export const loginUser = (user: Omit<IUser, 'firstName' | 'uid' | 'lastName'>) => {
+export const loginUser = (user: Omit<IUserReducer, 'firstName' | 'uid' | 'lastName'>) => {
   return (dispatch: any) => {
      api.loginUser(user)
       .then((res: any) => {

@@ -1,95 +1,50 @@
-import React, {
-  useCallback,
-  useEffect,
-  useState,
-  useRef,
-} from "react";
+import React, { useEffect } from "react";
 
 import TopUsers from "../TopUsers/TopUsersList";
-import Message, { TMessage } from "./Message";
+import Message from "./Message";
 import EmojiPicker from "../EmojiPicker/EmojiPicker";
 import SendIcon from "@mui/icons-material/Send";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import sky from "../../img/sky.jpeg";
 import "./Chat.scss";
-import moment from "moment";
-import useChat from "../hooks/useChat";
+import { TMessage } from "../../utils/types/types";
+import { IChat } from "../../utils/interfaces/interfaces";
+import RecordVoice from "../RecordVoice/RecordVoice";
+import useDataState from "../hooks/useDataState";
 
-const createBigMessages = (messages: Array<TMessage>) => {
-  const allMessages: Array<any> = [];
-  
-  let EMAIL = messages.length !== 0 && messages[0].user.email;
 
-  messages.forEach((message: any, index) => {
-    if (index === 0) {
-      allMessages.push([message]);
-    } else {
-      if (message.user.email === EMAIL) {
-        allMessages[allMessages.length - 1].push(message);
-      } else {
-        allMessages.push([message]);
-        EMAIL = message.user.email;
-      }
-    }
-  });
+const Chat = ({ theme = "default", messages, handleAddMessage, user }: IChat) => {
 
-  return allMessages;
-};
-
-const findArrayOldFirstDates = (messages: Array<TMessage>) => {
-  if (messages.length > 0) {
-    const arrDates = [messages[0].createData];
-    let currentDateInArray = moment(messages[0].createData).format("DD MM YY");
-
-    messages.forEach((item) => {
-      if (moment(item.createData).format("DD MM YY") !== currentDateInArray) {
-        arrDates.push(item.createData);
-        currentDateInArray = moment(item.createData).format("DD MM YY");
-      }
-    });
-    return arrDates;
-  }
-};
-
-const Chat = ({ theme = "default" }: any) => {
-  const { messages, handleAddMessage } = useChat();
-
-  const [value, setValue] = useState("");
-  const [flag, setFlag] = useState(false);
-  const tmpUser: any = localStorage.getItem("user");
-  const user = JSON.parse(tmpUser);
-  const messageRef = useRef<HTMLDivElement>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [moveScroll, setMoveScroll] = useState(true);
-  let filteredMessages = createBigMessages(messages);
-  
-  const oldDays = findArrayOldFirstDates(messages) || [];
-
-  
-  const sendMessage = useCallback(async () => {
-    const regular = /^[а-яА-Яa-zA-Z0-9\s()*_\-+!?=#:;@$%^&*,."'\][]*$/;
-    const regularEmoji =
-      /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/;
-
-    setValue("");
-
-    if (!localStorage.getItem("theme"))
-      localStorage.setItem("theme", "default");
-
-    if ((!regular.test(value) && !regularEmoji.test(value)) || !value.trim()) {
-      return;
-    }
-
-    if (user) {
-      setMoveScroll(true); // при добавлении своего сообщения скролл перемещается вниз
-      handleAddMessage(value)
-      setFlag(!flag);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
+  const {
+    value, setValue, messageRef,
+    scrollRef, moveScroll, setMoveScroll,
+    filteredMessages, delay, setDelay,
+    counterMessage, setCounterMessage,
+    setBlockSend, oldDays, sendMessage,
+  } = useDataState({ messages, user, handleAddMessage })
 
   useEffect(() => {
-    const listener = (event: any) => {
+    if (delay) {
+      const timeId = setTimeout(() => {
+        setDelay(false)
+        setCounterMessage(0)
+        clearTimeout(timeId)
+      }, 5000)
+    }
+  }, [delay])
+
+  useEffect(() => {
+    if (counterMessage === 6) { // проверка что отправленные сообщения достигли лимита 6 сообщений за 5 се
+      setBlockSend(true)
+      const timeId = setTimeout(() => {
+        setBlockSend(false);
+        clearTimeout(timeId)
+      }, 3000)
+    }
+  }, [counterMessage])
+
+  useEffect(() => {
+    const listener = (event: KeyboardEvent) => {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
         sendMessage();
       }
@@ -108,10 +63,7 @@ const Chat = ({ theme = "default" }: any) => {
     if (moveScroll) {
       messageRef.current?.scrollIntoView(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages, theme]);
-
-
 
   useEffect(() => {
     if (moveScroll) {
@@ -134,7 +86,7 @@ const Chat = ({ theme = "default" }: any) => {
     };
     scrollRef?.current?.addEventListener("scroll", checkScrollMessage);
   }, [theme]);
-
+  
   const play = (text: string) => {
     let audioPath = "";
 
@@ -250,16 +202,22 @@ const Chat = ({ theme = "default" }: any) => {
             </div>
             <div className="send-message">
               <EmojiPicker value={value} setValue={setValue} />
-              <input
-                type="text"
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-                className="message-input"
-              />
+              <div className="message-input">
+                <RecordVoice />
+                <div className="message-input__container">
+                  <input
+                    type="text"
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                  />
+                </div>
+              </div>
+
               <SendIcon
                 onClick={() => sendMessage()}
                 sx={{ color: "#5e5e5e", marginLeft: "10px" }}
               />
+
             </div>
           </div>
         </>
