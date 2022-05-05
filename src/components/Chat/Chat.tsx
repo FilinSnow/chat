@@ -14,10 +14,17 @@ import sky from "../../img/sky.jpeg";
 import "./Chat.scss";
 import moment from "moment";
 import useChat from "../hooks/useChat";
+import axios from "axios";
+import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
+
+interface IFintCurrentUser {
+  _id: string,
+  user: string
+}
 
 const createBigMessages = (messages: Array<TMessage>) => {
   const allMessages: Array<any> = [];
-  
+
   let EMAIL = messages.length !== 0 && messages[0].user.email;
 
   messages.forEach((message: any, index) => {
@@ -53,19 +60,60 @@ const findArrayOldFirstDates = (messages: Array<TMessage>) => {
 
 const Chat = ({ theme = "default" }: any) => {
   const { messages, handleAddMessage } = useChat();
-
+  const dispatch = useDispatch();
   const [value, setValue] = useState("");
   const [flag, setFlag] = useState(false);
+  const [printFlag, setPrintFlag] = useState(false);
+  const [moveScroll, setMoveScroll] = useState(true);
   const tmpUser: any = localStorage.getItem("user");
   const user = JSON.parse(tmpUser);
+  const userPrintString = `${user.firstName} ${user.lastName}`;
   const messageRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [moveScroll, setMoveScroll] = useState(true);
+  const counter = useRef<ReturnType<typeof setTimeout> | null>(null);
   let filteredMessages = createBigMessages(messages);
-  
+  const printUsers = useSelector((item: RootStateOrAny) => item.print.printUsers);
+  const fintCurrentUser = printUsers.find((item: IFintCurrentUser) => item.user === userPrintString);
+
   const oldDays = findArrayOldFirstDates(messages) || [];
 
-  
+  const removeUserPrint = async () => {
+    axios.delete(`http://localhost:8001/remove?id=${fintCurrentUser._id}`)
+      .then(result => {
+        dispatch({
+          type: "GET_PRINT_USERS",
+          payload: result.data
+        });
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }
+
+  const printsFunction = () => {
+    counter.current && clearTimeout(counter.current);
+    counter.current = setTimeout(() => {
+      removeUserPrint();
+      setPrintFlag(false);
+    }, 2000);
+  };
+
+  const addUserPrint = async () => {
+    !fintCurrentUser &&
+      await axios.post('http://localhost:8001/create', {
+        user: `${user.firstName} ${user.lastName}`
+      })
+        .then((result) => {
+          dispatch({
+            type: "GET_PRINT_USERS",
+            payload: result.data
+          });
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+  }
+
   const sendMessage = useCallback(async () => {
     const regular = /^[а-яА-Яa-zA-Z0-9\s()*_\-+!?=#:;@$%^&*,."'\][]*$/;
     const regularEmoji =
@@ -87,6 +135,22 @@ const Chat = ({ theme = "default" }: any) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
+
+  useEffect(() => {
+    const getUsersPrint = async () => {
+      axios.get('http://localhost:8001/all')
+        .then(result => {
+          dispatch({
+            type: "GET_PRINT_USERS",
+            payload: result.data
+          });
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    }
+    getUsersPrint();
+  }, []);
 
   useEffect(() => {
     const listener = (event: any) => {
@@ -253,13 +317,25 @@ const Chat = ({ theme = "default" }: any) => {
               <input
                 type="text"
                 value={value}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={(e) => {
+                  setValue(e.target.value);
+                  setPrintFlag(true);
+                  printsFunction();
+                  addUserPrint();
+                }}
                 className="message-input"
               />
               <SendIcon
                 onClick={() => sendMessage()}
                 sx={{ color: "#5e5e5e", marginLeft: "10px" }}
               />
+            </div>
+            <div className="user-prints">
+              {
+                printFlag ? (
+                  printUsers.map((item: IFintCurrentUser) => item.user !== userPrintString && <p>{item.user} печатает...</p>)
+                ) : <></>
+              }
             </div>
           </div>
         </>
