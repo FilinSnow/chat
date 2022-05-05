@@ -34,11 +34,11 @@ export interface IRoute {
 }
 
 export interface IFormDataLogin {
-  displayName: string;
+  displayName?: string;
   email: string;
   roomId: string;
   password: string;
-  showPassword: boolean;
+  showPassword?: boolean;
 }
 
 export interface IEmoji {
