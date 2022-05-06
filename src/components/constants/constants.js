@@ -1,1 +1,1 @@
-export const SERVER_URI = 'https://exceed-chat-app.herokuapp.com/'
+export const SERVER_URI = 'https://docker-chat-app.herokuapp.com/'
