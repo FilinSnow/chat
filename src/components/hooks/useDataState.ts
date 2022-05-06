@@ -29,7 +29,9 @@ const useDataState = ({ messages, user, handleAddMessage }: UserLocalStorage) =>
     }
 
     if (user) {
+      console.log(222)
       if (!blockSend) {
+        console.log(3333)
         setMoveScroll(true); // при добавлении своего сообщения скролл перемещается вниз
         handleAddMessage(value)
       }

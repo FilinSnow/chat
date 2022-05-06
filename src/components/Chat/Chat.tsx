@@ -12,33 +12,32 @@ import { IChat } from "../../utils/interfaces/interfaces";
 import RecordVoice from "../RecordVoice/RecordVoice";
 import useDataState from "../hooks/useDataState";
 
-
 const Chat = ({ theme = "default", messages, handleAddMessage, user }: IChat) => {
-
   const {
     value, setValue, messageRef,
     scrollRef, moveScroll, setMoveScroll,
     filteredMessages, delay, setDelay,
     counterMessage, setCounterMessage,
     setBlockSend, oldDays, sendMessage,
-  } = useDataState({ messages, user, handleAddMessage })
+  } = useDataState({ messages, user, handleAddMessage });
 
   useEffect(() => {
     if (delay) {
       const timeId = setTimeout(() => {
-        setDelay(false)
-        setCounterMessage(0)
-        clearTimeout(timeId)
-      }, 5000)
+        setDelay(false);
+        setCounterMessage(0);
+        clearTimeout(timeId);
+      }, 5000);
     }
-  }, [delay])
+  }, [delay]);
 
   useEffect(() => {
     if (counterMessage === 6) { // проверка что отправленные сообщения достигли лимита 6 сообщений за 5 се
-      setBlockSend(true)
+      setBlockSend(true);
+      
       const timeId = setTimeout(() => {
         setBlockSend(false);
-        clearTimeout(timeId)
+        clearTimeout(timeId);
       }, 3000)
     }
   }, [counterMessage])
@@ -60,15 +59,11 @@ const Chat = ({ theme = "default", messages, handleAddMessage, user }: IChat) =>
     const text = messages[len - 1]?.text;
 
     if (len > 0 && text[0] === "!") play(text);
-    if (moveScroll) {
-      messageRef.current?.scrollIntoView(false);
-    }
+    if (moveScroll) messageRef.current?.scrollIntoView(false);
   }, [messages, theme]);
 
   useEffect(() => {
-    if (moveScroll) {
-      messageRef.current?.scrollIntoView(false);
-    }
+    if (moveScroll) messageRef.current?.scrollIntoView(false);
   }, [moveScroll]);
 
   const handleAutoScroll = () => {
@@ -143,7 +138,7 @@ const Chat = ({ theme = "default", messages, handleAddMessage, user }: IChat) =>
                   flexDirection: "column",
                 }}
               >
-                {filteredMessages.length > 0 &&
+                {/* {filteredMessages.length > 0 &&
                   filteredMessages.map((message: Array<TMessage>, index) => {
                     return (
                       <Message
@@ -154,7 +149,23 @@ const Chat = ({ theme = "default", messages, handleAddMessage, user }: IChat) =>
                         oldDays={oldDays}
                       />
                     );
-                  })}
+                  })} */}
+                  {messages.length > 0 &&
+                    messages.map((message, index) => {
+                      const firstCombined = messages[index + 1]?.user?.email || '';
+                      const lastCombined = messages[index -1]?.user?.email || '';
+                      return (
+                        <Message
+                          key={index}
+                          message={message}
+                          theme={theme}
+                          user={user}
+                          oldDays={oldDays}
+                          firstCombined={firstCombined}
+                          lastCombined={lastCombined}
+                        />
+                      );
+                    })}
               </div>
             </div>
             <div className="send-message">
@@ -186,14 +197,19 @@ const Chat = ({ theme = "default", messages, handleAddMessage, user }: IChat) =>
                   ref={messageRef}
                   style={{ display: "flex", flexDirection: "column" }}
                 >
-                  {filteredMessages.length > 0 &&
-                    filteredMessages.map((message: Array<TMessage>, index) => {
+                  {messages.length > 0 &&
+                    messages.map((message, index) => {
+                      const firstCombined = messages[index + 1]?.user?.email || '';
+                      const lastCombined = messages[index -1]?.user?.email || '';
                       return (
                         <Message
                           key={index}
                           message={message}
                           user={user}
+                          theme={theme}
                           oldDays={oldDays}
+                          firstCombined={firstCombined}
+                          lastCombined={lastCombined}
                         />
                       );
                     })}

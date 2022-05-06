@@ -3,6 +3,7 @@ import { TMessage } from "./types/types";
 
 export const createBigMessages = (messages: Array<TMessage>) => {
   const allMessages: Array<Array<TMessage>> = [];
+  console.log("allMessages=", messages)
   let EMAIL = messages.length !== 0 && messages[0].user.email;
 
   messages.forEach((message: TMessage, index) => {

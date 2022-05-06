@@ -30,7 +30,11 @@ const AppRouter: any = ({ flag, setFlag, auth, setAuth, user }: IAuth) => {
             ?
             (<Routes>
               {privateRoutes.map(route => {
-                return <Route key={route.path} {...route} element={<route.element theme={theme} messages={messages} handleAddMessage={handleAddMessage} user={user}/>} />
+                return <Route 
+                    key={route.path} 
+                    {...route} 
+                    element={<route.element theme={theme} messages={messages} handleAddMessage={handleAddMessage} user={user}/>} 
+                  />
               })}
               <Route
                 path="*"
