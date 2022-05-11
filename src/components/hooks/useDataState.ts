@@ -24,8 +24,6 @@ const useDataState = ({ messages, user, handleAddMessage }: UserLocalStorage) =>
     setDelay(true)
     setCounterMessage((prevState) => prevState + 1)
     setValue("");
-    if (!localStorage.getItem("theme"))
-      localStorage.setItem("theme", "default");
 
     if (user && !blockSend) {
       if (voiceUrl) {

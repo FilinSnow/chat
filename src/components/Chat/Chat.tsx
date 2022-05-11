@@ -1,11 +1,8 @@
 import React, { useEffect } from "react";
-
-import TopUsers from "../TopUsers/TopUsersList";
 import Message from "./Message";
 import EmojiPicker from "../EmojiPicker/EmojiPicker";
 import SendIcon from "@mui/icons-material/Send";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import sky from "../../img/sky.jpeg";
 import "./Chat.scss";
 import { TMessage } from "../../utils/types/types";
 import { IChat } from "../../utils/interfaces/interfaces";
@@ -15,8 +12,8 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import WrapperChat from "../HOC/WrapperChat";
 
 
-const Chat = ({ theme = "default", messages, handleAddMessage, user }: IChat) => {
-  
+const Chat = ({ messages, handleAddMessage, user }: IChat) => {
+
   const {
     value, setValue, messageRef,
     scrollRef, moveScroll, setMoveScroll,
@@ -67,7 +64,7 @@ const Chat = ({ theme = "default", messages, handleAddMessage, user }: IChat) =>
     if (moveScroll) {
       messageRef.current?.scrollIntoView(false);
     }
-  }, [messages, theme]);
+  }, [messages]);
 
   useEffect(() => {
     if (moveScroll) {
@@ -89,7 +86,7 @@ const Chat = ({ theme = "default", messages, handleAddMessage, user }: IChat) =>
       }
     };
     scrollRef?.current?.addEventListener("scroll", checkScrollMessage);
-  }, [theme]);
+  }, []);
 
   const handleDeleteVoice = () => {
     setVoiceUrl('');
@@ -130,32 +127,27 @@ const Chat = ({ theme = "default", messages, handleAddMessage, user }: IChat) =>
 
   return (
     <div className="main-conteiner">
-      {theme === "default" ? (
-        <>
-          <TopUsers messages={messages} />
-
-          <div className="chat">
-            <h3>Chat</h3>
-            <div
-              id="2"
-              className="wrapper__chat"
-              style={{ background: sky }}
-              ref={scrollRef}
-            >
+      <>
+        <div className="chat_modern">
+          <div className="wrapper__chat__img">
+            {!moveScroll && (
               <div
-                id="1"
+                className="arrow-to-bottom"
+                onClick={() => handleAutoScroll()}
+              >
+                <ArrowDownwardIcon />
+              </div>
+            )}
+            <div className="wrapper__chat" ref={scrollRef}>
+              <div
+                id="3"
                 ref={messageRef}
-                style={{
-                  margin: "0 auto",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
+                style={{ display: "flex", flexDirection: "column" }}
               >
                 {filteredMessages.length > 0 &&
                   filteredMessages.map((message: Array<TMessage>, index) => {
                     return (
                       <Message
-                        theme={theme}
                         key={index}
                         message={message}
                         user={user}
@@ -165,76 +157,33 @@ const Chat = ({ theme = "default", messages, handleAddMessage, user }: IChat) =>
                   })}
               </div>
             </div>
-            <div className="send-message">
-              <EmojiPicker value={value} setValue={setValue} />
-              <input
-                type="text"
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-              />
-              <button onClick={() => sendMessage()}>Send</button>
-            </div>
           </div>
-        </>
-      ) : (
-        <>
-          <div className="chat_modern">
-            <div className="wrapper__chat__img">
-              {!moveScroll && (
-                <div
-                  className="arrow-to-bottom"
-                  onClick={() => handleAutoScroll()}
-                >
-                  <ArrowDownwardIcon />
-                </div>
-              )}
-              <div className="wrapper__chat" ref={scrollRef}>
-                <div
-                  id="3"
-                  ref={messageRef}
-                  style={{ display: "flex", flexDirection: "column" }}
-                >
-                  {filteredMessages.length > 0 &&
-                    filteredMessages.map((message: Array<TMessage>, index) => {
-                      return (
-                        <Message
-                          key={index}
-                          message={message}
-                          user={user}
-                          oldDays={oldDays}
-                        />
-                      );
-                    })}
-                </div>
+          <div className="send-message">
+            <EmojiPicker value={value} setValue={setValue} />
+            <div className="message-input">
+              {showVoiceBtn && <RecordVoice setVoiceUrl={setVoiceUrl} setBlockWriteInput={setBlockWriteInput} />}
+              <div className="message-input__container">
+                <input
+                  type="text"
+                  value={value}
+                  disabled={blockWriteInput}
+                  onChange={(e) => setValue(e.target.value)}
+                />
               </div>
             </div>
-            <div className="send-message">
-              <EmojiPicker value={value} setValue={setValue} />
-              <div className="message-input">
-                {showVoiceBtn && <RecordVoice setVoiceUrl={setVoiceUrl} setBlockWriteInput={setBlockWriteInput} />}
-                <div className="message-input__container">
-                  <input
-                    type="text"
-                    value={value}
-                    disabled={blockWriteInput}
-                    onChange={(e) => setValue(e.target.value)}
-                  />
-                </div>
-              </div>
-              <SendIcon
-                onClick={() => sendMessage()}
-                sx={{ color: "#5e5e5e", marginLeft: "10px" }}
-              />
-            </div>
-            {voiceUrl && <div className="container__audio">
-              <audio src={`https://exceed-chat-app.herokuapp.com/voices/${voiceUrl}`} controls></audio>
-              <button className="cancel__audio" onClick={handleDeleteVoice}>
-                <CancelIcon fill="#fff"/>
-              </button>
-            </div>}
+            <SendIcon
+              onClick={() => sendMessage()}
+              sx={{ color: "#5e5e5e", marginLeft: "10px" }}
+            />
           </div>
-        </>
-      )}
+          {voiceUrl && <div className="container__audio">
+            <audio src={`https://exceed-chat-app.herokuapp.com/voices/${voiceUrl}`} controls></audio>
+            <button className="cancel__audio" onClick={handleDeleteVoice}>
+              <CancelIcon fill="#fff" />
+            </button>
+          </div>}
+        </div>
+      </>
     </div>
   );
 };
