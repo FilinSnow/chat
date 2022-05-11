@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import './Login.scss'
 import { getUser, loginUser } from '../../store/reducers/AuthReducer';
 import { useDispatch } from 'react-redux';
-import {  ReactComponent as GoogleIcon } from '../../img/googleLogo.svg';
+import { ReactComponent as GoogleIcon } from '../../img/googleLogo.svg';
 
 const Login: FC<IOnChangeLogin & IAuth> = ({ flag, setFlag, setAuth }) => {
   const navigate = useNavigate()
@@ -23,7 +23,7 @@ const Login: FC<IOnChangeLogin & IAuth> = ({ flag, setFlag, setAuth }) => {
   };
 
   const handleMoveGoogle = () => {
-    window.open('https://docker-chat-app.herokuapp.com/google-auth', '_self');
+    window.open(`${process.env.REACT_APP_URL}/google-auth`, '_self');
   }
   
   useEffect(() => {

@@ -5,7 +5,8 @@ export type TMessage = {
   createData: string;
   isChanged: boolean;
   room: string;
-  tags: Array<Array<TTags>>
+  tags: Array<Array<TTags>>;
+  voice: string;
   text: string;
   user: IUser;
   _id?: string;

@@ -11,16 +11,20 @@ import { TMessage } from "../../utils/types/types";
 import { IChat } from "../../utils/interfaces/interfaces";
 import RecordVoice from "../RecordVoice/RecordVoice";
 import useDataState from "../hooks/useDataState";
+import CancelIcon from '@mui/icons-material/Cancel';
+import WrapperChat from "../HOC/WrapperChat";
 
 
 const Chat = ({ theme = "default", messages, handleAddMessage, user }: IChat) => {
-
+  
   const {
     value, setValue, messageRef,
     scrollRef, moveScroll, setMoveScroll,
     filteredMessages, delay, setDelay,
     counterMessage, setCounterMessage,
     setBlockSend, oldDays, sendMessage,
+    setVoiceUrl, blockWriteInput, voiceUrl,
+    setBlockWriteInput, showVoiceBtn,
   } = useDataState({ messages, user, handleAddMessage })
 
   useEffect(() => {
@@ -86,10 +90,14 @@ const Chat = ({ theme = "default", messages, handleAddMessage, user }: IChat) =>
     };
     scrollRef?.current?.addEventListener("scroll", checkScrollMessage);
   }, [theme]);
-  
+
+  const handleDeleteVoice = () => {
+    setVoiceUrl('');
+    setBlockWriteInput(false); // блок инпут ввода текста
+  }
+
   const play = (text: string) => {
     let audioPath = "";
-
     switch (text) {
       case "!sound":
         audioPath =
@@ -203,22 +211,27 @@ const Chat = ({ theme = "default", messages, handleAddMessage, user }: IChat) =>
             <div className="send-message">
               <EmojiPicker value={value} setValue={setValue} />
               <div className="message-input">
-                <RecordVoice />
+                {showVoiceBtn && <RecordVoice setVoiceUrl={setVoiceUrl} setBlockWriteInput={setBlockWriteInput} />}
                 <div className="message-input__container">
                   <input
                     type="text"
                     value={value}
+                    disabled={blockWriteInput}
                     onChange={(e) => setValue(e.target.value)}
                   />
                 </div>
               </div>
-
               <SendIcon
                 onClick={() => sendMessage()}
                 sx={{ color: "#5e5e5e", marginLeft: "10px" }}
               />
-
             </div>
+            {voiceUrl && <div className="container__audio">
+              <audio src={`https://exceed-chat-app.herokuapp.com/voices/${voiceUrl}`} controls></audio>
+              <button className="cancel__audio" onClick={handleDeleteVoice}>
+                <CancelIcon fill="#fff"/>
+              </button>
+            </div>}
           </div>
         </>
       )}
@@ -226,4 +239,4 @@ const Chat = ({ theme = "default", messages, handleAddMessage, user }: IChat) =>
   );
 };
 
-export default React.memo(Chat);
+export default WrapperChat(React.memo(Chat));

@@ -19,7 +19,6 @@ const Message = ({ message, theme, user: userStorage, oldDays }: IMessage) => {
   const isOwner = user._id === userStorage?._id;
   const isAvatar = avatar.includes("defaultAvatar.png") ? defaultUser : avatar;
   const [anchorEl, setAnchorEl] = React.useState<HTMLImageElement | null>(null);
-  const navigate = useNavigate();
 
 
   const admindUids = [
@@ -72,9 +71,8 @@ const Message = ({ message, theme, user: userStorage, oldDays }: IMessage) => {
           <p className="user-name">{isAdmin ? adminName : displayName}</p>
           {message.map((item) => {
             const messageTime = getReadableTime(item.createData);
-            const isOldDayMessage = oldDays.find(
-              (at) => at === item.createData
-            );
+            const isOldDayMessage = oldDays.find((at) => at === item.createData);
+
             return (
               <React.Fragment key={item.createData}>
                 {!!isOldDayMessage && (
@@ -90,7 +88,7 @@ const Message = ({ message, theme, user: userStorage, oldDays }: IMessage) => {
                   </div>
                 )}
                 <div className="message-content">
-                  {item.text}
+                  {item.text ? item.text : <audio src={item.voice} controls></audio>}
                   <p
                     className={isOwner ? "message-date__owner" : "message-date"}
                   >
