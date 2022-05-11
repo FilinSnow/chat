@@ -24,7 +24,7 @@ const useChat = () => {
       }
     })
   )
-
+    
   useEffect(() => {
     socket.emit('user:add', user)
     socket.on('messageToClient', (message) => {
