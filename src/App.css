@@ -36,3 +36,8 @@
     transform: rotate(360deg);
   }
 }
+
+.css-1yo1jo6-MuiStack-root{
+  justify-content: center;
+  margin-top: 10px;
+}

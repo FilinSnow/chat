@@ -1,8 +1,9 @@
 import moment from "moment";
 import React from "react";
-import defaultUser from '../../img/defaultUser.png'
+import { useNavigate } from "react-router-dom";
+import defaultUser from "../../img/defaultUser.png";
+import PopoverProfile from "../PopoverProfile/PopoverProfile";
 import { IMessage } from "../../utils/interfaces/interfaces";
-
 
 const getReadableTime = (time: number | string) => {
   const t = new Date(time);
@@ -15,15 +16,22 @@ const getReadableTime = (time: number | string) => {
 const Message = ({ message, user: userStorage, oldDays }: IMessage) => {
   const { createData, user } = message[0];
   const { firstName, lastName, email, avatar } = user;
-  const displayName = `${firstName} ${lastName}`
-  const isOwner = user?._id === userStorage?._id;
-  const isAvatar = avatar.includes('default.png') ? defaultUser : avatar
+  const displayName = `${firstName} ${lastName}`;
+  const isOwner = user._id === userStorage?._id;
+  const isAvatar = avatar.includes("defaultAvatar.png") ? defaultUser : avatar;
+  const [anchorEl, setAnchorEl] = React.useState<HTMLImageElement | null>(null);
+
+
   const admindUids = [
     "dkikot.exceedteam@gmail.com",
     "vproskurin.exceedteam@gmail.com",
   ];
   const isAdmin = isOwner && admindUids.includes(email);
   const adminName = `${firstName} ${lastName} [admin]`;
+
+  const handleClick = (event: React.MouseEvent<HTMLImageElement>): void => {
+    setAnchorEl(event.currentTarget);
+  };
 
   return (
     <div key={createData} className={isOwner ? "message-owner" : "message"}>
@@ -38,9 +46,9 @@ const Message = ({ message, user: userStorage, oldDays }: IMessage) => {
                 {!!isOldDayMessage && (
                   <div className="old-day">
                     {oldDays[oldDays.length - 1] === item.createData &&
-                      moment(Number(oldDays[oldDays.length - 1])).format(
-                        "DD MMMM YYYY"
-                      ) === moment().format("DD MMMM YYYY") ? (
+                    moment(Number(oldDays[oldDays.length - 1])).format(
+                      "DD MMMM YYYY"
+                    ) === moment().format("DD MMMM YYYY") ? (
                       <p>today</p>
                     ) : (
                       <p>{moment(item.createData).format("DD MMMM YYYY")}</p>

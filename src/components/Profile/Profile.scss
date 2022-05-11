@@ -1,0 +1,120 @@
+.main_conteiner_profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 15px;
+
+  .conteiner_profile {
+    width: 265px;
+    
+    .profile_info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      
+      .profile_backArrow {
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+
+        .profile_item_backArrow {
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 5px;
+          margin-left: -36px;
+          cursor: pointer;
+        }
+      }
+    
+      img {
+        width: 265px;
+        border-radius: 10px;
+      }
+
+      .profile_name {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+
+        span:first-child {
+          font-weight: 600;
+        }
+
+        span:last-child {
+          margin-top: 5px;
+        }
+      }
+
+      .profile_buttons {
+        display: flex;
+        flex-direction: row;
+        margin-top: 15px;
+        width: 100%;
+        justify-content: space-between;
+
+        .button_edit {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 90px;
+
+          p {
+            font-size: 15px;
+            margin: 5px 0px 0px 0px;
+          }
+
+          .profile_button {
+            width: 35px;
+            height: 35px;
+            background-color: gray;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            svg {
+              width: 0.9em;
+              color: white;
+            }
+          }
+          
+          .profile_button:hover {
+            opacity: 0.7;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .profile_moreInfo {
+      display: flex;
+      flex-direction: column;
+      margin-top: 50px;
+
+      .moreInfo_container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 10px;
+
+        a {
+          text-decoration: none;
+        }
+
+        a:hover {
+          text-decoration: revert;
+        }
+
+        .moreInfo_title {
+          margin: 0 0 5px 0;
+          font-size: 15px;
+          font-weight: 300;
+        }    
+      }
+    }
+  }
+}
