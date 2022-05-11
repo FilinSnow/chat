@@ -1,6 +1,4 @@
-import React, {
-  useEffect,
-} from "react";
+import React, { useEffect } from "react";
 
 import TopUsers from "../TopUsers/TopUsersList";
 import Message from "./Message";

@@ -2,18 +2,15 @@ import React, { FC, useEffect, useState } from 'react'
 import { IAuth, IFormDataLogin, IOnChangeLogin } from '../../utils/interfaces/interfaces';
 import { useLocation, useNavigate } from "react-router-dom";
 import './Login.scss'
-import { Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { getUser, loginUser } from '../../store/reducers/AuthReducer';
 import { useDispatch } from 'react-redux';
-
+import { ReactComponent as GoogleIcon } from '../../img/googleLogo.svg';
 
 const Login: FC<IOnChangeLogin & IAuth> = ({ flag, setFlag, setAuth }) => {
   const navigate = useNavigate()
   const [formData, setFormData] = useState<Omit<IFormDataLogin, 'displayName'>>({
     email: '',
     password: '',
-    showPassword: false,
     roomId: 'main_room',
   })
   const location = useLocation();
@@ -26,86 +23,71 @@ const Login: FC<IOnChangeLogin & IAuth> = ({ flag, setFlag, setAuth }) => {
   };
 
   const handleMoveGoogle = () => {
-    window.open('https://exceed-chat-app.herokuapp.com/google-auth', '_self')
+    window.open(`${process.env.REACT_APP_URL}/google-auth`, '_self');
   }
   
   useEffect(() => {
-    if(location.search) {
-      dispatch(getUser(location.search))
-      // navigate('/chat')
+    if (location.search) {
+      dispatch(getUser(location.search));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.search])
-
-  const handleClickShowPassword = () => {
-    setFormData({
-      ...formData,
-      showPassword: !formData.showPassword,
-    });
-  };
-
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
-
-  const navigateRegisterPage = () => {
-    navigate('/register')
-  }
+  }, [location.search, dispatch]);
 
   const login = () => {
-    const copyFormData = {
+    dispatch(loginUser({
       email: formData.email,
       password: formData.password
-    }
-    dispatch(loginUser(copyFormData))
+    }));
   } 
 
   return (
     <div className="container__login">
       <h2>Login</h2>
-      <div className="wrapper__login">
-        <div style={{ width: '100%' }}>
-          <TextField
-            id="outlined-basic"
-            label="Email"
-            variant="outlined"
-            required
-            value={formData.email}
-            onChange={handleFormData('email')} 
-            style={{ width: '100%' }} 
-          />
-            
-        </div>
-        <div>
-          <FormControl sx={{ m: 1 }} variant="outlined" style={{ width: '100%', margin: '12px 0' }}>
-            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-password"
-              type={formData.showPassword ? 'text' : 'password'}
+      <div className="form">
+        <div className="container">
+          <div className="form-field">
+            <span>Email</span>
+            <input 
+              className="form-input" 
+              type="email" 
+              name="email"
+              value={formData.email}
+              onChange={handleFormData('email')} 
+            />
+          </div>
+          <div className="form-field">
+            <span>Password</span>
+            <input 
+              className="form-input"
+              type="password" 
+              name="password"
               value={formData.password}
               onChange={handleFormData('password')}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {formData.showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Password"
             />
-          </FormControl>
+          </div>
+          <p className="reminder-text">Work again? Forever 💻</p>  
         </div>
-        <Button variant="contained" sx={{mr: '8px'}} onClick={login}>Login</Button>
-        <Button variant="contained" sx={{mr: '8px'}} onClick={handleMoveGoogle}>Login Google</Button>
-        <Button color="secondary" variant="outlined" onClick={navigateRegisterPage}>Register</Button>
+      </div>
+
+      <div className="buttons" onClick={login}>
+        <div className="button inline-button">
+          <div className="content">
+            <p className="text">Login</p>
+          </div>
+        </div>
+        <div className="button inline-button" onClick={() => navigate('/register')}>
+          <div className="content">
+            <p className="text">Register</p>
+          </div>
+        </div>
+      </div>
+      <div className="button" onClick={handleMoveGoogle}>
+        <div className="content">
+          <GoogleIcon />
+          <p className="text">Sign in with Google</p>
+        </div>
       </div>
     </div>
   )
 }
 
-export default Login
+export default Login;
