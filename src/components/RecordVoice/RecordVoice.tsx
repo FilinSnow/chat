@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import voiceImg from '../../img/Dictation.svg'
+import { api } from '../api/api';
 
-const RecordVoice = () => {
-  const [voice, setVoice] = useState(false)
-  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder>()
+const RecordVoice = ({ setVoiceUrl, setBlockWriteInput }: any) => {
+  const [isVoice, setIsVoice] = useState(false)
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder>();
   let chunks: Array<Blob> = []
 
   const onRecord = () => {
@@ -14,35 +15,38 @@ const RecordVoice = () => {
     }
   };
 
-  
+
   const startRecord = (stream: MediaStream) => {
     const recorder = new MediaRecorder(stream);
-
+    setBlockWriteInput(true); // блок инпут ввода текста
     setMediaRecorder(recorder);
 
     recorder.start();
 
     recorder.onstart = () => {
-      setVoice(true);
+      setIsVoice(true);
     };
 
     recorder.onstop = () => {
-      setVoice(false);
-      // const blob = new Blob(chunks, { 'type': 'audio/ogg; codecs=opus' });
+      setIsVoice(false);
       chunks = [];
-      // const audioURL = URL.createObjectURL(blob);
-
       recorder.stream.getTracks().forEach(i => i.stop());
     };
-
+    
     recorder.ondataavailable = e => {
       const file = new File([e.data], 'audio.webm');
-      console.log(file);
-      
-      chunks.push(e.data)
+      chunks.push(file);
+      const blob = new Blob(chunks, { 'type': 'audio/webm; codecs=opus' });
+      const formData = new FormData();
+      formData.append('file', blob);
+      api.uploadFile(formData)
+        .then(res => {
+          if (res) {
+            setVoiceUrl(res.data)
+          }
+        })
     };
   }
-
 
   const stopRecord = () => {
     if (mediaRecorder) {
@@ -51,8 +55,8 @@ const RecordVoice = () => {
   }
 
   return (
-    <div className="voice-audio" onClick={() => voice ? stopRecord() : onRecord()}>
-      <img style={{ color: voice ? 'red' : 'grey' }} src={voiceImg} alt="startVoice" />
+    <div className="voice-audio" onClick={() => isVoice ? stopRecord() : onRecord()}>
+      <img style={{ background: isVoice ? 'red' : '', borderRadius: '50%' }} src={voiceImg} alt="startVoice" />
     </div>
   )
 }

@@ -1,1 +1,1 @@
-export const SERVER_URI = 'https://exceed-chat-app.herokuapp.com/' //'https://docker-chat-app.herokuapp.com/' 
+export const SERVER_URI = process.env.REACT_APP_URL || 'https://docker-chat-app.herokuapp.com';

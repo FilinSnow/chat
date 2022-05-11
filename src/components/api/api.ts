@@ -1,12 +1,12 @@
 import axios from "axios";
 import { IUserCreate, IUserLogin } from "../../utils/types/types";
 
-const uri = 'exceed'; //exceed
+const url = process.env.REACT_APP_URL;
 
 export const api = {
   createUser: async (user: IUserCreate) => {
    return await axios.request({
-      url: 'https://exceed-chat-app.herokuapp.com/auth/registration',
+      url: `${url}/auth/registration`,
       method: 'post',
       data: user,
     })
@@ -14,16 +14,37 @@ export const api = {
 
   loginUser: async (user: IUserLogin) => {
     return await axios.request({
-      url: 'https://exceed-chat-app.herokuapp.com/auth/login',
+      url: `${url}/auth/login`,
       method: 'post',
       data: user,
     })
   },
 
-  getUser: async (url: string) => {
+  getUser: async (path: string) => {
     return await axios.request({
-      url: `https://exceed-chat-app.herokuapp.com/google-auth/redirect/${url}`,
+      url: `${url}/google-auth/redirect/${path}`,
       method: 'get',
     })
+  },
+  uploadFile: async (file: any) => {
+    const user = JSON.parse(localStorage.getItem('user') ?? '');
+    const { accessToken } = user
+    const token = `Bearer ${accessToken}`
+    console.log(file);
+
+    try {
+      return await axios.post(`https://exceed-chat-app.herokuapp.com/upload/voice`,
+        file,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: token,
+          },
+        }
+      )
+    } catch (error) {
+      console.log(error);
+
+    }
   }
 }

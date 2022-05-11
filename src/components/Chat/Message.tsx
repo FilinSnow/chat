@@ -29,8 +29,7 @@ const reactionsArray = [
 const allowedEmojies = ['😀', '❤️', '💩', '👍', '👎'];
 
 const Message = ({ message, firstCombined, lastCombined, theme = 'default', user: userStorage, oldDays }: IMessage) => {
-  console.log("theme=", theme)
-  const { createData, user, text, _id } = message;
+  const { createData, user, text, voice, _id } = message;
   const { firstName, lastName, email, avatar } = user;
   const [isShowingReactions, setIsShowingReactions] = useState(false);
   const shouldHideName = lastCombined === user.email;
@@ -76,11 +75,6 @@ const Message = ({ message, firstCombined, lastCombined, theme = 'default', user
             )}
 
             <div className="message-content-text">
-              {/* {index === 0 && (
-                <div style={{ marginBottom: "10px", fontWeight: "bold" }}>
-                  {displayName}
-                </div>
-              )} */}
               <div>{text}</div>
               <p className="message-date">{messageTime}</p>
             </div>
@@ -107,7 +101,7 @@ const Message = ({ message, firstCombined, lastCombined, theme = 'default', user
                 </div>
               )}
               <div className="message-content">
-                {text}
+                {text ? text : <audio src={voice} controls></audio>}
                 <div className="message-footer">
                   <div className='reactions'>
                     {/* {reactionsArray.map((item: any, key: number) => {
