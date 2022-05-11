@@ -42,9 +42,9 @@ const EditModal = ({
   const saveChange = () => {
     if (
       editInfo.firstName.trim() &&
-      editInfo.firstName.trim() &&
-      editInfo.firstName.trim() &&
-      editInfo.firstName.trim()
+      editInfo.lastName.trim() &&
+      editInfo.avatar.trim() &&
+      editInfo.email.trim()
     ) {
       axios
         .patch(

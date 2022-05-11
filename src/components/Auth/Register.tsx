@@ -78,7 +78,7 @@ const Register: FC<IFormDataRegister & IOnChangeRegister>  = () => {
     }
     createUser(copyFormData)
       .then(res => {
-        console.log(res);
+    
         if(res.status !== 400) {
           if (res.data.message) {
             alert('Cykas')

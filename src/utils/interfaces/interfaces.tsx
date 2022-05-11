@@ -87,6 +87,14 @@ export interface IUser {
   _id: string;
 }
 
+export interface IUserInfo {
+  firstName: string;
+  lastName: string;
+  avatar: string;
+  email: string;
+  _id: string;
+}
+
 export interface UserLocalStorage extends Omit<IChat, "theme"> {}
 
 export interface IUseDataState {

@@ -11,6 +11,14 @@ export type TMessage = {
   _id?: string;
 };
 
+export type LocationState = {
+  from: {
+    path: string;
+    id: string;
+  }
+  id: string;
+}
+
 export type TTags = {
   displayName: string;
   email: string;

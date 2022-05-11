@@ -37,7 +37,6 @@ const RecordVoice = () => {
 
     recorder.ondataavailable = e => {
       const file = new File([e.data], 'audio.webm');
-      console.log(file);
       
       chunks.push(e.data)
     };

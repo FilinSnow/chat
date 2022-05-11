@@ -8,16 +8,24 @@ import "./Profile.scss";
 import axios from "axios";
 import EditModal from "../editModal/EditModal";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { LocationState } from "../../utils/types/types";
+import { IUserInfo } from "../../utils/interfaces/interfaces";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const location: any = useLocation();
+  const location = useLocation();
   const userString: any = localStorage.getItem("user");
   const user = JSON.parse(userString);
-  const [userInfo, setUserInfo] = useState<any>({});
+  const [userInfo, setUserInfo] = useState<IUserInfo>({
+      firstName: '',
+      lastName: '',
+      avatar: '',
+      email: '',
+      _id: ''
+  });
   const [openEditModal, setOpenEditModal] = useState(false);
   const handleOpenEditModal = () => setOpenEditModal(true);
-  const handleCloseEditModal = (userInfo: any) => {
+  const handleCloseEditModal = (userInfo: IUserInfo) => {
     setEditInfo({
       firstName: userInfo.firstName,
       lastName: userInfo.lastName,
@@ -34,7 +42,6 @@ const Profile = () => {
   });
 
   useEffect(() => {
-    console.log("test");
     setEditInfo({
       firstName: userInfo.firstName,
       lastName: userInfo.lastName,
@@ -44,8 +51,11 @@ const Profile = () => {
   }, [userInfo]);
 
   useEffect(() => {
+    const {id} = location.state as LocationState
+
+    
     axios
-      .get(`https://docker-chat-app.herokuapp.com/user/${location.state.id}`, {
+      .get(`https://docker-chat-app.herokuapp.com/user/${id}`, {
         headers: {
           Authorization: `Bearer ${user.accessToken}`,
         },
