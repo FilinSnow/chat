@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import defaultUser from '../../img/defaultUser.png'
 import { IMessage } from "../../utils/interfaces/interfaces";
 import OutsideClickHandler from 'react-outside-click-handler';
+import { useNavigate } from "react-router-dom";
+import PopoverProfile from "../PopoverProfile/PopoverProfile";
 
 const getReadableTime = (time: number | string) => {
   const t = new Date(time);
@@ -38,6 +40,7 @@ const Message = ({ message, firstCombined, lastCombined, theme = 'default', user
   const displayName = `${firstName} ${lastName}`
   const isOwner = user?._id === userStorage?._id;
   const isAvatar = avatar.includes('default.png') ? defaultUser : avatar;
+  const [anchorEl, setAnchorEl] = React.useState<HTMLImageElement | null>(null);
   
   const admindUids = [
     "dkikot.exceedteam@gmail.com",
@@ -58,6 +61,10 @@ const Message = ({ message, firstCombined, lastCombined, theme = 'default', user
     console.log(react);
     setIsShowingReactions(false)
   }
+  
+  const handleClick = (event: React.MouseEvent<HTMLImageElement>): void => {
+    setAnchorEl(event.currentTarget);
+  };
 
   return (
     <div key={createData} className={isOwner ? "message-owner" : "message"} >
@@ -136,10 +143,15 @@ const Message = ({ message, firstCombined, lastCombined, theme = 'default', user
           </OutsideClickHandler>)
         }
         {!shouldCombineMessage ? 
-          <img src={isAvatar} className="avatar" alt="avatar" /> 
+          <img src={isAvatar} className="avatar" alt="avatar" onClick={handleClick}/> 
           : 
           <div className='avatar-placeholder'></div>
         }
+        <PopoverProfile
+          anchorEl={anchorEl}
+          setAnchorEl={setAnchorEl}
+          userId={user._id}
+        />
       </div>
   );
 };

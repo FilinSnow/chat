@@ -12,6 +12,7 @@ import { IChat } from "../../utils/interfaces/interfaces";
 import RecordVoice from "../RecordVoice/RecordVoice";
 import useDataState from "../hooks/useDataState";
 import CancelIcon from '@mui/icons-material/Cancel';
+import WrapperChat from "../HOC/WrapperChat";
 
 const Chat = ({ theme = "default", messages, handleAddMessage, user }: IChat) => {
   const {
@@ -242,4 +243,4 @@ const Chat = ({ theme = "default", messages, handleAddMessage, user }: IChat) =>
   );
 };
 
-export default React.memo(Chat);
+export default WrapperChat(React.memo(Chat));

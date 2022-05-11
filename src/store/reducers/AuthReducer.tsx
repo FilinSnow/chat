@@ -28,7 +28,7 @@ const AuthReducer = (state = initialState, action: IAction) => {
 export const createUser = (user: Omit<IUserReducer, 'uid'>) => {
   return api.createUser(user)
     .then((res: any) => {
-      console.log(res);
+  
       
       return res
     })
