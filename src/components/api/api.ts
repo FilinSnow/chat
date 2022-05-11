@@ -3,7 +3,7 @@ import { IUserCreate, IUserLogin } from "../../utils/types/types"
 
 export const api = {
   createUser: async (user: IUserCreate) => {
-   return await axios.request({
+    return await axios.request({
       url: 'https://exceed-chat-app.herokuapp.com/auth/registration',
       method: 'post',
       data: user,
@@ -23,5 +23,26 @@ export const api = {
       url: `https://exceed-chat-app.herokuapp.com/google-auth/redirect/${url}`,
       method: 'get',
     })
+  },
+  uploadFile: async (file: any) => {
+    const user = JSON.parse(localStorage.getItem('user') ?? '');
+    const { accessToken } = user
+    const token = `Bearer ${accessToken}`
+    console.log(file);
+
+    try {
+      return await axios.post(`https://exceed-chat-app.herokuapp.com/upload/voice`,
+        file,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: token,
+          },
+        }
+      )
+    } catch (error) {
+      console.log(error);
+
+    }
   }
 }

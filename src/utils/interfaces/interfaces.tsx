@@ -18,7 +18,7 @@ export interface IAction {
 export interface IChat {
   theme: string;
   messages: TMessage[];
-  handleAddMessage: (message: string) => void;
+  handleAddMessage: ({message, audio}: IParamAddMessage) => void;
   user: UserLocalStorage; 
 }
 
@@ -105,6 +105,17 @@ export interface IUserReducer {
 export interface IAction {
   type: string;
   user: IUserReducer;
+}
+
+export interface IParamAddMessage {
+  message: string;
+  audio: string;
+}
+
+export interface IObjSendMessage {
+  roomId: string;
+  text: string;
+  voice?: string;
 }
 // export interface IAppRouter extends IAuth {
 //   setAuth?: () => void;

@@ -18,7 +18,6 @@ const Message = ({ message, theme, user: userStorage, oldDays }: IMessage) => {
   const displayName = `${firstName} ${lastName}`
   const isOwner = user?._id === userStorage?._id;
   const isAvatar = avatar.includes('default.png') ? defaultUser : avatar
-  
   const admindUids = [
     "dkikot.exceedteam@gmail.com",
     "vproskurin.exceedteam@gmail.com",
@@ -64,6 +63,7 @@ const Message = ({ message, theme, user: userStorage, oldDays }: IMessage) => {
           {message.map((item) => {
             const messageTime = getReadableTime(item.createData);
             const isOldDayMessage = oldDays.find((at) => at === item.createData);
+
             return (
               <React.Fragment key={item.createData}>
                 {!!isOldDayMessage && (
@@ -79,7 +79,7 @@ const Message = ({ message, theme, user: userStorage, oldDays }: IMessage) => {
                   </div>
                 )}
                 <div className="message-content">
-                  {item.text}
+                  {item.text ? item.text : <audio src={item.voice} controls></audio>}
                   <p
                     className={isOwner ? "message-date__owner" : "message-date"}
                   >

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { io } from 'socket.io-client'
+import { IObjSendMessage, IParamAddMessage } from "../../utils/interfaces/interfaces";
 import { SERVER_URI } from "../constants/constants";
 
 
@@ -36,10 +37,18 @@ const useChat = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const handleAddMessage = (message: string) => {
-    const obj = {
+  const handleAddMessage = ({message, audio}: IParamAddMessage) => {
+    let obj: IObjSendMessage = {
       roomId: '626696098f5928e2635222b9',
-      text: message
+      text: message,
+    }
+    
+    if (audio) {
+      obj = {
+        roomId: '626696098f5928e2635222b9',
+        text: message,
+        voice: `https://exceed-chat-app.herokuapp.com/voices/${audio}`
+      }
     }
     socket.emit('addMessage', obj)
   }
