@@ -16,7 +16,6 @@ import WrapperChat from "../HOC/WrapperChat";
 
 
 const Chat = ({ theme = "default", messages, handleAddMessage, user }: IChat) => {
-  console.log(theme);
   
   const {
     value, setValue, messageRef,
