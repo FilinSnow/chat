@@ -35,39 +35,49 @@ const Message = ({ message, user: userStorage, oldDays }: IMessage) => {
 
   return (
     <div key={createData} className={isOwner ? "message-owner" : "message"}>
-        <div className="message-container">
-          <p className="user-name">{isAdmin ? adminName : displayName}</p>
-          {message.map((item) => {
-            const messageTime = getReadableTime(item.createData);
-            const isOldDayMessage = oldDays.find((at) => at === item.createData);
+      <div className="message-container">
+        <p className="user-name">{isAdmin ? adminName : displayName}</p>
+        {message.map((item) => {
+          const messageTime = getReadableTime(item.createData);
+          const isOldDayMessage = oldDays.find((at) => at === item.createData);
 
-            return (
-              <React.Fragment key={item.createData}>
-                {!!isOldDayMessage && (
-                  <div className="old-day">
-                    {oldDays[oldDays.length - 1] === item.createData &&
+          return (
+            <React.Fragment key={item.createData}>
+              {!!isOldDayMessage && (
+                <div className="old-day">
+                  {oldDays[oldDays.length - 1] === item.createData &&
                     moment(Number(oldDays[oldDays.length - 1])).format(
                       "DD MMMM YYYY"
                     ) === moment().format("DD MMMM YYYY") ? (
-                      <p>today</p>
-                    ) : (
-                      <p>{moment(item.createData).format("DD MMMM YYYY")}</p>
-                    )}
-                  </div>
-                )}
-                <div className="message-content">
-                  {item.text ? item.text : <audio src={item.voice} controls></audio>}
-                  <p
-                    className={isOwner ? "message-date__owner" : "message-date"}
-                  >
-                    {messageTime}
-                  </p>
+                    <p>today</p>
+                  ) : (
+                    <p>{moment(item.createData).format("DD MMMM YYYY")}</p>
+                  )}
                 </div>
-              </React.Fragment>
-            );
-          })}
-        </div>
-      <img src={isAvatar} className="avatar" alt="avatar" />
+              )}
+              <div className="message-content">
+                {item.text ? item.text : <audio src={item.voice} controls></audio>}
+                <p
+                  className={isOwner ? "message-date__owner" : "message-date"}
+                >
+                  {messageTime}
+                </p>
+              </div>
+            </React.Fragment>
+          );
+        })}
+      </div>
+      <img
+        src={isAvatar}
+        className="avatar"
+        alt="avatar"
+        onClick={handleClick}
+      />
+      <PopoverProfile
+        anchorEl={anchorEl}
+        setAnchorEl={setAnchorEl}
+        userId={user._id}
+      />
     </div>
   );
 };
