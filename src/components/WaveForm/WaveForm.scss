@@ -1,0 +1,34 @@
+.waveform__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  width: 100%;
+  max-width: 100%;
+  background: transparent;
+
+  #waveform {
+    width: 100%;
+    height: 90px;
+    max-width: 100%;
+  }
+
+  .waveform__play {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    background: #EFEFEF;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding-bottom: 3px;
+
+    &:hover {
+      background: #DDD;
+    }
+  }
+}
