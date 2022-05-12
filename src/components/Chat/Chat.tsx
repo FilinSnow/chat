@@ -10,6 +10,7 @@ import RecordVoice from "../RecordVoice/RecordVoice";
 import useDataState from "../hooks/useDataState";
 import CancelIcon from '@mui/icons-material/Cancel';
 import WrapperChat from "../HOC/WrapperChat";
+import WaveForm from "../WaveForm/WaveForm";
 
 
 const Chat = ({ messages, handleAddMessage, user }: IChat) => {
@@ -177,7 +178,8 @@ const Chat = ({ messages, handleAddMessage, user }: IChat) => {
             />
           </div>
           {voiceUrl && <div className="container__audio">
-            <audio src={`https://exceed-chat-app.herokuapp.com/voices/${voiceUrl}`} controls></audio>
+            <WaveForm voiceUrl={voiceUrl}/>
+            {/* <audio src={`https://exceed-chat-app.herokuapp.com/voices/${voiceUrl}`} controls></audio> */}
             <button className="cancel__audio" onClick={handleDeleteVoice}>
               <CancelIcon fill="#fff" />
             </button>

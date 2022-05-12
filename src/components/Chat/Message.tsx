@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import defaultUser from "../../img/defaultUser.png";
 import PopoverProfile from "../PopoverProfile/PopoverProfile";
 import { IMessage } from "../../utils/interfaces/interfaces";
+import WaveForm from "../WaveForm/WaveForm";
 
 const getReadableTime = (time: number | string) => {
   const t = new Date(time);
@@ -56,7 +57,8 @@ const Message = ({ message, user: userStorage, oldDays }: IMessage) => {
                 </div>
               )}
               <div className="message-content">
-                {item.text ? item.text : <audio src={item.voice} controls></audio>}
+                {/* {item.text ? item.text : <audio src={item.voice} controls></audio>} */}
+                {item.text ? item.text : <WaveForm voiceUrl={item.voice}/>}
                 <p
                   className={isOwner ? "message-date__owner" : "message-date"}
                 >
