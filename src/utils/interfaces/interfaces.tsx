@@ -73,6 +73,10 @@ export interface IMessage {
   oldDays: Array<string>;
 }
 
+export interface ITextProps {
+  item: TMessage
+}
+
 export interface IUser {
   avatar: string;
   createData: string;
