@@ -1,5 +1,8 @@
 .main-conteiner {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow-x: hidden;
 
   @media (max-width: 800px) {
     flex-direction: column;
@@ -11,11 +14,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  padding: 0 30px;
   
   @media (max-width: 800px) {
-    padding: 0 10px;
+    padding: 0 20px;
+  }
+
+  @media (max-width: 700px) {
+    width: 100%;
+    padding-left: 20px;
   }
 
   .wrapper__chat {
@@ -51,6 +57,7 @@
       height: 40px;
       margin: 0 3px;
       border-radius: 50%;
+      cursor: pointer;
     }
   }
   
@@ -68,19 +75,9 @@
       }
     }
     & .old-day {
-      margin-right: 427px;
-      @media (max-width: 600px) {
-        & {
-          margin-right: 160px;
-        }
-      }
-      @media (max-width: 400px) {
-        & {
-          margin-right: 54px;
-        }
-      }
+      position: absolute;
+      right: 50%;
     }
-
   }
   
   .message {
@@ -88,17 +85,8 @@
     flex-direction: row-reverse;
 
     & .old-day {
-      margin-left: 460px;
-      @media (max-width: 600px) {
-        & {
-          margin-left: 200px;
-        }
-      }
-      @media (max-width: 400px) {
-        & {
-          margin-left: 100px;
-        }
-      }
+      position: absolute;
+      right: 50%;
     }
   }
   
