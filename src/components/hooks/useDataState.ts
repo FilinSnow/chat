@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { emoji } from "../../utils/consts";
 import { UserLocalStorage } from "../../utils/interfaces/interfaces";
 import { createBigMessages, findArrayOldFirstDates } from "../../utils/utils";
 
@@ -36,8 +37,13 @@ const useDataState = ({ messages, user, handleAddMessage }: UserLocalStorage) =>
         if (isCheckTextAndEmoji || !value.trim()) {
           return;
         }
+        let isCheckValueGifEmoji = value;
+        const resultEmoji = emoji.filter(smile => smile.emojiText === value || smile.emojiText.trim() === value.trim()); 
+        if (resultEmoji.length > 0) {
+          isCheckValueGifEmoji = resultEmoji[0].url
+        }
         setMoveScroll(true); // при добавлении своего сообщения скролл перемещается вниз
-        handleAddMessage({ message: value, audio: '' })
+        handleAddMessage({ message: isCheckValueGifEmoji, audio: '' })
       }
     }
   }, [value, voiceUrl]);

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import defaultUser from "../../img/defaultUser.png";
 import PopoverProfile from "../PopoverProfile/PopoverProfile";
 import { IMessage } from "../../utils/interfaces/interfaces";
+import Text from "./Text";
 
 const getReadableTime = (time: number | string) => {
   const t = new Date(time);
@@ -32,7 +33,7 @@ const Message = ({ message, user: userStorage, oldDays }: IMessage) => {
   const handleClick = (event: React.MouseEvent<HTMLImageElement>): void => {
     setAnchorEl(event.currentTarget);
   };
-
+  
   return (
     <div key={createData} className={isOwner ? "message-owner" : "message"}>
       <div className="message-container">
@@ -56,7 +57,7 @@ const Message = ({ message, user: userStorage, oldDays }: IMessage) => {
                 </div>
               )}
               <div className="message-content">
-                {item.text ? item.text : <audio src={item.voice} controls></audio>}
+                <Text item={item}/>
                 <p
                   className={isOwner ? "message-date__owner" : "message-date"}
                 >
