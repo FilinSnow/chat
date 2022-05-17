@@ -31,6 +31,28 @@
     overflow-y: scroll;
     margin: 0 auto;
   }
+
+  .wrapper__chat-dark {
+    height: 43em;
+    width: 100%;
+    max-width: 1100px;
+    overflow-y: scroll;
+    margin: 0 auto;
+
+    &::-webkit-scrollbar{
+      width: 12px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #1F2023;        /* цвет дорожки */
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #2D2F36;       /* цвет дорожки */
+    }
+  }
+
+
   
   
   .message,
@@ -142,6 +164,7 @@
           outline: none;
           height: 100%;
           width: 95%;
+          font-size: 16px;
         }
       }
       

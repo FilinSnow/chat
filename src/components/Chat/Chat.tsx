@@ -18,6 +18,7 @@ import Box from '@mui/material/Box';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import WrapperChat from "../HOC/WrapperChat";
 import { styled } from '@mui/material/styles';
+import { useSelector, RootStateOrAny } from 'react-redux';
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
@@ -49,7 +50,9 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 
 const Chat = ({ messages, handleAddMessage, user }: IChat) => {
+  const theme = useSelector((state: RootStateOrAny) => state.theme.theme);
   const [open, setOpen] = useState(false);
+  const styleForInput = theme === 'black' ? { background: theme === 'black' ? '#424242' : '', color: '#fff' } : {};
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -232,7 +235,7 @@ const Chat = ({ messages, handleAddMessage, user }: IChat) => {
                     <ArrowDownwardIcon />
                   </div>
                 )}
-                <div className="wrapper__chat" ref={scrollRef}>
+                <div className={ theme === 'black' ? "wrapper__chat-dark" : "wrapper__chat"} ref={scrollRef}>
                   <div
                     id="3"
                     ref={messageRef}
@@ -254,7 +257,7 @@ const Chat = ({ messages, handleAddMessage, user }: IChat) => {
               </div>
               <div className="send-message">
                 <EmojiPicker value={value} setValue={setValue} />
-                <div className="message-input">
+                <div className="message-input" style={styleForInput}>
                   {showVoiceBtn && <RecordVoice setVoiceUrl={setVoiceUrl} setBlockWriteInput={setBlockWriteInput} />}
                   <div className="message-input__container">
                     <input
@@ -262,6 +265,7 @@ const Chat = ({ messages, handleAddMessage, user }: IChat) => {
                       value={value}
                       disabled={blockWriteInput}
                       onChange={(e) => setValue(e.target.value)}
+                      style={styleForInput}
                     />
                   </div>
                 </div>
