@@ -1,17 +1,26 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { useSelector } from 'react-redux';
-import { IAuth } from '../../utils/interfaces/interfaces';
+import { useDispatch, useSelector } from 'react-redux';
+import { actionUser } from '../../store/actions/actionUser';
 import { RootState } from '../../utils/types/types';
 
 
 const WrapperAppRouter = (Component: any) => {
-  
   const ShowComponent = (props: any) => {
-    const copyUser = useSelector((state: RootState) => state.auth.user)
+    const { flag, setFlag } = props;
+    const copyUser = useSelector((state: RootState) => state.auth.user);
+    const dispatch = useDispatch()
     const [auth, setAuth] = useState(false);
     const tmpObj: any = localStorage.getItem('user')
-    const user = useMemo(() =>  JSON.parse(tmpObj) || copyUser, [tmpObj, copyUser])
-    
+    const user = useMemo(() => JSON.parse(tmpObj) || copyUser, [tmpObj, copyUser])
+
+    useEffect(() => {
+      window.onstorage = event => {
+        if (event.key !== 'user') return;
+        dispatch(actionUser({}))
+        setFlag(!flag)
+      };
+
+    }, [window.onstorage])
     useEffect(() => {
       if (user || copyUser) {
         if (Object.keys(user).length === 0) {
@@ -25,7 +34,7 @@ const WrapperAppRouter = (Component: any) => {
     }, [user, copyUser])
 
     return (
-      <Component {...props} auth={auth} setAuth={setAuth} user={user}/>
+      <Component {...props} auth={auth} setAuth={setAuth} user={user} />
     )
   }
   return ShowComponent

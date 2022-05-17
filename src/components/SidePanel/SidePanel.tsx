@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import './SidePanel.scss';
 import { Dialog } from "./components/Dialog";
@@ -64,7 +64,11 @@ export const SidePanel = () => {
         {
           filteringElements(elements).map((item: { id: number; image: string; name: string; shortDescription: string }) => {
             const { id, image, name, shortDescription } = item;
-            return <Dialog id={id} image={image} name={name} shortDescription={shortDescription} />;
+            return (
+             <React.Fragment key={id}>
+                <Dialog id={id} image={image} name={name} shortDescription={shortDescription} />
+             </React.Fragment>
+            )
           })
         }
       </div>
