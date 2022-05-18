@@ -19,8 +19,8 @@ const WrapperAppRouter = (Component: any) => {
         dispatch(actionUser({}))
         setFlag(!flag)
       };
-
     }, [window.onstorage])
+    
     useEffect(() => {
       if (user || copyUser) {
         if (Object.keys(user).length === 0) {
