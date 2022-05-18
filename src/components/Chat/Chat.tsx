@@ -199,14 +199,11 @@ const Chat = ({ messages, handleAddMessage, user }: IChat) => {
         <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Drawer
             sx={{
-              width: '30%',
+              width: open ? '35%' : '0',
               flexShrink: 0,
               '& .MuiDrawer-paper': {
-                width: '30%',
+                width: '35%',
                 boxSizing: 'border-box',
-                '@media screen and (max-width: 900px)': {
-                  width: '40%',
-                },
                 '@media screen and (max-width: 700px)': {
                   width: '100%',
                 },
@@ -216,15 +213,20 @@ const Chat = ({ messages, handleAddMessage, user }: IChat) => {
             anchor="left"
             open={open}
           >
-            <DrawerHeader>
-              <IconButton onClick={handleDrawerClose}>
+            <DrawerHeader sx={{
+              background: theme === 'black' ? '#222222' : '',
+            }}>
+              <IconButton onClick={handleDrawerClose} sx={{ color: theme === 'black' ? '#fff' : '' }}>
                 <ChevronLeftIcon />
               </IconButton>
             </DrawerHeader>
             <Divider />
             <SidePanel />
           </Drawer>
-          <Main open={open}>
+          <Main open={open} sx={{
+            maxWidth: '100vw',
+            boxSizing: 'border-box'
+          }}>
             <div className="chat_modern">
               <div className="wrapper__chat__img">
                 {!moveScroll && (
