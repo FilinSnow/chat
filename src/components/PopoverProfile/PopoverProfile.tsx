@@ -8,7 +8,7 @@ import EditModal from "../editModal/EditModal";
 
 const PopoverProfile = ({ anchorEl, setAnchorEl, userId }: any) => {
   const navigate = useNavigate();
-  const userString: string = localStorage.getItem("user") || "";
+  const userString: string = localStorage.getItem("user") || "{}";
   const user = JSON.parse(userString);
   const [userInfo, setUserInfo] = useState<any>({});
   const [openEditModal, setOpenEditModal] = useState(false);

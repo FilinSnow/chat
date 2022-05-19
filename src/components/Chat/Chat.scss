@@ -77,9 +77,11 @@
   
     & > .avatar {
       height: 40px;
+      width: 40px;
       margin: 0 3px;
       border-radius: 50%;
       cursor: pointer;
+      object-fit: cover;
     }
   }
   
