@@ -8,7 +8,7 @@ interface IAction {
 }
 
 const initialState: ITheme = {
-  theme: localStorage.getItem('theme') || 'white'
+  theme: localStorage.getItem('theme') || 'light'
 };
 
 export const Theme = (state = initialState, action: IAction) => {

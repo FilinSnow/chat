@@ -37,7 +37,7 @@ export const SidePanel = () => {
   }
 
   return (
-    <div className="side-panel" style={theme === 'black' ? { background: '#222222', color: '#fff' } : {}}>
+    <div className="side-panel" style={theme === 'dark' ? { background: '#222222', color: '#fff' } : {}}>
       <Input />
       <div className="header-panel">
         <div

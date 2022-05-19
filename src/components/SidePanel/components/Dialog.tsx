@@ -20,7 +20,7 @@ export const Dialog = ({ id, image, name, shortDescription }: IDialog) => {
   const theme = useSelector((state: RootStateOrAny) => state.theme.theme);
 
   return (
-    <div className="dialog" style={{ background: theme === 'black' ? '#424242' : '' }}>
+    <div className="dialog" style={{ background: theme === 'dark' ? '#424242' : '' }}>
       <div className="img">
         <img src={`https://react-test-starwars.vercel.app${image}`} alt="Avatar" />
       </div>

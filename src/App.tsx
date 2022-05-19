@@ -11,17 +11,17 @@ const App: FC = () => {
   useEffect(() => {
     const LS = localStorage.getItem('theme');
     if (!LS) {
-      localStorage.setItem('theme', 'white');
+      localStorage.setItem('theme', 'light');
       dispatch({
         type: 'CHANGE_THEME',
-        payload: 'white'
+        payload: 'light'
       });
     }
   });
 
   return (
     <div className="App" style={{
-      background: theme === 'black' ? '#1F2023' : '',
+      background: theme === 'dark' ? '#1F2023' : '',
       height: '100vh',
       width: '100vw',
       scrollbarColor: '#1F2023'

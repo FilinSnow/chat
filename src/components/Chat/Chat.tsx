@@ -52,7 +52,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 const Chat = ({ messages, handleAddMessage, user }: IChat) => {
   const theme = useSelector((state: RootStateOrAny) => state.theme.theme);
   const [open, setOpen] = useState(false);
-  const styleForInput = theme === 'black' ? { background: theme === 'black' ? '#424242' : '', color: '#fff' } : {};
+  const styleForInput = theme === 'dark' ? { background: theme === 'dark' ? '#424242' : '', color: '#fff' } : {};
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -214,9 +214,9 @@ const Chat = ({ messages, handleAddMessage, user }: IChat) => {
             open={open}
           >
             <DrawerHeader sx={{
-              background: theme === 'black' ? '#222222' : '',
+              background: theme === 'dark' ? '#222222' : '',
             }}>
-              <IconButton onClick={handleDrawerClose} sx={{ color: theme === 'black' ? '#fff' : '' }}>
+              <IconButton onClick={handleDrawerClose} sx={{ color: theme === 'dark' ? '#fff' : '' }}>
                 <ChevronLeftIcon />
               </IconButton>
             </DrawerHeader>
@@ -237,7 +237,7 @@ const Chat = ({ messages, handleAddMessage, user }: IChat) => {
                     <ArrowDownwardIcon />
                   </div>
                 )}
-                <div className={ theme === 'black' ? "wrapper__chat-dark" : "wrapper__chat"} ref={scrollRef}>
+                <div className={ theme === 'dark' ? "wrapper__chat-dark" : "wrapper__chat"} ref={scrollRef}>
                   <div
                     id="3"
                     ref={messageRef}
