@@ -200,11 +200,17 @@ const Chat = ({ messages, handleAddMessage, user }: IChat) => {
           <Drawer
             sx={{
               width: open ? '35%' : '0',
+              '@media screen and (max-width: 700px)': {
+                width: open ? '45%' : '0',
+              },
               flexShrink: 0,
               '& .MuiDrawer-paper': {
                 width: '35%',
                 boxSizing: 'border-box',
                 '@media screen and (max-width: 700px)': {
+                  width: '45%',
+                },
+                '@media screen and (max-width: 640px)': {
                   width: '100%',
                 },
               },
