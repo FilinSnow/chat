@@ -29,6 +29,7 @@
     width: 100%;
     max-width: 1100px;
     overflow-y: scroll;
+    overflow-x: hidden;
     margin: 0 auto;
   }
 
@@ -37,6 +38,7 @@
     width: 100%;
     max-width: 1100px;
     overflow-y: scroll;
+    overflow-x: hidden;
     margin: 0 auto;
 
     &::-webkit-scrollbar{
