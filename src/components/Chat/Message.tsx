@@ -5,6 +5,7 @@ import { IMessage } from "../../utils/interfaces/interfaces";
 import OutsideClickHandler from 'react-outside-click-handler';
 import { useNavigate } from "react-router-dom";
 import PopoverProfile from "../PopoverProfile/PopoverProfile";
+import Text from "./Text";
 
 const getReadableTime = (time: number | string) => {
   const t = new Date(time);
@@ -30,7 +31,7 @@ const reactionsArray = [
 
 const allowedEmojies = ['😀', '❤️', '💩', '👍', '👎'];
 
-const Message = ({ message, firstCombined, lastCombined, theme = 'default', user: userStorage, oldDays }: IMessage) => {
+const Message = ({ message, firstCombined, lastCombined, user: userStorage, oldDays, isDark }: IMessage) => {
   const { createData, user, text, voice, _id } = message;
   const { firstName, lastName, email, avatar } = user;
   const [isShowingReactions, setIsShowingReactions] = useState(false);
@@ -65,83 +66,62 @@ const Message = ({ message, firstCombined, lastCombined, theme = 'default', user
   const handleClick = (event: React.MouseEvent<HTMLImageElement>): void => {
     setAnchorEl(event.currentTarget);
   };
-
+  
   return (
     <div key={createData} className={isOwner ? "message-owner" : "message"} >
-      {theme === "default" ? (
-        <div className="message-content">
+      <OutsideClickHandler onOutsideClick={() => setIsShowingReactions(false)}>
+        <div 
+          className="message-container"
+          onClick={() => setIsShowingReactions(true)}
+        >
+          {!shouldHideName && <p className="user-name">{isAdmin ? adminName : displayName}</p>}
           <React.Fragment key={createData}>
             {!!isOldDayMessage && (
               <div className="old-day">
-                {oldDays[oldDays.length - 1] === createData ? (
+                {oldDays[oldDays.length - 1] === createData &&
+                  moment(Number(oldDays[oldDays.length - 1])).format(
+                    "DD MMMM YYYY"
+                  ) === moment().format("DD MMMM YYYY") ? (
                   <p>today</p>
                 ) : (
                   <p>{moment(createData).format("DD MMMM YYYY")}</p>
                 )}
               </div>
             )}
-
-            <div className="message-content-text">
-              <div>{text}</div>
-              <p className="message-date">{messageTime}</p>
+            <div className="message-content">
+              {text ? text : <audio src={voice} controls></audio>}
+              <div className="message-footer">
+                <div className='reactions'>
+                  {/* {reactionsArray.map((item: any, key: number) => {
+                    return (
+                      <div
+                        key={key}
+                        className="emoji-badge" 
+                        onClick={() => addReaction(item.emoji, _id, user._id)}
+                      >
+                        <span className='emoji'>{item.emoji}</span>
+                        <span className='emoji-count'>{item.count}</span>
+                      </div>);
+                  })} */}
+                </div>
+                <p className={isOwner ? "message-date__owner" : "message-date"}>
+                  {messageTime}
+                </p>
+              </div>
             </div>
+            {isShowingReactions && 
+              <div className={"pick-reaction" + (isDark ? " dark-reaction": "")}>
+                {allowedEmojies.map((item: any, key: number) => {
+                  return (
+                    <div className="emoji-badge" key={key} onClick={() => addReaction(item, _id, user._id)}>
+                      <span className='emoji'>{item}</span>
+                    </div>);
+                })}
+              </div>
+            }
           </React.Fragment>
         </div>
-      ) : (
-        <OutsideClickHandler onOutsideClick={() => setIsShowingReactions(false)}>
-          <div 
-            className="message-container"
-            onClick={() => setIsShowingReactions(true)}
-          >
-            {!shouldHideName && <p className="user-name">{isAdmin ? adminName : displayName}</p>}
-            <React.Fragment key={createData}>
-              {!!isOldDayMessage && (
-                <div className="old-day">
-                  {oldDays[oldDays.length - 1] === createData &&
-                    moment(Number(oldDays[oldDays.length - 1])).format(
-                      "DD MMMM YYYY"
-                    ) === moment().format("DD MMMM YYYY") ? (
-                    <p>today</p>
-                  ) : (
-                    <p>{moment(createData).format("DD MMMM YYYY")}</p>
-                  )}
-                </div>
-              )}
-              <div className="message-content">
-                {text ? text : <audio src={voice} controls></audio>}
-                <div className="message-footer">
-                  <div className='reactions'>
-                    {/* {reactionsArray.map((item: any, key: number) => {
-                      return (
-                        <div
-                          key={key}
-                          className="emoji-badge" 
-                          onClick={() => addReaction(item.emoji, _id, user._id)}
-                        >
-                          <span className='emoji'>{item.emoji}</span>
-                          <span className='emoji-count'>{item.count}</span>
-                        </div>);
-                    })} */}
-                  </div>
-                  <p className={isOwner ? "message-date__owner" : "message-date"}>
-                    {messageTime}
-                  </p>
-                </div>
-              </div>
-              {isShowingReactions && 
-                <div className="pick-reaction">
-                  {allowedEmojies.map((item: any, key: number) => {
-                    return (
-                      <div className="emoji-badge" key={key} onClick={() => addReaction(item, _id, user._id)}>
-                        <span className='emoji'>{item}</span>
-                      </div>);
-                  })}
-                </div>
-              }
-            </React.Fragment>
-          </div>
-          </OutsideClickHandler>)
-        }
+        </OutsideClickHandler>
         {!shouldCombineMessage ? 
           <img src={isAvatar} className="avatar" alt="avatar" onClick={handleClick}/> 
           : 

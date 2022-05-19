@@ -1,6 +1,7 @@
 .header__content {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 13px;
   background: #F1F1F2;
 
@@ -8,6 +9,19 @@
     a {
       text-decoration: none;
       margin: 10px;
+    }
+
+    button {
+      background-color: #f44336;
+      border-radius: 10px;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      cursor: pointer;
     }
   }
 }

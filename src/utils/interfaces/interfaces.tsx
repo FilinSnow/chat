@@ -5,8 +5,6 @@ export interface IAuth {
   setFlag?: (tmp: boolean) => void;
   auth?: boolean | any;
   setAuth?: (tmp: boolean) => void;
-  theme?: any;
-  setTheme?: any;
   user?: UserLocalStorage;
 }
 
@@ -16,7 +14,6 @@ export interface IAction {
 }
 
 export interface IChat {
-  theme: string;
   messages: TMessage[];
   handleAddMessage: ({message, audio}: IParamAddMessage) => void;
   user: UserLocalStorage; 
@@ -75,8 +72,12 @@ export interface IMessage {
   firstCombined: string;
   lastCombined: string;
   user: any;
-  theme?: string | undefined;
   oldDays: Array<string>;
+  isDark?: boolean;
+}
+
+export interface ITextProps {
+  item: TMessage
 }
 
 export interface IUser {

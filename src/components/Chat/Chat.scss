@@ -1,5 +1,8 @@
 .main-conteiner {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow-x: hidden;
 
   @media (max-width: 800px) {
     flex-direction: column;
@@ -11,11 +14,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  padding: 0 30px;
   
   @media (max-width: 800px) {
-    padding: 0 10px;
+    padding: 0 20px;
+  }
+
+  @media (max-width: 700px) {
+    width: 100%;
+    padding-left: 20px;
   }
 
   .wrapper__chat {
@@ -25,6 +31,28 @@
     overflow-y: scroll;
     margin: 0 auto;
   }
+
+  .wrapper__chat-dark {
+    height: 43em;
+    width: 100%;
+    max-width: 1100px;
+    overflow-y: scroll;
+    margin: 0 auto;
+
+    &::-webkit-scrollbar{
+      width: 12px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #1F2023;        /* цвет дорожки */
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #2D2F36;       /* цвет дорожки */
+    }
+  }
+
+
   
   .message,
   .message-owner {
@@ -53,6 +81,8 @@
       width: 40px;
       margin: 0 3px;
       border-radius: 50%;
+      cursor: pointer;
+      object-fit: cover;
     }
 
     & > .avatar-placeholder {
@@ -77,19 +107,9 @@
       }
     }
     & .old-day {
-      margin-right: 427px;
-      @media (max-width: 600px) {
-        & {
-          margin-right: 160px;
-        }
-      }
-      @media (max-width: 400px) {
-        & {
-          margin-right: 54px;
-        }
-      }
+      position: absolute;
+      right: 50%;
     }
-
   }
   
   .message {
@@ -97,17 +117,8 @@
     flex-direction: row-reverse;
 
     & .old-day {
-      margin-left: 460px;
-      @media (max-width: 600px) {
-        & {
-          margin-left: 200px;
-        }
-      }
-      @media (max-width: 400px) {
-        & {
-          margin-left: 100px;
-        }
-      }
+      position: absolute;
+      right: 50%;
     }
   }
   
@@ -158,6 +169,10 @@
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   }
 
+  .dark-reaction {
+    background-color: rgb(71 74 91);
+  }
+
   .emoji-badge {
     display: flex;
     align-items: center;
@@ -203,133 +218,10 @@
           outline: none;
           height: 100%;
           width: 95%;
+          font-size: 16px;
         }
       }
       
-    }
-  }
-}
-
-.chat {
-  width: 100%;
-  padding-right: 10%;
-
-  @media (max-width: 800px) {
-    padding: 0 10px;
-  }
-
-  .wrapper__chat {
-    border: 1px solid #000;
-    height: 600px;
-    max-width: 610px;
-    overflow-y: scroll;
-    margin: 0 auto;
-    background-image: url('https://d7hftxdivxxvm.cloudfront.net/?resize_to=width&src=https%3A%2F%2Fartsy-media-uploads.s3.amazonaws.com%2F2RNK1P0BYVrSCZEy_Sd1Ew%252F3417757448_4a6bdf36ce_o.jpg&width=1200&quality=80');
-  }
-  
-  .message,
-  .message-owner {
-    display: flex;
-    align-items: flex-end;
-  
-    & > .avatar {
-      height: 30px;
-      margin: 0 5px;
-      border-radius: 5px;
-    }
-
-    & > .avatar-placeholder {
-      height: 30px;
-      width: 30px;
-      margin: 0 5px;
-      background-color: #ff000000;
-    }
-
-    & > .message-container{
-      & > .user-name {
-        text-align: left;
-        margin: 0;
-      }
-    }
-  }
-  
-  .message {
-    justify-content: start;
-    flex-direction: row-reverse;
-
-    & .old-day {
-      margin-left: 220px;
-
-      @media (max-width: 500px){
-        & {
-          margin-left: 100px;
-        }
-      }
-    }
-  }
-  
-  .message-owner {
-    justify-content: flex-end;
-
-    & .message-content {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-    }
-
-    & .old-day {
-      margin-right: 190px;
-
-      @media (max-width: 500px){
-        & {
-          margin-right: 50px;
-        }
-      }
-    }
-
-  }
-  
-  .message-content {
-    text-align: left;
-    margin: 5px 5px 0px 5px; 
-    word-break: break-word;
-
-
-    & .message-content-name {
-      padding: 10px;
-      margin-bottom: 3; 
-      background: white;
-      width: 100%;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-    }
-
-    & .message-content-text {
-      margin-bottom: 10px;
-      margin-top: 10px;
-      padding: 10px;
-      background: white;
-      border-radius: 10px;
-      max-width: 250px;
-      width: max-content;
-      &:last-child {
-        margin-bottom: 0px;
-      }
-    }
-  }
-
-  .message-date {
-    margin: 0px 0;
-    text-align: right;
-    color: #737373;
-    font-size: 14px;
-  }
-  
-  .send-message {
-    margin-top: 10px;
-  
-    & > *{
-      height: 20px
     }
   }
 }
