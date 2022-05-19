@@ -9,8 +9,7 @@ const App: FC = () => {
   const [flag, setFlag] = useState<boolean>(false);
   
   useEffect(() => {
-    const LS = localStorage.getItem('theme');
-    if (!LS) {
+    if (!localStorage.getItem('theme')) {
       localStorage.setItem('theme', 'light');
       dispatch({
         type: 'CHANGE_THEME',
