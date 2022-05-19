@@ -75,19 +75,20 @@ const Chat = ({ messages, handleAddMessage, user }: IChat) => {
   useEffect(() => {
     if (delay) {
       const timeId = setTimeout(() => {
-        setDelay(false)
-        setCounterMessage(0)
-        clearTimeout(timeId)
-      }, 5000)
+        setDelay(false);
+        setCounterMessage(0);
+        clearTimeout(timeId);
+      }, 5000);
     }
-  }, [delay])
+  }, [delay]);
 
   useEffect(() => {
     if (counterMessage === 6) { // проверка что отправленные сообщения достигли лимита 6 сообщений за 5 се
-      setBlockSend(true)
+      setBlockSend(true);
+      
       const timeId = setTimeout(() => {
         setBlockSend(false);
-        clearTimeout(timeId)
+        clearTimeout(timeId);
       }, 3000)
     }
   }, [counterMessage])
@@ -115,9 +116,7 @@ const Chat = ({ messages, handleAddMessage, user }: IChat) => {
   }, [messages]);
 
   useEffect(() => {
-    if (moveScroll) {
-      messageRef.current?.scrollIntoView(false);
-    }
+    if (moveScroll) messageRef.current?.scrollIntoView(false);
   }, [moveScroll]);
 
   const handleAutoScroll = () => {
@@ -220,7 +219,7 @@ const Chat = ({ messages, handleAddMessage, user }: IChat) => {
             open={open}
           >
             <DrawerHeader sx={{
-              background: theme === 'dark' ? '#222222' : '',
+              background: theme === 'dark' ? 'rgb(66, 66, 66)' : '#F1F1F2',
             }}>
               <IconButton onClick={handleDrawerClose} sx={{ color: theme === 'dark' ? '#fff' : '' }}>
                 <ChevronLeftIcon />
@@ -249,14 +248,19 @@ const Chat = ({ messages, handleAddMessage, user }: IChat) => {
                     ref={messageRef}
                     style={{ display: "flex", flexDirection: "column" }}
                   >
-                    {filteredMessages.length > 0 &&
-                      filteredMessages.map((message: Array<TMessage>, index) => {
+                    {messages.length > 0 &&
+                      messages.map((message, index) => {
+                        const firstCombined = messages[index + 1]?.user?.email || '';
+                        const lastCombined = messages[index -1]?.user?.email || '';
                         return (
                           <Message
                             key={index}
                             message={message}
                             user={user}
+                            isDark={theme === 'dark'}
                             oldDays={oldDays}
+                            firstCombined={firstCombined}
+                            lastCombined={lastCombined}
                           />
                         );
                       })}

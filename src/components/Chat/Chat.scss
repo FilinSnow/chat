@@ -54,14 +54,15 @@
 
 
   
-  
   .message,
   .message-owner {
     display: flex;
     align-items: flex-end;
     margin-top: 8px;
+    position: relative;
+    align-items: center;
 
-    & > .message-container {
+    .message-container {
       display: flex;
       flex-direction: column;
       margin: 0 5px;
@@ -83,12 +84,19 @@
       cursor: pointer;
       object-fit: cover;
     }
+
+    & > .avatar-placeholder {
+      height: 40px;
+      width: 40px;
+      margin: 0 3px;
+      background-color: #ffffff00;
+    }
   }
   
   .message-owner {
     justify-content: flex-end;
 
-    & > .message-container {
+    .message-container {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
@@ -123,21 +131,65 @@
     border-radius: 20px;
     word-break: break-word;
 
-    &:not(:last-child) {
-      margin-bottom: 10px
+    & > .message-footer {
+      display: flex;
+      justify-content: flex-end;
+
+      & > .message-date, 
+      .message-date__owner {
+        margin: 0;
+        margin-top: 4px;
+        color: rgb(82 82 82);
+        font-size: 14px;
+        text-align: right;
+      }
+  
+      & > .message-date__owner {
+        color: #e0e0e0;
+      }
+  
+      & > .reactions {
+        display: flex;
+        color: #ffffff;
+        margin-right: 5px;
+        margin-top: 3px;
+      }
+    }
+  }
+
+  .pick-reaction {
+    display: flex;
+    background-color: rgb(255, 255, 255);
+    border-radius: 12px;
+    padding: 4px;
+    position: absolute;
+    right: 50;
+    bottom: -24px;
+    z-index: 100;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  .dark-reaction {
+    background-color: rgb(71 74 91);
+  }
+
+  .emoji-badge {
+    display: flex;
+    align-items: center;
+    margin: 0 2px 0 2px;
+    background-color: #00000059;
+    border-radius: 12px;
+    padding: 0 4px 0 4px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #3d97ff;
     }
 
-    & > .message-date, 
-    .message-date__owner {
-      margin: 0;
-      margin-top: 4px;
-      color: rgb(82 82 82);
-      font-size: 14px;
-      text-align: right;
-    }
-
-    & > .message-date__owner {
-      color: #e0e0e0;
+    & > .emoji {
+      padding-bottom: 1px;
+      margin-right: 4px;
+      font-size: 15px;
     }
   }
   
@@ -179,6 +231,7 @@
   bottom: 20px;
   left: 50%;
   cursor: pointer;
+  z-index: 101;
 }
 
 .wrapper__chat__img {

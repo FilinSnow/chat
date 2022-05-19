@@ -68,9 +68,12 @@ export interface IFormError {
 }
 
 export interface IMessage {
-  message: TMessage[];
+  message: TMessage;
+  firstCombined: string;
+  lastCombined: string;
   user: any;
   oldDays: Array<string>;
+  isDark?: boolean;
 }
 
 export interface ITextProps {

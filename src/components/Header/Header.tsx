@@ -24,7 +24,7 @@ const Header: FC<IAuth> = ({ flag, setFlag, auth: isCheckAuth }: IAuth) => {
 
   return (
     <div style={{ width: '100%', borderBottom: '1px solid silver' }}>
-      <div className="header__content" style={{ background: LS === 'dark' ? '#1F2023' : '' }}>
+      <div className="header__content" style={{ background: LS === 'dark' ? 'rgb(66, 66, 66)' : '' }}>
         <div className="content">
           <Switch defaultChecked={LS === 'light' ? false : true} size="small" onChange={() => LS === 'light' ? changeThemeColor('dark') : changeThemeColor('light') } />
         </div>

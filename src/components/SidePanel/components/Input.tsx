@@ -5,7 +5,7 @@ import SearchIcon from '@mui/icons-material/Search';
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  backgroundColor: 'rgb(201 201 201 / 15%)',
   '&:hover': {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
