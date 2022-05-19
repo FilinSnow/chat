@@ -46,7 +46,7 @@ export const Input = () => {
   return (
     <Search sx={{
       margin: '20px',
-      width: 'auto'
+      width: 'auto',
     }}>
       <SearchIconWrapper>
         <SearchIcon />

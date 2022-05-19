@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector, RootStateOrAny } from 'react-redux';
 import axios from "axios";
 import './SidePanel.scss';
 import { Dialog } from "./components/Dialog";
@@ -14,6 +15,7 @@ interface IElement {
 export const SidePanel = () => {
   const [ elements, setElements ] = useState([]) as any;
   const [ filtering, setFiltering ] = useState('all');
+  const theme = useSelector((state: RootStateOrAny) => state.theme.theme);
 
   useEffect(() => {
     const getWars = async () => {
@@ -35,7 +37,7 @@ export const SidePanel = () => {
   }
 
   return (
-    <div className="side-panel ">
+    <div className="side-panel" style={theme === 'dark' ? { background: '#222222', color: '#fff' } : {}}>
       <Input />
       <div className="header-panel">
         <div
@@ -64,11 +66,7 @@ export const SidePanel = () => {
         {
           filteringElements(elements).map((item: { id: number; image: string; name: string; shortDescription: string }) => {
             const { id, image, name, shortDescription } = item;
-            return (
-             <React.Fragment key={id}>
-                <Dialog id={id} image={image} name={name} shortDescription={shortDescription} />
-             </React.Fragment>
-            )
+            return <Dialog key={id} id={id} image={image} name={name} shortDescription={shortDescription} />;
           })
         }
       </div>
